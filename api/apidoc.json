@@ -1,0 +1,11 @@
+{
+    "name": "rullex api",
+    "version": "0.0.1",
+    "description": "api сервиса rullex.ru",
+    "title": "Данная документация содержит все запросы и методы api rullex.ru",
+    "url" : "https://rullex.ru/api/rullex",
+    "template": {
+        "withCompare": true,
+        "withGenerator": true
+    }
+}

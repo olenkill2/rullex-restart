@@ -1,0 +1,86 @@
+// Import Vuetify styling
+@import 'variables';
+@import 'controls';
+html,body
+{
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+body
+{
+	font-size: 16px;
+	font-family: $accent-font;
+	font-weight: $regular;
+	color: $accent;
+	background-color: $light-gray;
+	line-height: 1.5;
+}
+*
+{
+	box-sizing: border-box;
+	outline: none;
+}
+a
+{
+	color: $accent;
+}
+table
+{
+	border-collapse: collapse;
+}
+th
+{
+	font-weight: $medium;
+	text-align: left;
+	font-size: 14px;
+}
+td
+{
+	font-weight: $light;
+	font-size: 14px;
+}
+.def-link
+{
+	color: $accent;
+	text-decoration: none;
+	border-bottom: 1px solid $main;
+	padding-bottom: 2px;
+	transition: background-color 0.2s;
+	&:hover
+	{
+		border-color: $accent;
+	}
+}
+.container
+{
+	max-width: 1200px;
+	padding-left: $container-gut;
+	padding-right: $container-gut;
+	margin-left: auto;
+	margin-right: auto;
+}
+.header-wr
+{
+	position: relative;
+	z-index: 20;
+}
+.page-content
+{
+	padding-top: 30px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.dashboard-header-wr
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 45px;
+}
+.dashboard-header__left
+{
+	font-size: 24px;
+	color: $accent;
+}
