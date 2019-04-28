@@ -1,13 +1,11 @@
 <template lang="pug">
-	.input-wr
-		input.input(:value="name",
+	.textarea-wr
+		textarea.textarea(:value="name",
 			@input="updateSelf($event.target.value)",
 			@focus="focused = true; $emit('focus')",
 			@blur="focused = false; $emit('blur')",
-			:type="type",
-			:placeholder="placeholder"
-			:class="{'input_focused': focused || name !== '' || placeholder}")
-		.input-label
+			:class="{'textarea_focused': focused || name !== ''}")
+		.textarea-label
 			|{{label}}
 </template>
 <script>
@@ -15,7 +13,7 @@ export default {
 	model: {
 		prop: "name",
 	},
-	props: ["name", "label", "type", "placeholder"],
+	props: ["name", "label", "type"],
 	data: () => ({
 		focused: false
 	}),
@@ -28,16 +26,17 @@ export default {
 </script>
 <style lang="scss">
 	@import '~/assets/style/variables.scss';
-	.input-wr
+	.textarea-wr
 	{
 		position: relative;
 		padding-top: 12px;
 	}
-	.input
+	.textarea
 	{
 		box-shadow: none;
 		border: none;
 		background-color: transparent;
+		font-size: 16px;
 		border-bottom: 1px solid $accent;
 		left: 0;
 		min-height: 32px;
@@ -47,26 +46,27 @@ export default {
 		font-size: 14px;
 		display: block;
 		width: 100%;
-		min-width: 60px;
+		resize: vertical;
+		min-height: 45px;
 	}
-	.input_error
+	.textarea_error
 	{
 		border-color: $red;
-		& ~ .input-label
+		& ~ .textarea-label
 		{
 			color: $red;
 		}
 	}
-	.input_focused
+	.textarea_focused
 	{
-		& ~ .input-label
+		& ~ .textarea-label
 		{
 			font-size: 12px;
 			top: -3px;
 			color: $accent;
 		}
 	}
-	.input-label
+	.textarea-label
 	{
 		position: absolute;
 		width: 100%;

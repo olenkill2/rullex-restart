@@ -1,22 +1,28 @@
 <template lang="pug">
 	.popup-box
 		.popup-box__layout
-		.popup.popup_link
+		.popup.popup_post
 			.popup-top
 				.popup-top__header
-					|Добавить ссылку
+					|Управление статьей
 				.popup-top__close(@click="close")
 					img(src="~/assets/icons/close.svg")
 
 			.popup-body
-				field.popup-link__field(v-model="linkData.name", label="Название")
-				field.popup-link__field(v-model="linkData.url", label="Url")
-				category.popup-link__field(@select="selectCategory", :selected="editData")
-				field.popup-link__field(v-model="linkData.order", label="Вес")
-				label.checkbox-label-wr
-					checkbox(v-model="linkData.private")
-					span.label-text
-						|Приватная
+				.popup-body__top
+					field.popup-post__field(v-model="postData.name", label="Название")
+					field.popup-post__field(v-model="postData.url", label="Url")
+					field.popup-post__field(v-model="postData.title", label="Title")
+					field.popup-post__field(v-model="postData.description", label="Description")
+					category.popup-post__field(@select="selectCategory", :selected="editData")
+					label.checkbox-label-wr
+						checkbox(v-model="postData.private")
+						span.label-text
+							|Приватная
+
+				.content-editor
+					//- <froala :tag="'textarea'" :config="config" v-model="postData.content"></froala>
+					editor(v-model="postData.content", ref="editor", :value="postData.content", :options="editorOptions", :html="editorHtml", :visible="editorVisible", previewStyle="vertical", mode="wysiwyg")
 
 			.popup-footer
 				button.btn.btn_red.popup-footer__btn(v-if="edit", @click="removeItem")
@@ -36,26 +42,37 @@ export default {
 	components: {
 		field,
 		category,
-		checkbox
+		checkbox,
 	},
 	data: () => ({
-		linkData: {
+		postData: {
 			name: '',
 			url: '',
+			title: '',
+			description: '',
 			category: '',
-			order: '',
-			private: false,
+			private: true,
+			content: '',
+			category: 'null'
 		},
 		selectedCategory: '',
 		error: false,
-		model: ''
+		editorText: 'This is initialValue.',
+		editorOptions: {
+			useDefaultHTMLSanitizer: true,
+			hideModeSwitch: true
+		},
+		editorHtml: ``,
+		editorVisible: true
 	}),
 	methods: {
 		close () {
 			this.$emit('close');
 		},
 		addNewItem () {
-			this.$axios.post('/api/menu', this.linkData).then((result, error) => {
+			console.log(this.postData.category);
+			this.postData.content = this.$refs.editor.invoke('getHtml');
+			this.$axios.post('/api/post', this.postData).then((result, error) => {
 				this.$emit('update');
 				this.close();
 			}).catch((error) => {
@@ -64,12 +81,13 @@ export default {
 		},
 		selectCategory (category) {
 			if(category != null)
-				this.linkData.category = category;
+				this.postData.category = category;
 			else
-				this.linkData.category = null
+				this.postData.category = null
 		},
 		updateItem () {
-			this.$axios.put('/api/menu', {link: this.linkData}).then((result, error) => {
+			this.postData.content = this.$refs.editor.invoke('getHtml');
+			this.$axios.put('/api/post', {post: this.postData}).then((result, error) => {
 				this.$emit('update');
 				this.close();
 			}).catch((error) => {
@@ -77,20 +95,23 @@ export default {
 			});
 		},
 		removeItem () {
-			this.$axios.delete('/api/menu', {data: {link: this.linkData}}).then((result, error) => {
+			this.$axios.delete('/api/post', {data: {post: this.postData._id}}).then((result, error) => {
 				this.$emit('update');
 				this.close();
 			}).catch((error) => {
 				this.error = true;
 			})
 		},
+		uploadImage (file) {
+			console.log('upload');
+		}
 	},
 	computed:
 	{
 		edit () {
 			if(this.editData)
 			{
-				this.linkData = {...this.editData};
+				this.postData = {...this.editData};
 				return true;
 			}
 			return false;
@@ -164,13 +185,9 @@ export default {
 			width: 100%;
 		}
 	}
-	.popup-link__field
+	.popup-post__field
 	{
-		margin-bottom: 15px;
-		&:last-child
-		{
-			margin-bottom: 0;
-		}
+		margin-right: 10px;
 	}
 	.popup-footer
 	{
@@ -193,5 +210,15 @@ export default {
 		{
 			margin-left: 0;
 		}
+	}
+	.popup-body__top
+	{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.content-editor
+	{
+		padding-top: 40px;
 	}
 </style>

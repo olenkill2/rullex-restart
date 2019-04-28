@@ -19,6 +19,7 @@
 							th №
 							th Название
 							th Url
+							th Скрыта
 							th Раздел
 							th Ред.
 						tr(v-for="(item, index) of navItems")
@@ -26,7 +27,10 @@
 							td {{item.name}}
 							td {{item.url}}
 							td
-								div(v-if="typeof item.category != 'undefined'") {{item.category.category}}
+								span(v-if="!item.private") Нет
+								span(v-else) Да
+							td
+								div(v-if="item.category != null") {{item.category.category}}
 							td
 								.edit-btn(@click="editMenuItem(index)")
 
@@ -41,13 +45,14 @@
 							th Url
 							th Раздел
 
-						tr
-							td 1
-							td Главная
-							td /
-							td --
+						tr(v-for="(post, index) in allPosts")
+							td {{index + 1}}
+							td {{post.name}}
+							td {{post.url}}
+							td
+								div(v-if="post.category != null") {{post.category.category}}
 
-		linkPopup(v-if="showLinkPopup", :editData="editData", @close="closePopup", @dataUpdated="updateMenu")
+		linkPopup(v-if="showLinkPopup", :editData="editData", @close="closePopup", @update="updateMenu")
 </template>
 <script>
 import linkPopup from '~/components/linkPopup.vue';
@@ -55,13 +60,15 @@ export default {
 	layout (context) {
 		return 'dashboard'
 	},
-	asyncData (req) {
-		return req.$axios.get('http://127.0.0.1:3002/menu').then((result, error) => {
-			// this.navItems = ;
-			return { navItems: result.data.data }
-		}).catch((error) => {
-			return { navItems: []}
-		})
+	async asyncData (req) {
+		try
+		{
+			var getLinks = await req.$axios.get('http://127.0.0.1:3002/menu');
+			var getPosts = await req.$axios.get('http://127.0.0.1:3002/post');
+			return await { navItems: getLinks.data.data, allPosts: getPosts.data.data};
+		} catch (err) {
+			return await { navItems: '', allPosts: ''};
+		}
 	},
 	middleware: ['authenticated'],
 	components: {
@@ -71,7 +78,7 @@ export default {
 		showLinkPopup: false,
 		editData: false,
 		navItems: [],
-		selectedCategory: '',
+		allPosts: [],
 	}),
 	methods: {
 		editMenuItem (itemIndex) {
@@ -83,8 +90,19 @@ export default {
 			this.editData = '';
 		},
 		updateMenu (newItem) {
-			this.navItems.push(newItem)
-		}
+			this.$axios.get('/api/menu').then((result, error) => {
+				this.navItems = result.data.data;
+			}).catch((error) => {
+				this.error = true;
+			})
+		},
+	},
+	mounted () {
+		// this.$axios.get('/api/post').then((result, error) => {
+		// 	this.allPosts = result.data.data;
+		// }).catch((error) => {
+		// 	this.error = true;
+		// })
 	}
 }
 </script>
@@ -114,20 +132,5 @@ export default {
 	.nav-settings-table
 	{
 		width: 100%;
-	}
-	.edit-btn
-	{
-		display: block;
-		width: 20px;
-		height: 20px;
-		background-image: url('../../assets/icons/edit.svg');
-		background-repeat: no-repeat;
-		background-position: center;
-		cursor: pointer;
-		transition: 0.2s;
-		&:hover
-		{
-			transform: scale(1.2);
-		}
 	}
 </style>

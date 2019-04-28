@@ -27,6 +27,7 @@
 					router-link.sidebar-nav-item(to="/dashboard") Админка
 					router-link.sidebar-nav-item(to="/dashboard/menu") Меню
 					router-link.sidebar-nav-item(to="/dashboard/pages") Страницы
+					router-link.sidebar-nav-item(to="/dashboard/roulets") Рулетки
 
 			.content(:class="{'content_popup': !$store.state.user.auth}")
 				nuxt

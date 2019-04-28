@@ -7,7 +7,9 @@ const postSchema = new Schema(
 	category:
 	{
 		type: Schema.ObjectId,
-		ref: 'category',
+		ref: 'Category',
+		required: false,
+		default: null,
 	},
 	name:
 	{
@@ -24,7 +26,7 @@ const postSchema = new Schema(
 		type: String,
 		required: true,
 	},
-	desctiption:
+	description:
 	{
 		type: String,
 		required: true,
@@ -32,7 +34,6 @@ const postSchema = new Schema(
 	content:
 	{
 		type: String,
-		required: true,
 	},
 	created_at:
 	{
@@ -43,7 +44,7 @@ const postSchema = new Schema(
 	private:
 	{
 		type: Boolean,
-		default: false,
+		default: true,
 	}
 });
 

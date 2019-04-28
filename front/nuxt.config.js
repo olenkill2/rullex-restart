@@ -50,7 +50,9 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-	'~/plugins/axios',
+	'~/plugins/directives',
+  '~/plugins/axios',
+  {src: '~/plugins/wyswig', ssr: false},
   ],
 
   /*

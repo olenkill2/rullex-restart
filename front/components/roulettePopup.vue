@@ -4,19 +4,23 @@
 		.popup.popup_link
 			.popup-top
 				.popup-top__header
-					|Добавить ссылку
+					|Управление рулетками
 				.popup-top__close(@click="close")
 					img(src="~/assets/icons/close.svg")
 
 			.popup-body
-				field.popup-link__field(v-model="linkData.name", label="Название")
-				field.popup-link__field(v-model="linkData.url", label="Url")
-				category.popup-link__field(@select="selectCategory", :selected="editData")
-				field.popup-link__field(v-model="linkData.order", label="Вес")
+				field.popup-link__field(v-model="rouletteData.name", label="Название")
+				field.popup-link__field(v-model="rouletteData.url", label="Url")
 				label.checkbox-label-wr
-					checkbox(v-model="linkData.private")
+					checkbox(v-model="rouletteData.private")
 					span.label-text
 						|Приватная
+				dropdown(:list="modesList", label="Режим", @select="setMode")
+				text-field(v-model="rouletteData.authValidationRuleFunction", label="Функция валидации")
+				text-field(v-model="rouletteData.balanceParseFunction", label="Функция сбора баланса")
+				text-field(v-model="rouletteData.balanceParseFunction", label="Функция сбора баланса")
+				//- category.popup-link__field(@select="selectCategory", :selected="editData")
+				//- field.popup-link__field(v-model="rouletteData.order", label="Вес")
 
 			.popup-footer
 				button.btn.btn_red.popup-footer__btn(v-if="edit", @click="removeItem")
@@ -28,6 +32,8 @@
 </template>
 <script>
 import field from '~/components/input';
+import dropdown from '~/components/drop-down';
+import textField from '~/components/textarea';
 import category from '~/components/categorys';
 import checkbox from '~/components/checkbox';
 
@@ -36,65 +42,83 @@ export default {
 	components: {
 		field,
 		category,
-		checkbox
+		checkbox,
+		textField,
+		dropdown
 	},
 	data: () => ({
-		linkData: {
+		rouletteData: {
 			name: '',
 			url: '',
-			category: '',
+			authValidationRuleFunction: '',
+			balanceParseFunction: '',
+			gameFunction: '',
+			gameFunctionForMode: {
+				modeName: '',
+				function: ''
+			},
 			order: '',
 			private: false,
 		},
 		selectedCategory: '',
 		error: false,
-		model: ''
+		model: '',
+		modesList: '',
 	}),
 	methods: {
 		close () {
 			this.$emit('close');
 		},
 		addNewItem () {
-			this.$axios.post('/api/menu', this.linkData).then((result, error) => {
-				this.$emit('update');
-				this.close();
-			}).catch((error) => {
-				this.error = true;
-			})
+			// this.$axios.post('/api/menu', this.rouletteData).then((result, error) => {
+			// 	this.$emit('update');
+			// 	this.close();
+			// }).catch((error) => {
+			// 	this.error = true;
+			// })
 		},
 		selectCategory (category) {
-			if(category != null)
-				this.linkData.category = category;
-			else
-				this.linkData.category = null
+			// if(category != null)
+			// 	this.rouletteData.category = category;
+			// else
+			// 	this.rouletteData.category = null
 		},
 		updateItem () {
-			this.$axios.put('/api/menu', {link: this.linkData}).then((result, error) => {
-				this.$emit('update');
-				this.close();
-			}).catch((error) => {
-				this.error = true;
-			});
+			// this.$axios.put('/api/menu', {link: this.rouletteData}).then((result, error) => {
+			// 	this.$emit('update');
+			// 	this.close();
+			// }).catch((error) => {
+			// 	this.error = true;
+			// });
 		},
 		removeItem () {
-			this.$axios.delete('/api/menu', {data: {link: this.linkData}}).then((result, error) => {
-				this.$emit('update');
-				this.close();
-			}).catch((error) => {
-				this.error = true;
-			})
+			// this.$axios.delete('/api/menu', {data: {link: this.rouletteData}}).then((result, error) => {
+			// 	this.$emit('update');
+			// 	this.close();
+			// }).catch((error) => {
+			// 	this.error = true;
+			// })
 		},
+		setMode () {
+
+		}
 	},
-	computed:
-	{
+	computed: {
 		edit () {
 			if(this.editData)
 			{
-				this.linkData = {...this.editData};
+				this.rouletteData = {...this.editData};
 				return true;
 			}
 			return false;
-		}
+		},
+	},
+	mounted () {
+		// this.$axios.get('/api/modes').then((result, error) => {
+		// 	this.modesList = result.data.data;
+		// }).catch((error) => {
+		// 	this.modesList = [];
+		// }
 	},
 }
 </script>

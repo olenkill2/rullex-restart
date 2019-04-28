@@ -20,20 +20,23 @@
 		main.container.main
 			aside.sidebar-wr
 				.sidebar-nav
-					router-link.sidebar-nav-item(:to="item.url", :key="item._id" v-for="item in navItems") {{item.name}}
-					//- router-link.sidebar-nav-item(to="/2") Как пользоваться
-					//- router-link.sidebar-nav-item(to="/3") Faq
+					.sidebar-nav__item-wr(v-for="group in navItems")
+						//- |{{group.name == 'none'}}
+						.single-item(v-if="group.items.length == 1 || group.name == 'none'", v-for="navItem in group.items")
+							router-link.sidebar-nav-item(:to="navItem.url", v-if="!navItem.private") {{navItem.name}}
 
-					//- .sidebar-nav-group
-					//- 	.sidebar-nav-group__label
-					//- 		span.sidebar-nav-group__label-icon
-					//- 			svg(width='7', height='13', viewBox='0 0 7 13', fill='none', xmlns='http://www.w3.org/2000/svg')
-					//- 				path(d='M6.828 6.24L.695.109a.367.367 0 0 0-.52 0 .367.367 0 0 0 0 .52L6.045 6.5l-5.87 5.87a.37.37 0 1 0 .259.63.359.359 0 0 0 .258-.109l6.133-6.133a.366.366 0 0 0 .003-.517z', fill='#62677D')
-					//- 		span.sidebar-nav-group__label-text
-					//- 			|sss
 
-						.sidebar-nav-group__list
-							router-link.sidebar-nav-item.sidebar-nav-item_sub(to="admin") sss
+						.sidebar-nav-group(v-if="group.name != 'none' && group.items.length > 1")
+							.sidebar-nav-group__item
+								.sidebar-nav-group__label(@click="group.open = !group.open")
+									span.sidebar-nav-group__label-icon
+										svg(width='7', height='13', viewBox='0 0 7 13', fill='none', xmlns='http://www.w3.org/2000/svg')
+											path(d='M6.828 6.24L.695.109a.367.367 0 0 0-.52 0 .367.367 0 0 0 0 .52L6.045 6.5l-5.87 5.87a.37.37 0 1 0 .259.63.359.359 0 0 0 .258-.109l6.133-6.133a.366.366 0 0 0 .003-.517z', fill='#62677D')
+									span.sidebar-nav-group__label-text
+										|{{group.name}}
+
+								.sidebar-nav-group__list(v-for="navItem of group.items", v-if="group.open")
+									router-link.sidebar-nav-item.sidebar-nav-item_sub(:to="navItem.url", v-if="!navItem.private") {{navItem.name}}
 
 			.content
 				nuxt
@@ -45,6 +48,9 @@
 <script>
 	import realStat from '~/components/real-stat.vue';
 	export default {
+		async asyncData ({$axtion}) {
+
+		},
 		components: {
 			realStat
 		},
@@ -55,7 +61,26 @@
 		},
 		mounted () {
 			this.$axios.get('/api/menu').then((result, error) => {
-				this.navItems = result.data.data;
+				let menuArray = {withoutCategory: {name: 'none', items: []}};
+				for(var link of result.data.data)
+				{
+					console.log(link);
+					if(!link.private)
+					{
+						if(link.category == null)
+							menuArray.withoutCategory.items.push(link)
+						else
+						{
+							if(typeof menuArray[link.category.category] == 'undefined')
+							{
+								menuArray[link.category.category] = {name: link.category.category, open: false, items: []};
+							}
+							menuArray[link.category.category].items.push(link);
+						}
+					}
+				}
+				console.log(menuArray);
+				this.navItems = menuArray;
 			}).catch((error) => {
 				this.navItems = [];
 			});

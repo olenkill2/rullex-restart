@@ -19,8 +19,8 @@ module.exports =
 					_id: new mongoose.Types.ObjectId()
 				});
 
-				new Category(newCategory).save().then((dadta) => {
-					res.status(200).json(dadta);
+				new Category(newCategory).save().then((data) => {
+					res.status(200).json(data);
 				}).catch((err) => {
 					if(err)
 						res.status(402).json({error: 'чего-то не хватает'})

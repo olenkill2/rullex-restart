@@ -1,13 +1,13 @@
 <template lang="pug">
 	.category-wr
-		.category-input-wr
+		.category-input-wr(v-click-outside="hideCategoris")
 			field.category-input(type="text", v-model="category", label="Категория", @focus="focus = true")
 			.categorys-list(v-show="focus")
-				.categorys-list__item(v-for="(category, index) in categoryList", @click="selectCategory(index)", :key="index")
+				.categorys-list__item(v-for="(category, index) in filteredList", @click="selectCategory(category.index)", :key="index")
 					| {{category.category}}
 
-		button.btn.category-btn
-			|Добавить
+		button.btn.category-btn(:disabled="filteredList.length != 0", @click="addCategory")
+			|+
 
 </template>
 <script>
@@ -25,13 +25,27 @@ export default {
 	watch: {
 		category (newValue) {
 			if(newValue == '')
-				this.$emit('select', '');
+				this.$emit('select', null);
+		},
+		focus (newValue) {
+			// console.log(newValue);
 		}
+	},
+	computed: {
+		filteredList() {
+			if(this.categoryList.length)
+				return this.categoryList.filter((category, index) => {
+					category.index = index;
+					return category.category.toLowerCase().includes(this.category.toLowerCase())
+				})
+			return this.categoryList
+		},
 	},
 	methods: {
 		addCategory () {
-			this.$axios.post('/api/category', {category}).then((result, error) => {
-				this.categoryList.push(result.data.data);
+			this.$axios.post('/api/category', {category: this.category}).then((result, error) => {
+				this.categoryList.push(result.data);
+				this.selectCategory(this.categoryList.length - 1);
 			}).catch((error) => {
 				this.error = true;
 			});
@@ -39,11 +53,14 @@ export default {
 		selectCategory (index) {
 			this.focus = false;
 			this.category = this.categoryList[index].category;
-			this.$emit('select', {...this.categoryList[index]});
+			this.$emit('select', this.categoryList[index]._id);
+		},
+		hideCategoris () {
+			this.focus = false;
 		}
 	},
 	mounted () {
-		if(typeof this.selected.category != 'undefined')
+		if(this.selected.category != null)
 			this.category = this.selected.category.category;
 
 		this.$axios.get('/api/category').then((result, error) => {
@@ -78,9 +95,14 @@ export default {
 		background-color: #fff;
 		z-index: 4;
 		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+		overflow-y: auto;
 	}
 	.categorys-list__item
 	{
 		padding: 5px;
+	}
+	.category-btn
+	{
+		min-width: 40px;
 	}
 </style>

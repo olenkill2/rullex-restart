@@ -23,7 +23,8 @@ const menuSchema = new Schema(
 	{
 		type: Schema.ObjectId,
 		ref: 'Category',
-		required: false
+		required: false,
+		default: null,
 	},
 	private:
 	{

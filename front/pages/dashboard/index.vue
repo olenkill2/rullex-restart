@@ -7,7 +7,9 @@
 		.dashboard-main-panel
 			router-link.dashboard-main-panel__item(to="/dashboard/menu") Меню
 			router-link.dashboard-main-panel__item(to="/dashboard/pages") Страницы
-			router-link.dashboard-main-panel__item(to="/dashboard/menu") Меню
+			router-link.dashboard-main-panel__item(to="/dashboard/roulets") Рулетки
+			router-link.dashboard-main-panel__item(to="/dashboard/freebie") Халява
+			//- router-link.dashboard-main-panel__item(to="/dashboard/menu") Меню
 </template>
 <script>
 export default {
