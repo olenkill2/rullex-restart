@@ -30,7 +30,7 @@ export default {
 		roulettesTab
 	},
 	data: () => ({
-		activeTab: 1,
+		activeTab: 0,
 	}),
 	methods: {
 	},

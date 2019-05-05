@@ -23,7 +23,7 @@ module.exports =
 					res.status(200).json(data);
 				}).catch((err) => {
 					if(err)
-						res.status(402).json({error: 'чего-то не хватает'})
+						res.status(400).json({error: 'чего-то не хватает'})
 				});
 			}
 		});
@@ -32,7 +32,6 @@ module.exports =
 		Category.find({}).then((data) => {
 			res.status(200).json({data});
 		}).catch((err) => {
-			console.log(err);
 			res.status(400).json('error')
 		})
 	},

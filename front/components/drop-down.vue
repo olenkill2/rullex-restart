@@ -22,7 +22,7 @@ export default {
 	methods: {
 		select(index) {
 			this.selected = index;
-			this.$emit("select", this.list[index]);
+			this.$emit("input", this.list[index]);
 			this.close();
 		},
 		updateSelf(name) {
@@ -36,6 +36,12 @@ export default {
 		selectedValue() {
 			return this.list[this.selected];
 		}
+	},
+	created () {
+		this.$emit("input", this.list[this.selected]);
+	},
+	mounted () {
+		this.$emit("input", this.list[this.selected]);
 	}
 }
 </script>
@@ -46,7 +52,6 @@ export default {
 		position: relative;
 		padding-top: 12px;
 		width: 100%;
-		// min-width: 100%
 	}
 	.dropdown-selected
 	{

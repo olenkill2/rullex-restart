@@ -6,9 +6,6 @@
 				.modes-list__item(v-for="(mode, index) in filteredList", @click="selectmode(mode.index)", :key="index")
 					| {{mode.name}}
 
-		//- button.btn.mode-btn(:disabled="filteredList.length != 0", @click="addmode")
-		//- 	|+
-
 </template>
 <script>
 import field from '~/components/input';

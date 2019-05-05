@@ -19,12 +19,6 @@ const rouletteSchema = new Schema(
 		type: Boolean,
 		default: true
 	},
-	// modes:
-	// [{
-	// 	type: Schema.ObjectId,
-	// 	ref : 'modes'
-	// 	default: null
-	// }],
 	authValidationRuleFunction:
 	{
 		type: String,
@@ -38,13 +32,20 @@ const rouletteSchema = new Schema(
 	gameFunctionForMode:
 	[
 		{
-			type: Array,
+			type: Object,
 			default: {
 				modeName: '',
 				function: ''
 			}
 		}
 	],
+	referal:
+	{
+		type: Object,
+		url: '',
+		refType: '',
+		code: '',
+	},
 	created_at:
 	{
 		type: Date,

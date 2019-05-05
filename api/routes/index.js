@@ -1,14 +1,18 @@
 const userRoutes = require('./user');
 const adminRoutes = require('./admin');
 const menuRoutes = require('./menu');
-const category = require('./category');
-const post = require('./post');
+const categoryRoutes = require('./category');
+const postRoutes = require('./post');
+const modeRoutes = require('./mode');
+const rouletteRoutes = require('./roulette');
 
 module.exports = function(app, db)
 {
 	adminRoutes(app);
 	userRoutes(app);
 	menuRoutes(app);
-	category(app);
-	post(app);
+	categoryRoutes(app);
+	postRoutes(app);
+	modeRoutes(app);
+	rouletteRoutes(app);
 }

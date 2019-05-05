@@ -22,7 +22,7 @@ module.exports =
 
 		const foundUser = await User.findOne({ 'local.email': email })
 		if(foundUser)
-			return res.status(403).json({error: 'Логин уже используется'});
+			return res.status(400).json({error: 'Логин уже используется'});
 
 		const newUser = new User(
 		{

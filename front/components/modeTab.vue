@@ -2,29 +2,39 @@
 	.modes-wr
 		.modes-header
 			.modes-header__left
-				|Всего режимов - 0
+				|Всего режимов - {{modesList.length}}
 			.modes-header__right
-				button.btn.btn_small
-					|Добавить
+				//- button.btn.btn_small(@click="modeFormShow = !modeFormShow", :class="{'btn_skin': modeFormShow}")
+				//- 	span(v-if="!modeFormShow") Добавить
+				//- 	span(v-else="") Отменить
 
-		.mode-form-wr
-			//- .mode-form__header Добавление режима
+				button.btn.btn_small(v-if="!modeFormShow", @click="modeFormShow = !modeFormShow", :class="{'btn_skin': modeFormShow}")
+					|Добавить
+				button.btn.btn_small(v-else="", @click="cancelEdit", :class="{'btn_skin': modeFormShow}")
+					|Отменить
+
+		.mode-form-wr(v-show="modeFormShow")
 			.mode-form-groups
 				.mode-form-groups__item
 					.mode-form__item-label Новый режим
 					field(v-model="mode.name", label="Название режима", type="text")
 				.mode-form-groups__item
 					.mode-form__item-label Добавление полей
+
 					.mode-form-groups-field-wr
 						field(v-model="fieldObject.name", label="Название поля", type="text")
+
 					.mode-form-groups-field-wr
 						field(v-model="fieldObject.placeholder", label="Плейсхолдер поля", type="text")
+
 					.mode-form-groups-field-wr
 						field(v-model="fieldObject.model", label="Название модели", type="text")
+
 					.mode-form-groups-field-wr
-						dropdown(:list="componentsList", @select="setType", label="Тип компонента")
-					.mode-form-groups-field-wr
-						.field-droplist-items-wr(v-if="fieldObject.type == 'dropdown'")
+						dropdown(:list="componentsList", v-model="fieldObject.component", label="Тип компонента")
+
+					.mode-form-groups-field-wr(v-if="fieldObject.component == 'dropdown'")
+						.field-droplist-items-wr
 							.field-droplist-items-top
 								field(v-model="dropDownListItem", label="Параметр", type="text")
 								button.btn.btn_skin.btn_small(@click="addDropListItem") Добавить
@@ -34,21 +44,29 @@
 									.field-droplist-item_remove(@click="removeDropListItem(index)")
 
 					.mode-form-groups-field-wr
-						button.btn.btn_small(@click="addField") Добавить
+						button.btn.btn_small.btn_full(v-if="!editingField", @click="addField") Добавить
+						button.btn.btn_small.btn_full(v-else="", @click="updateField") Изменить
 
 				.mode-form-groups__item
 					.mode-form__item-label Список полей
 					.mode-fields
 						.mode-field-item(v-for="(modeField, index) in mode.fields")
-							field(v-if="modeField.type == 'field'", :label="modeField.name", v-model="modeField.model", :placeholder="modeField.placeholder")
-							dropdown(v-else="modeField.type == 'dropdown'", :list="modeField.dropDownList", @select="setType", :label="modeField.placeholder")
+							field(v-if="modeField.component == 'field'", :label="modeField.name", v-model="modeField.model", :placeholder="modeField.placeholder")
+							dropdown(v-else="modeField.component == 'dropdown'", :list="modeField.dropDownList", v-model="fieldObject.component", :label="modeField.placeholder")
 							.remove-field(@click="removeField(index)")
 							.edit-field(@click="editField(index)")
-			.mode-form-actions
+
+			.mode-form-actions(v-if="!editingMode")
 				.mode-form-actions__item
 					button.btn.btn_small.btn_red Очистить
 				.mode-form-actions__item
-					button.btn.btn_small.btn_accent Добавить
+					button.btn.btn_small.btn_accent(@click="addMode") Добавить
+
+			.mode-form-actions(v-else="")
+				.mode-form-actions__item
+					button.btn.btn_small.btn_red(@click="removeMode") Удалить
+				.mode-form-actions__item
+					button.btn.btn_small.btn_accent(@click="updateMode") Сохранить изменения
 
 
 		.modes-message(v-if="modesList.length == 0")
@@ -61,7 +79,17 @@
 					th Список полей
 					th Схема
 					th Редактирование
-
+				tr(v-for="(mode, index) in modesList")
+					th {{index + 1}}
+					th {{mode.name}}
+					th
+						div(v-if="showModeFieldsList !== index", @click="showModeFieldsList = index") Показать
+						div(v-else="", @click="showModeFieldsList = false") Свернуть
+						pre(v-if="showModeFieldsList === index") {{mode.fields}}
+					th
+						div(v-for="(field, index) in mode.fields") {{field.name}}, {{field.model}}
+					th
+						.edit-field.edit-field_mode(@click="editMode(index)")
 
 </template>
 <script>
@@ -79,92 +107,103 @@ export default {
 	data: () => ({
 		modesList: [],
 		showModeEditForm: false,
+		modeFormShow: false,
 		mode: {
-			name: '1',
+			name: '',
 			fields: [],
 		},
-		fieldObject: {
-			name: '1',
-			placeholder: '1',
-			model: 'a',
-			type: 'field',
-			dropDownList: []
-		},
+		fieldObject: {},
+		showModeFieldsList: false,
 		dropDownListItem: '',
-		componentsList: ['field', 'dropdown']
+		componentsList: ['field', 'dropdown'],
+		editingMode: false,
+		editingField: false,
+		editFieldIndex: 0,
 	}),
 	methods: {
-		setType (type) {
-			this.fieldObject.type = type;
-		},
-		removeDropListItem (index) {
-			console.log(index);
-			console.log(this.fieldObject.dropDownList);
-			this.fieldObject.dropDownList = this.fieldObject.dropDownList.splice(index, 1);
-		},
-		addField () {
-			this.mode.fields.push(this.fieldObject);
-			this.fieldObject = {
+		getFieldObjectSchema () {
+			return {
 				name: '',
 				placeholder: '',
 				model: '',
-				type: 'field',
-				dropDownList: []
-			};
+				component: this.fieldObject.component,
+				dropDownList: [],
+			}
+		},
+		removeDropListItem (index) {
+			this.fieldObject.dropDownList.splice(index, 1);
+		},
+		addField () {
+			this.mode.fields.push(this.fieldObject);
+			this.fieldObject = this.getFieldObjectSchema();
+		},
+		editField (index) {
+			this.editingField = true;
+			this.editFieldIndex = index;
+			this.fieldObject = {...this.mode.fields[this.editFieldIndex]};
+			console.log(this.mode.fields[this.editFieldIndex]);
+		},
+		updateField () {
+			console.log(this.mode.fields[this.editFieldIndex], this.fieldObject);
+			this.mode.fields[this.editFieldIndex] = this.fieldObject;
+			this.editingField = false;
+			this.fieldObject = this.getFieldObjectSchema();
+		},
+		removeField (index) {
+			this.mode.fields.splice(index, 1);
 		},
 		addDropListItem () {
 			this.fieldObject.dropDownList.push(this.dropDownListItem);
 			this.dropDownListItem = '';
 		},
-		removeField (index) {
-			this.mode.fields.splice(index, 1);
-			console.log(this.mode.fields);
+		addMode () {
+			this.$axios.post('/api/mode', this.mode).then((result, error) => {
+				this.cancelEdit();
+				this.getModes();
+			}).catch((error) => {
+				this.error = true;
+			})
+		},
+		editMode (index) {
+			this.editingMode = true;
+			this.modeFormShow = true;
+			this.mode = this.modesList[index];
+		},
+		removeMode () {
+			this.$axios.delete('/api/mode/' + this.mode._id).then((result, error) => {
+				this.getModes();
+				this.cancelEdit();
+			}).catch((error) => {
+				this.error = true;
+			})
+		},
+		updateMode () {
+			this.$axios.put('/api/mode/' + this.mode._id, {mode: this.mode}).then((result, error) => {
+				this.getModes();
+				this.cancelEdit();
+			}).catch((error) => {
+				this.error = true;
+			})
+		},
+		cancelEdit () {
+			this.editingMode = false;
+			this.modeFormShow = false;
+			this.fieldObject = this.getFieldObjectSchema();
+			this.mode = {
+				name: '',
+				fields: [],
+			}
+		},
+		getModes () {
+			this.$axios.get('/api/mode').then((result) => {
+				this.modesList = result.data.data;
+			})
 		}
-		// close () {
-		// 	this.$emit('close');
-		// },
-		// addNewItem () {
-		// 	this.$axios.post('/api/menu', this.linkData).then((result, error) => {
-		// 		this.$emit('update');
-		// 		this.close();
-		// 	}).catch((error) => {
-		// 		this.error = true;
-		// 	})
-		// },
-		// selectCategory (category) {
-		// 	if(category != null)
-		// 		this.linkData.category = category;
-		// 	else
-		// 		this.linkData.category = null
-		// },
-		// updateItem () {
-		// 	this.$axios.put('/api/menu', {link: this.linkData}).then((result, error) => {
-		// 		this.$emit('update');
-		// 		this.close();
-		// 	}).catch((error) => {
-		// 		this.error = true;
-		// 	});
-		// },
-		// removeItem () {
-		// 	this.$axios.delete('/api/menu', {data: {link: this.linkData}}).then((result, error) => {
-		// 		this.$emit('update');
-		// 		this.close();
-		// 	}).catch((error) => {
-		// 		this.error = true;
-		// 	})
-		// },
 	},
-	computed:
-	{
-		// edit () {
-		// 	if(this.editData)
-		// 	{
-		// 		this.linkData = {...this.editData};
-		// 		return true;
-		// 	}
-		// 	return false;
-		// }
-	},
+	created () {
+		this.getModes();
+		this.fieldObject = this.getFieldObjectSchema();
+	}
 }
 </script>
 <style lang="scss">
@@ -289,5 +328,17 @@ export default {
 	{
 		background-image: url('../assets/icons/edit.svg');
 		background-size: 80%;
+		&.edit-field_mode
+		{
+			margin-left: 0;
+		}
+	}
+	.modes-list
+	{
+		vertical-align: top;
+		th
+		{
+			vertical-align: top;
+		}
 	}
 </style>

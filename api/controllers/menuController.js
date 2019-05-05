@@ -23,12 +23,12 @@ module.exports =
 				if(mongoose.Types.ObjectId.isValid(category))
 					menuItemData.category = category;
 
-				new Menu(menuItemData).save().then((dadta) => {
-					res.status(200).json(dadta);
+				new Menu(menuItemData).save().then((data) => {
+					res.status(200).json(data);
 				}).catch((err) => {
 					console.log(err);
 					if(err)
-						res.status(402).json({error: 'чего-то не хватает'})
+						res.status(400).json({error: 'чего-то не хватает'})
 				});
 			}
 		})

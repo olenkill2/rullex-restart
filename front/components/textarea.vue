@@ -43,6 +43,7 @@ export default {
 		z-index: 1;
 		position: relative;
 		padding-bottom: 3px;
+		padding-top: 5px;
 		font-size: 14px;
 		display: block;
 		width: 100%;

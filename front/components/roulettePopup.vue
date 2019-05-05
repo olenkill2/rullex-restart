@@ -1,4 +1,4 @@
-<template lang="pug">
+<!-- <template lang="pug">
 	.popup-box
 		.popup-box__layout
 		.popup.popup_link
@@ -219,3 +219,4 @@ export default {
 		}
 	}
 </style>
+ -->

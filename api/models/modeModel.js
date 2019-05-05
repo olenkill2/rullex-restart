@@ -15,10 +15,7 @@ const modeSchema = new Schema(
 			label: String,
 			placeholder: String,
 			model: String,
-			component: {
-				type: Array,
-				default: []
-			},
+			component: String,
 			dropDownList:[],
 		}
 	],
