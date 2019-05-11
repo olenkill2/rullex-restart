@@ -11,8 +11,8 @@ const modeSchema = new Schema(
 	fields:
 	[
 		{
-			name: String,
 			label: String,
+			name: String,
 			placeholder: String,
 			model: String,
 			component: String,

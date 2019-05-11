@@ -5,7 +5,7 @@ const { isAdmin } = require('../helpers/isAdmin');
 const passportConf = require('../passport');
 const multer = require('multer');
 
-module.exports = function(app, db)
+module.exports = function(app)
 {
 	app.post('/admin/signin', passport.authenticate('local', {session: false}), admin.signin);
 	// app.get('/admin/is-admin', passport.authenticate('jwt', {session: false}), isAdmin, admin.isAdmin);

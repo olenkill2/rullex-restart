@@ -94,6 +94,7 @@ export default {
 		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 		overflow-y: auto;
 	}
+
 	.modes-list__item
 	{
 		padding: 5px;
@@ -102,4 +103,5 @@ export default {
 	{
 		min-width: 40px;
 	}
+
 </style>

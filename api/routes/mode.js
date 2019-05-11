@@ -8,6 +8,22 @@ module.exports = function(app, db)
 {
 	app.post('/mode', passport.authenticate('jwt', {session: false}), isAdmin, mode.add);
 	app.get('/mode/:name',  mode.getByName);
+	/**
+	 * @swagger
+	 * definition:
+     *   User:
+     *     properties:
+     *       firstName:
+     *         type: string
+     *       lastName:
+     *         type: string
+     *       email:
+     *         type: string
+     *       password:
+     *         type: string
+     *       role:
+     *         type: string
+     */
 	app.get('/mode', passport.authenticate('jwt', {session: false}), isAdmin, mode.getAll);
 	app.delete('/mode/:id', passport.authenticate('jwt', {session: false}), isAdmin, mode.delete);
 	app.put('/mode/:id', passport.authenticate('jwt', {session: false}), isAdmin, mode.update);
