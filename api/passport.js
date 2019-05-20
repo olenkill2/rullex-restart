@@ -2,27 +2,22 @@ const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const { ExtractJwt } = require('passport-jwt');
-const { JWT_SECRET } = require('./config/config.js');
 const User = require('./models/userModel.js');
+const JWT_SECRET  = require('config').get('JWT_SECRET');
 
 //JSON WEB TOKEN STRATEGY
-passport.use(new JwtStrategy(
-	{
+passport.use(new JwtStrategy({
 		jwtFromRequest: ExtractJwt.fromHeader('authorization'),
 		secretOrKey: JWT_SECRET
 	},
-	async (payload, done) =>
-	{
-		try
-		{
+	async (payload, done) => {
+		try {
 			const user = await User.findById(payload.sub);
 			if(!user)
 				return done(null, false);
 
 			done(null, user);
-		}
-		catch(err)
-		{
+		} catch(err) {
 			done(err, false)
 		}
 	})
@@ -32,10 +27,8 @@ passport.use(new JwtStrategy(
 passport.use(new LocalStrategy({
 		usernameField: 'email'
 	},
-	async (email, password, done) =>
-	{
-		try
-		{
+	async (email, password, done) => {
+		try {
 			const user = await User.findOne({ 'local.email': email });
 			if(!user)
 				return done(null, false);
@@ -45,10 +38,10 @@ passport.use(new LocalStrategy({
 				return done(null, false);
 
 			done(null, user);
-		}
-		catch(err)
-		{
+		} catch(err) {
 			done(err, false);
 		}
 	})
 )
+
+module.exports.JWT_auth = passport.authenticate('jwt', {session: false});

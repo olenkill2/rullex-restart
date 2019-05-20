@@ -8,7 +8,6 @@ const options = {
 			version: '1.0.0',
 			description: 'Api всего проекта',
 		},
-		// host: 'localhost:3002',
 		basePath: '/',
 	},
 	swagger: '2.0',
@@ -17,7 +16,7 @@ const options = {
 }
 
 const specs = swaggerJsDoc(options);
-console.log(specs);
+
 module.exports = (app) => {
 	app.get('/swagger.json', (req, res) => {res.json(specs)})
 	app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))

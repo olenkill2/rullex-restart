@@ -39,6 +39,11 @@ const rouletteSchema = new Schema(
 			}
 		}
 	],
+	referalChangeFunction:
+	{
+		type: String,
+		default: '',
+	},
 	referal:
 	{
 		type: Object,

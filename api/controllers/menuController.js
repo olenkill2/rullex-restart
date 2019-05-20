@@ -4,62 +4,48 @@ module.exports =
 {
 	add: async(req, res) => {
 		const { url, name, category, order, private } = req.body;
-		console.log(req.body);
-		Menu.findOne({ 'url': url }).then((data) => {
-			if(data)
-			{
-				res.status(403).json({error: 'Ссылка уже существует'});
-			}
-			else
-			{
-				const menuItemData = {
-					url,
-					name,
-					private,
-					order,
-					created_at: Date.now()
-				}
 
-				if(mongoose.Types.ObjectId.isValid(category))
-					menuItemData.category = category;
+		const result = await Menu.findOne({ 'url': url });
+		if(result) return res.status(403).json({error: 'Ссылка уже существует'});
 
-				new Menu(menuItemData).save().then((data) => {
-					res.status(200).json(data);
-				}).catch((err) => {
-					console.log(err);
-					if(err)
-						res.status(400).json({error: 'чего-то не хватает'})
-				});
-			}
-		})
+		const menuItemData = {
+			url,
+			name,
+			private,
+			order,
+			created_at: Date.now()
+		}
+
+		if(mongoose.Types.ObjectId.isValid(category))
+			menuItemData.category = category;
+
+		const newMenuItem = new Menu(menuItemData)
+		await newMenuItem.save();
+
+		res.status(200).json({data: newMenuItem});
 	},
 	get: async(req, res) => {
-		Menu.find().populate('category').then((data) => {
-			res.status(200).json({data});
-		}).catch((err) => {
-			console.log(err);
-			res.status(400).json('error')
-		});
+		const result = await Menu.find().populate('category');
+
+		if(!result) return res.status(404).json({error: 'Not found'});
+
+		res.status(200).json({data: result});
 	},
 	update: async(req, res) => {
 		const updatedLink = req.body.link;
-		console.log(updatedLink.category);
+
 		if(typeof updatedLink.category == 'undefined')
 			updatedLink.category = null;
 
-		Menu.findOneAndUpdate({'_id': updatedLink._id}, updatedLink).then((data) => {
-			console.log(data);
-			res.status(200).json({data});
-		}).catch((err) => {
-			console.log(err);
-			res.status(400).json('error')
-		});
+		const result = await Menu.findOneAndUpdate({'_id': updatedLink._id}, updatedLink);
+		if(!result) return res.status(404).json({error: 'Not found'});
+
+		res.status(200).json({data: result});
 	},
 	delete: async(req, res) => {
-		Menu.deleteOne({'_id': req.body.link._id}).then((data) => {
-			res.status(200).json({data});
-		}).catch((err) => {
-			res.status(400).json('error')
-		});
+		const deletedMenuItem = await Menu.deleteOne({'_id': req.body.link._id});
+		if(!deletedMenuItem) return res.status(404).json({error: 'Not found'});
+
+		res.status(200).json({data: deletedMenuItem});
 	},
 }

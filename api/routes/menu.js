@@ -1,14 +1,13 @@
 const menu = require('../controllers/menuController.js');
-// const { validateBody, schemas } = require('../helpers/validator');
 const passport = require('passport');
-const { isAdmin } = require('../helpers/isAdmin');
-const passportConf = require('../passport');
+const { isAdmin } = require('../middleware/isAdmin');
+const {JWT_auth} = require('../passport');
+const { validateBody, schemas } = require('../middleware/validator');
 
 module.exports = function(app, db)
 {
-	// app.post('/menu/', passport.authenticate('local', {session: false}), menu.add);
-	app.post('/menu', passport.authenticate('jwt', {session: false}), isAdmin, menu.add);
-	app.get('/menu', passport.authenticate('jwt', {session: false}), isAdmin, menu.get);
-	app.put('/menu', passport.authenticate('jwt', {session: false}), isAdmin, menu.update);
-	app.delete('/menu', passport.authenticate('jwt', {session: false}), isAdmin, menu.delete);
+	app.post('/menu', JWT_auth, isAdmin, validateBody(schemas.menu), menu.add);
+	app.put('/menu', JWT_auth, isAdmin, validateBody(schemas.menu), menu.update);
+	app.get('/menu', JWT_auth, isAdmin, menu.get);
+	app.delete('/menu', JWT_auth, isAdmin, menu.delete);
 }

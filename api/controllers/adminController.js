@@ -1,5 +1,5 @@
 const JWT = require('jsonwebtoken');
-const { JWT_SECRET } = require('../config/config.js');
+const JWT_SECRET = require('config').get('JWT_SECRET');
 const User = require('../models/userModel.js');
 // const Category = require('../models/categoryModel.js');
 // const Post = require('../models/postModel.js');

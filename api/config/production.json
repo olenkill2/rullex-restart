@@ -1,0 +1,5 @@
+{
+	"state": "production",
+	"dbUrl": "3",
+	"JWT_SECRET": "3"
+}

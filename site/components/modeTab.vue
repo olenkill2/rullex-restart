@@ -200,8 +200,10 @@ export default {
 			})
 		}
 	},
-	created () {
+	mounted () {
 		this.getModes();
+	},
+	created () {
 		this.fieldObject = this.getFieldObjectSchema();
 	}
 }

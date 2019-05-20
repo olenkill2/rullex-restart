@@ -3,54 +3,40 @@ const mongoose = require('mongoose');
 module.exports =
 {
 	add: async(req, res) => {
-		const newMode = req.body;
-		Mode.findOne({ 'name': newMode.name }).then((data) => {
-			if(data)
-			{
-				res.status(403).json({error: 'Мод уже существует'});
-			}
-			else
-			{
-				newMode.created_at = Date.now();
+		let modeData = req.body;
+		let mode = await Mode.findOne({ 'name': modeData.name });
 
-				new Mode(newMode).save().then((data) => {
-					res.status(200).json(data);
-				}).catch((err) => {
-					if(err)
-						res.status(400).json({error: 'чего-то не хватает'})
-				});
-			}
-		});
+		if(mode) return res.status(403).json({error: 'Мод уже существует'});
+
+		modeData.created_at = Date.now();
+
+		const newMode = new Mode(newMode)
+		await newMode.save();
+		res.status(200).json({data: newMode});
 	},
 	getByName: async(req, res) => {
-		Mode.find({name: req.params.name}).then((data) => {
-			res.status(200).json({data});
-		}).catch((err) => {
-			console.log(err);
-			res.status(400).json('error')
-		});
+		const mode = await Mode.find({name: req.params.name});
+
+		if(!mode) return res.status(404).json({error: 'Not found'});
+
+		res.status(200).json({data: mode});
 	},
 	getAll: async(req, res) => {
-		Mode.find().then((data) => {
-			res.status(200).json({data});
-		}).catch((err) => {
-			console.log(err);
-			res.status(400).json('error')
-		});
+		const modes = await Mode.find();
+		res.status(200).json({data: modes});
 	},
 	update: async(req, res) => {
-		Mode.findOneAndUpdate({'_id': req.params.id}, req.body.mode).then((data) => {
-			res.status(200).json({data});
-		}).catch((err) => {
-			console.log(err);
-			res.status(400).json('error')
-		});
+		const updatedMode = await Mode.findOneAndUpdate({'_id': req.params.id}, req.body.mode);
+
+		if(!updatedMode) return res.status(404).json({error: 'Not found'});
+
+		res.status(200).json({data: updatedMode});
 	},
 	delete: async(req, res) => {
-		Mode.deleteOne({'_id': req.params.id}).then((data) => {
-			res.status(200).json({data});
-		}).catch((err) => {
-			res.status(400).json('error')
-		});
+		const deletedMode = await Mode.deleteOne({'_id': req.params.id});
+
+		if(!deletedMode) return res.status(404).json({error: 'Not found'});
+
+		res.status(200).json({data: deletedMode});
 	},
 }

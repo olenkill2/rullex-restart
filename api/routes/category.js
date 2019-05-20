@@ -1,11 +1,11 @@
 const category = require('../controllers/categoryController.js');
-const { validateBody, schemas } = require('../helpers/validator');
-const { isAdmin } = require('../helpers/isAdmin');
+const { validateBody, schemas } = require('../middleware/validator');
+const { isAdmin } = require('../middleware/isAdmin');
 const passport = require('passport');
-const passportConf = require('../passport');
+const {JWT_auth} = require('../passport');
 
 module.exports = function(app, db)
 {
-	app.post('/category', passport.authenticate('jwt', {session: false}), isAdmin, category.add);
-	app.get('/category', passport.authenticate('jwt', {session: false}), isAdmin, category.get);
+	app.post('/category', JWT_auth, isAdmin, validateBody(schemas.category), category.add);
+	app.get('/category', JWT_auth, isAdmin, validateBody(schemas.category), category.get);
 }

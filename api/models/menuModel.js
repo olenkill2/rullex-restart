@@ -1,38 +1,31 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const menuSchema = new Schema(
-{
-	name:
-	{
+const menuSchema = new Schema({
+	name: {
 		type: String,
 		required: true
 	},
-	url:
-	{
+	url: {
 		type: String,
 		required: true,
 		unique: true
 	},
-	order:
-	{
+	order: {
 		type: Number,
 		default: 0,
 	},
-	category:
-	{
+	category: {
 		type: Schema.ObjectId,
 		ref: 'Category',
 		required: false,
 		default: null,
 	},
-	private:
-	{
+	private: {
 		type: Boolean,
 		default: false
 	},
-	created_at:
-	{
+	created_at: {
 		type: Date,
 		default: Date.now
 	},

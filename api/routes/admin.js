@@ -1,8 +1,8 @@
 const admin = require('../controllers/adminController.js');
 // const { validateBody, schemas } = require('../helpers/validator');
 const passport = require('passport');
-const { isAdmin } = require('../helpers/isAdmin');
-const passportConf = require('../passport');
+const { isAdmin } = require('../middleware/isAdmin');
+const {JWT_auth} = require('../passport');
 const multer = require('multer');
 
 module.exports = function(app)

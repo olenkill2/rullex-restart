@@ -1,30 +1,14 @@
 const mode = require('../controllers/modeController.js');
-const { validateBody, schemas } = require('../helpers/validator');
-const { isAdmin } = require('../helpers/isAdmin');
+const { validateBody, schemas } = require('../middleware/validator');
+const { isAdmin } = require('../middleware/isAdmin');
 const passport = require('passport');
-const passportConf = require('../passport');
+const {JWT_auth} = require('../passport');
 
 module.exports = function(app, db)
 {
-	app.post('/mode', passport.authenticate('jwt', {session: false}), isAdmin, mode.add);
+	app.post('/mode', JWT_auth, isAdmin, validateBody(schemas.mode), mode.add);
+	app.put('/mode/:id', JWT_auth, isAdmin, validateBody(schemas.mode), mode.update);
+	app.delete('/mode/:id', JWT_auth, isAdmin, mode.delete);
+	app.get('/mode', JWT_auth, isAdmin, mode.getAll);
 	app.get('/mode/:name',  mode.getByName);
-	/**
-	 * @swagger
-	 * definition:
-     *   User:
-     *     properties:
-     *       firstName:
-     *         type: string
-     *       lastName:
-     *         type: string
-     *       email:
-     *         type: string
-     *       password:
-     *         type: string
-     *       role:
-     *         type: string
-     */
-	app.get('/mode', passport.authenticate('jwt', {session: false}), isAdmin, mode.getAll);
-	app.delete('/mode/:id', passport.authenticate('jwt', {session: false}), isAdmin, mode.delete);
-	app.put('/mode/:id', passport.authenticate('jwt', {session: false}), isAdmin, mode.update);
 }

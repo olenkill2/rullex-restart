@@ -61,8 +61,7 @@ export default {
 		return 'dashboard'
 	},
 	async asyncData (req) {
-		try
-		{
+		try {
 			var getLinks = await req.$axios.get('http://127.0.0.1:3002/menu');
 			var getPosts = await req.$axios.get('http://127.0.0.1:3002/post');
 			return await { navItems: getLinks.data.data, allPosts: getPosts.data.data};

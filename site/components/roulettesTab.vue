@@ -48,6 +48,9 @@
 					.roulette-form-groups-field-wr
 						text-field(v-model="roulette.balanceParseFunction", label="Функция получения баланса")
 
+					.roulette-form-groups-field-wr
+						text-field(v-model="roulette.referalChangeFunction", label="Функция получения подмены рефки")
+
 					.roulette-form-groups-field-wr.roulette-form-groups-field-wr_modes(v-for="(modeGameFunction, index) in roulette.gameFunctionForMode")
 						text-field(v-model="modeGameFunction.function", :label="'Игровая функция для ' + modeGameFunction.modeName")
 						.remove-function(@click="removeMode(index)")
@@ -131,6 +134,21 @@ export default {
 				this.roulettesList = result.data.data
 			}).catch((error) => { this.roulettesList = [];})
 		},
+		getModes () {
+			this.$axios.get('/api/mode').then((result) => {
+				if(!result.data.data.length) {
+					return false;
+				}
+
+				this.addModeName = result.data.data[0].name;
+
+				for(let mode of result.data.data) {
+					this.modesListForDropDown.push(mode.name);
+				}
+				this.roulette.gameFunctionForMode[0].modeName = this.addModeName;
+				this.modesList = result.data.data;
+			})
+		},
 		getRouletteSchema () {
 			return {
 				name: '',
@@ -143,6 +161,7 @@ export default {
 						function: ''
 					}
 				],
+				referalChangeFunction: '',
 				private: true,
 				referal: {
 					refType: 'url',
@@ -216,22 +235,12 @@ export default {
 	{
 
 	},
-	created () {
+	mounted () {
 		this.getRoulettes();
-		this.$axios.get('/api/mode').then((result) => {
-			if(!result.data.data.length)
-			{
-				return false;
-			}
+		this.getModes();
+	},
+	created () {
 
-			this.addModeName = result.data.data[0].name;
-			for(let mode of result.data.data)
-			{
-				this.modesListForDropDown.push(mode.name);
-			}
-			this.roulette.gameFunctionForMode[0].modeName = this.addModeName;
-			this.modesList = result.data.data;
-		})
 		this.roulette = this.getRouletteSchema();
 	}
 }
