@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "jest --watchAll",
 		"dev": "nodemon index.js"
 	},
 	"author": "",
@@ -27,9 +27,11 @@
 		"passport-local": "^1.0.0",
 		"swagger-jsdoc": "^3.2.9",
 		"swagger-ui-express": "^4.0.2",
-		"winston": "^3.2.1"
+		"winston": "^3.2.1",
+		"winston-mongodb": "^5.0.0"
 	},
 	"devDependencies": {
+		"jest": "^24.8.0",
 		"nodemon": "^1.18.4"
 	}
 }
