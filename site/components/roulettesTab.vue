@@ -12,10 +12,10 @@
 		.roulette-form-wr(v-show="rouletteFormShow")
 			.roulette-form-groups
 				.roulette-form-groups__item
-					.roulette-form__item-label Новый режим
+					.roulette-form__item-label Новая рулетка
 
 					.roulette-form-groups-field-wr
-						field(v-model="roulette.name", label="Название режима", type="text")
+						field(v-model="roulette.name", label="Название рулетки", type="text")
 
 					.roulette-form-groups-field-wr
 						field(v-model="roulette.host", label="Host", type="text")
@@ -82,24 +82,18 @@
 						th Публичная
 						th Редактирование
 					tr(v-for="(roulette, index) in roulettesList")
-						th {{index + 1}}
-						th {{roulette.name}}
-						th {{roulette.host}}
-						th {{roulette.referal.refType}} - {{roulette.referal[roulette.referal.refType]}}
-						th
+						td {{index + 1}}
+						td {{roulette.name}}
+						td {{roulette.host}}
+						td {{roulette.referal.refType}} - {{roulette.referal[roulette.referal.refType]}}
+						td
 							//- |{{roulette.gameFunctionForMode}}
 							span(v-for="mode in roulette.gameFunctionForMode")
 								|  {{mode.modeName}},
-						th(v-if="roulette.private") Нет
-						th(v-else="") Да
-						th
+						td(v-if="roulette.private") Нет
+						td(v-else="") Да
+						td
 							.edit-field.edit-field_roulette(@click="setRouletteForEdit(index)")
-					//- th
-					//- 	div(v-if="showrouletteFieldsList !== index", @click="showrouletteFieldsList = index") Показать
-					//- 	div(v-else="", @click="showrouletteFieldsList = false") Свернуть
-					//- 	pre(v-if="showrouletteFieldsList === index") {{roulette.fields}}
-					//- th
-					//- 	div(v-for="(field, index) in roulette.fields") {{field.name}}, {{field.model}}
 
 </template>
 <script>
@@ -130,12 +124,12 @@ export default {
 	}),
 	methods: {
 		getRoulettes () {
-			this.$axios.get('/api/roulette').then((result) => {
+			this.$axios.get('/api/roulettes').then((result) => {
 				this.roulettesList = result.data.data
 			}).catch((error) => { this.roulettesList = [];})
 		},
 		getModes () {
-			this.$axios.get('/api/mode').then((result) => {
+			this.$axios.get('/api/modes').then((result) => {
 				if(!result.data.data.length) {
 					return false;
 				}
@@ -158,7 +152,8 @@ export default {
 				gameFunctionForMode: [
 					{
 						modeName: this.addModeName,
-						function: ''
+						function: '',
+						mode_id: this.currentModeId
 					}
 				],
 				referalChangeFunction: '',
@@ -169,10 +164,6 @@ export default {
 					code: '',
 				}
 			}
-			console.log('getRouletteSchema');
-		},
-		setModeName (name) {
-			this.addModeName = name;
 		},
 		addMode () {
 			let inArray = false;
@@ -189,12 +180,13 @@ export default {
 			{
 				this.roulette.gameFunctionForMode.push({
 					modeName: this.addModeName,
-					function: ''
+					function: '',
+					mode_id: this.currentModeId
 				});
 			}
 		},
 		addRoulette () {
-			this.$axios.post('/api/roulette', this.roulette).then((result, error) => {
+			this.$axios.post('/api/roulettes', this.roulette).then((result, error) => {
 				this.getRoulettes();
 				this.cancelEdit();
 			}).catch((error) => {
@@ -215,7 +207,7 @@ export default {
 			this.rouletteFormShow = false;
 		},
 		deleteRoulette () {
-			this.$axios.delete('/api/roulette/' + this.roulette._id).then((result, error) => {
+			this.$axios.delete('/api/roulettes/' + this.roulette._id).then((result, error) => {
 				this.getRoulettes();
 				this.cancelEdit();
 			}).catch((error) => {
@@ -223,7 +215,7 @@ export default {
 			})
 		},
 		updateRoulette () {
-			this.$axios.put('/api/roulette/' + this.roulette._id, {roulette: this.roulette}).then((result, error) => {
+			this.$axios.put('/api/roulettes/' + this.roulette._id, this.roulette).then((result, error) => {
 				this.getRoulettes();
 				this.cancelEdit();
 			}).catch((error) => {
@@ -233,7 +225,10 @@ export default {
 	},
 	computed:
 	{
-
+		currentModeId () {
+			const mode_id = this.modesList.map((mode) => {if(mode.name == this.addModeName) return mode._id});
+			return mode_id[0];
+		}
 	},
 	mounted () {
 		this.getRoulettes();
@@ -250,10 +245,22 @@ export default {
 	.page-data-container
 	{
 		padding-bottom: 40px;
+		width: 100%;
+		overflow-x: auto;
+
 	}
 	.roulettes-list
 	{
 		width: 100%;
+		td,th
+		{
+			padding-right: 15px;
+				white-space: nowrap;
+			&:last-child
+			{
+				padding-right: 0;
+			}
+		}
 	}
 	.modes-header
 	{

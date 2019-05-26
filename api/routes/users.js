@@ -1,4 +1,4 @@
-const user = require('../controllers/userController.js');
+const user = require('../controllers/usersController.js');
 const { validateBody, schemas } = require('../middleware/validator');
 const passport = require('passport');
 const {JWT_auth} = require('../passport');

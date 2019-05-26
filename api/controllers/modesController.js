@@ -14,8 +14,8 @@ module.exports =
 		await newMode.save();
 		res.status(200).json({data: newMode});
 	},
-	getByName: async(req, res) => {
-		const mode = await Mode.find({name: req.params.name});
+	getPublicMode: async(req, res) => {
+		const mode = await Mode.findById(req.params.id);
 
 		if(!mode) return res.status(404).json({error: 'Not found'});
 
@@ -26,7 +26,7 @@ module.exports =
 		res.status(200).json({data: modes});
 	},
 	update: async(req, res) => {
-		const updatedMode = await Mode.findOneAndUpdate({'_id': req.params.id}, req.body.mode);
+		const updatedMode = await Mode.findOneAndUpdate({'_id': req.params.id}, req.body);
 
 		if(!updatedMode) return res.status(404).json({error: 'Not found'});
 

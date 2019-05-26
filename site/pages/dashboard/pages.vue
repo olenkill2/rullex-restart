@@ -43,7 +43,7 @@ export default {
 		return 'dashboard'
 	},
 	asyncData (req) {
-		return req.$axios.get('http://127.0.0.1:3002/post').then((result, error) => {
+		return req.$axios.get('http://127.0.0.1:3002/posts').then((result, error) => {
 			return { postList: result.data.data }
 		}).catch((error) => {
 			return { postList: []}

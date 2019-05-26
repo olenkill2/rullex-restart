@@ -20,15 +20,24 @@ module.exports =
 		const roulette = await Roulette.find().populate('category');
 		res.status(200).json({data: roulette});
 	},
-	getOne: async(req, res) => {
-		// получить инфу для одной рулетки
+	getAllPublicRoulettes: async(req, res) => {
+		const roulettes = await Roulette.find({private: false});
+
+		if(!roulettes || !roulettes.length) return res.status(404).json({error: 'no roullets'});
+
+		res.status(200).json({data: roulettes});
+	},
+	getOnePublicRoulette: async(req, res) => {
+		console.log(req.params.host);
+		const roulette = await Roulette.findOne({host: req.params.host}).select('-private -__v -created_at');
+		console.log(!roulette);
+
+		if(!roulette) return res.status(404).json({error: 'not found'});
+
+		res.status(200).json({data: roulette});
 	},
 	update: async(req, res) => {
-		// валидация
-		// if(!req.body.roulette)
-		// 	return res.status(400).json({error: 'чего-то не хватает'});
-
-		const roulette = await Roulette.findOneAndUpdate({'_id': req.params.id}, req.body.roulette)
+		const roulette = await Roulette.findOneAndUpdate({'_id': req.params.id}, req.body)
 		if(!roulette) return res.status(404).json({error: 'Not found'});
 
 		res.status(200).json({data: roulette});

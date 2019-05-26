@@ -28,7 +28,8 @@
 		},
 		data: () => ({
 			title: 'Rullex',
-			description: 'Бот для рулеток'
+			description: 'Бот для рулеток',
+			content: 'Расширение для рулеток'
 		}),
 	}
 </script>

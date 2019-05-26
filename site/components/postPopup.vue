@@ -72,7 +72,7 @@ export default {
 		addNewItem () {
 			console.log(this.postData.category);
 			this.postData.content = this.$refs.editor.invoke('getHtml');
-			this.$axios.post('/api/post', this.postData).then((result, error) => {
+			this.$axios.post('/api/posts', this.postData).then((result, error) => {
 				this.$emit('update');
 				this.close();
 			}).catch((error) => {
@@ -87,7 +87,7 @@ export default {
 		},
 		updateItem () {
 			this.postData.content = this.$refs.editor.invoke('getHtml');
-			this.$axios.put('/api/post', {post: this.postData}).then((result, error) => {
+			this.$axios.put('/api/posts', {post: this.postData}).then((result, error) => {
 				this.$emit('update');
 				this.close();
 			}).catch((error) => {
@@ -95,7 +95,7 @@ export default {
 			});
 		},
 		removeItem () {
-			this.$axios.delete('/api/post', {data: {post: this.postData._id}}).then((result, error) => {
+			this.$axios.delete('/api/posts', {data: {post: this.postData._id}}).then((result, error) => {
 				this.$emit('update');
 				this.close();
 			}).catch((error) => {

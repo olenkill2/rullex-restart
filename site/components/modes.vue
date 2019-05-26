@@ -40,7 +40,7 @@ export default {
 	},
 	methods: {
 		addmode () {
-			this.$axios.post('/api/mode', {mode: this.mode}).then((result, error) => {
+			this.$axios.post('/api/modes', {mode: this.mode}).then((result, error) => {
 				this.modeList.push(result.data);
 				this.selectmode(this.modeList.length - 1);
 			}).catch((error) => {
@@ -60,7 +60,7 @@ export default {
 		if(this.selected.mode != null)
 			this.mode = this.selected.mode.mode;
 
-		this.$axios.get('/api/modes').then((result, error) => {
+		this.$axios.get('/api/modess').then((result, error) => {
 			this.modeList = result.data.data;
 		}).catch((error) => {
 			this.error = true;

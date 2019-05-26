@@ -157,7 +157,7 @@ export default {
 			this.dropDownListItem = '';
 		},
 		addMode () {
-			this.$axios.post('/api/mode', this.mode).then((result, error) => {
+			this.$axios.post('/api/modes/', this.mode).then((result, error) => {
 				this.cancelEdit();
 				this.getModes();
 			}).catch((error) => {
@@ -170,7 +170,7 @@ export default {
 			this.mode = this.modesList[index];
 		},
 		removeMode () {
-			this.$axios.delete('/api/mode/' + this.mode._id).then((result, error) => {
+			this.$axios.delete('/api/modes/' + this.mode._id).then((result, error) => {
 				this.getModes();
 				this.cancelEdit();
 			}).catch((error) => {
@@ -178,7 +178,7 @@ export default {
 			})
 		},
 		updateMode () {
-			this.$axios.put('/api/mode/' + this.mode._id, {mode: this.mode}).then((result, error) => {
+			this.$axios.put('/api/modes/' + this.mode._id, this.mode).then((result, error) => {
 				this.getModes();
 				this.cancelEdit();
 			}).catch((error) => {
@@ -195,7 +195,7 @@ export default {
 			}
 		},
 		getModes () {
-			this.$axios.get('/api/mode').then((result) => {
+			this.$axios.get('/api/modes').then((result) => {
 				this.modesList = result.data.data;
 			})
 		}

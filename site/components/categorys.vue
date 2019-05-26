@@ -43,7 +43,7 @@ export default {
 	},
 	methods: {
 		addCategory () {
-			this.$axios.post('/api/category', {category: this.category}).then((result, error) => {
+			this.$axios.post('/api/categorys', {category: this.category}).then((result, error) => {
 				this.categoryList.push(result.data);
 				this.selectCategory(this.categoryList.length - 1);
 			}).catch((error) => {
@@ -63,7 +63,7 @@ export default {
 		if(this.selected.category != null)
 			this.category = this.selected.category.category;
 
-		this.$axios.get('/api/category').then((result, error) => {
+		this.$axios.get('/api/categorys').then((result, error) => {
 			this.categoryList = result.data.data;
 		}).catch((error) => {
 			this.error = true;

@@ -35,7 +35,8 @@ const rouletteSchema = new Schema(
 			type: Object,
 			default: {
 				modeName: '',
-				function: ''
+				function: '',
+				mode_id: ''
 			}
 		}
 	],

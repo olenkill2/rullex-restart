@@ -79,7 +79,6 @@
 						}
 					}
 				}
-				console.log(menuArray);
 				this.navItems = menuArray;
 			}).catch((error) => {
 				this.navItems = [];
@@ -172,6 +171,7 @@
 		margin-left: 16px;
 		margin-right: 16px;
 		min-height: calc(100vh - 91px);
+		max-width: 59%;
 	}
 	.content_popup
 	{

@@ -1,20 +1,20 @@
-const userRoutes = require('./user');
+const usersRoutes = require('./users');
 const adminRoutes = require('./admin');
 const menuRoutes = require('./menu');
-const categoryRoutes = require('./category');
-const postRoutes = require('./post');
-const modeRoutes = require('./mode');
-const rouletteRoutes = require('./roulette');
+const categorysRoutes = require('./categorys');
+const postsRoutes = require('./posts');
+const modesRoutes = require('./modes');
+const roulettesRoutes = require('./roulettes');
 const error = require('../middleware/error');
 
 module.exports = function(app, db)
 {
 	adminRoutes(app);
-	userRoutes(app);
+	usersRoutes(app);
 	menuRoutes(app);
-	categoryRoutes(app);
-	postRoutes(app);
-	modeRoutes(app);
-	rouletteRoutes(app);
+	categorysRoutes(app);
+	postsRoutes(app);
+	modesRoutes(app);
+	roulettesRoutes(app);
 	app.use(error);
 }

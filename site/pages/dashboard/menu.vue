@@ -63,7 +63,7 @@ export default {
 	async asyncData (req) {
 		try {
 			var getLinks = await req.$axios.get('http://127.0.0.1:3002/menu');
-			var getPosts = await req.$axios.get('http://127.0.0.1:3002/post');
+			var getPosts = await req.$axios.get('http://127.0.0.1:3002/posts');
 			return await { navItems: getLinks.data.data, allPosts: getPosts.data.data};
 		} catch (err) {
 			return await { navItems: '', allPosts: ''};
