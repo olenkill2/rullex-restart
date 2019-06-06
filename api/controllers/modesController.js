@@ -4,13 +4,15 @@ module.exports =
 {
 	add: async(req, res) => {
 		let modeData = req.body;
+		console.log(modeData);
+
 		let mode = await Mode.findOne({ 'name': modeData.name });
 
 		if(mode) return res.status(403).json({error: 'Мод уже существует'});
 
 		modeData.created_at = Date.now();
 
-		const newMode = new Mode(newMode)
+		const newMode = new Mode(modeData);
 		await newMode.save();
 		res.status(200).json({data: newMode});
 	},

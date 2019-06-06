@@ -36,7 +36,6 @@ module.exports = {
 		mode: Joi.object().keys({
 			name: Joi.string().required().min(3).max(256),
 			fields: Joi.array().required(),
-			dataSchema: Joi.array().required(),
 		}).options({ allowUnknown: true }),
 		roulette: Joi.object().keys({
 			name: Joi.string().required().min(3).max(512),

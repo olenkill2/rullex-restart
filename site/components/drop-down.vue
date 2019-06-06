@@ -3,7 +3,7 @@
 		.dropdown-selected(@click="open = !open")
 			.dropdown-selected__text
 				|{{selectedValue}}
-			.dropdown-selected__icon(:class="{'dropdown-selected__icon_open': open}")
+			.dropdown-selected__icon(v-if="list.length > 1", :class="{'dropdown-selected__icon_open': open}")
 
 		.dropdown-list(v-if="open", v-click-outside="close")
 			.dropdown-list__item(v-for="(item, index) in list", @click="select(index)", v-if="index != selected")

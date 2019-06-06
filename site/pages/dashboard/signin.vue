@@ -1,7 +1,7 @@
 <template lang="pug">
 	.auth-wr(:class="{'auth-wr_error': error}")
 		.auth-header
-			|Авторизация {{$store.state.user.auth}}
+			|Авторизация
 
 		form(@submit="signin($event)", novalidate)
 			.auth-fields
@@ -40,6 +40,7 @@ export default {
 	}),
 	methods: {
 		signin(e) {
+			this.error = false;
 			const data = {
 				email: this.email,
 				password: this.password,
@@ -60,6 +61,24 @@ export default {
 </script>
 <style lang="scss">
 	@import '~/assets/style/variables.scss';
+	@keyframes error-set {
+		0%
+		{
+			transform: translateY(0);
+		}
+		40%
+		{
+			transform: translateY(-50px);
+		}
+		80%
+		{
+			transform: translateY(50px);
+		}
+		100%
+		{
+			transform: translateY(0);
+		}
+	}
 	.auth-wr
 	{
 		margin-top: 60px;
@@ -73,6 +92,11 @@ export default {
 		padding-bottom: 60px;
 		max-width: 400px;
 		width: 100%;
+	}
+	.auth-wr_error
+	{
+		animation: error-set 0.3s ease;
+		border: 1px solid $red;
 	}
 	.auth-header
 	{

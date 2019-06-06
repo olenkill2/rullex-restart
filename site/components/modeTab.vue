@@ -51,8 +51,9 @@
 					.mode-form__item-label Список полей
 					.mode-fields
 						.mode-field-item(v-for="(modeField, index) in mode.fields")
-							field(v-if="modeField.component == 'field'", :label="modeField.name", v-model="modeField.model", :placeholder="modeField.placeholder")
-							dropdown(v-else="modeField.component == 'dropdown'", :list="modeField.dropDownList", v-model="fieldObject.component", :label="modeField.placeholder")
+							//- |{{modeField.model}}
+							field(v-if="modeField.component == 'field'", :label="modeField.name", :placeholder="modeField.placeholder")
+							dropdown(v-else="modeField.component == 'dropdown'", :list="modeField.dropDownList", :label="modeField.name")
 							.remove-field(@click="removeField(index)")
 							.edit-field(@click="editField(index)")
 
@@ -157,6 +158,8 @@ export default {
 			this.dropDownListItem = '';
 		},
 		addMode () {
+			console.log(this.mode);
+
 			this.$axios.post('/api/modes/', this.mode).then((result, error) => {
 				this.cancelEdit();
 				this.getModes();
@@ -277,11 +280,14 @@ export default {
 		color: $main;
 		display: flex;
 		vertical-align: top;
+		flex-wrap: wrap;
 	}
 	.field-droplist-item
 	{
 		display: flex;
 		align-items: center;
+		padding-right: 10px;
+		padding-bottom: 8px;
 	}
 	.mode-form-actions__item
 	{
@@ -312,7 +318,7 @@ export default {
 		background-position: center;
 		background-repeat: no-repeat;
 		cursor: pointer;
-		margin-left: 20px;
+		margin-left: 15px;
 	}
 	.field-droplist-item_remove
 	{

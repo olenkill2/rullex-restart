@@ -19,11 +19,6 @@ const modeSchema = new Schema(
 			dropDownList:[],
 		}
 	],
-	dataSchema:
-	{
-		type: Array,
-		default: [],
-	},
 	created_at:
 	{
 		type: Date,

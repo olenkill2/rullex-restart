@@ -227,6 +227,8 @@ export default {
 	{
 		currentModeId () {
 			const mode_id = this.modesList.map((mode) => {if(mode.name == this.addModeName) return mode._id});
+			console.log(mode_id);
+
 			return mode_id[0];
 		}
 	},
@@ -235,7 +237,6 @@ export default {
 		this.getModes();
 	},
 	created () {
-
 		this.roulette = this.getRouletteSchema();
 	}
 }
@@ -255,7 +256,7 @@ export default {
 		td,th
 		{
 			padding-right: 15px;
-				white-space: nowrap;
+			white-space: nowrap;
 			&:last-child
 			{
 				padding-right: 0;

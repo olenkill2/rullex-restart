@@ -120,7 +120,9 @@
 		margin-left: 16px;
 		margin-right: 16px;
 		min-height: calc(100vh - 91px);
-		max-width: 59%;
+		max-width: calc(59% - 32px);
+		margin-left: auto;
+		margin-right: auto;
 	}
 	.content_popup
 	{
