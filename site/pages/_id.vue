@@ -5,8 +5,6 @@
 <script>
 	export default {
 		asyncData ({$axios, redirect, res, route}) {
-			console.log(route.params.id);
-
 			return $axios.get('http://127.0.0.1:3002/posts' + route.params.id).then((result, error) => {
 				return { pageData: result.data.data }
 			}).catch((error) => {

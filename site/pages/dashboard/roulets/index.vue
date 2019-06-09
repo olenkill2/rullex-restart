@@ -12,15 +12,26 @@
 
 		.tabs-wr
 			.tab(v-show="activeTab == 0")
-				roulettesTab
+				roulettesTab(:roulettesList="roulettesList", :modesList="modesList")
 			.tab(v-show="activeTab == 1")
-				modeTab
+				modeTab(:modesList="modesList")
 </template>
 <script>
 // import roulettePopup from '~/components/roulettePopup.vue';
 import modeTab from '~/components/modeTab.vue';
 import roulettesTab from '~/components/roulettesTab.vue';
 export default {
+	async asyncData ({$axios, redirect, res, route}) {
+		try {
+			var getRoulettes = await $axios.get('http://127.0.0.1:3002/roulettes');
+			var getModes = await $axios.get('http://127.0.0.1:3002/modes');
+			return await { roulettesList: getRoulettes.data.data, modesList: getModes.data.data};
+		} catch (err) {
+			console.log(err);
+
+			return await { roulettesList: [], modesList: []};
+		}
+	},
 	layout (context) {
 		return 'dashboard'
 	},
@@ -31,8 +42,15 @@ export default {
 	},
 	data: () => ({
 		activeTab: 0,
+		roulettesList: [],
+		modesList: []
 	}),
 	methods: {
+		getRoulettes () {
+			this.$axios.get('/api/roulettes').then((result) => {
+				this.roulettesList = result.data.data
+			}).catch((error) => { this.roulettesList = [];})
+		},
 	},
 	mounted () {
 	}

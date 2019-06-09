@@ -102,7 +102,7 @@ import dropdown from '~/components/drop-down';
 import checkbox from '~/components/checkbox';
 import textField from '~/components/textarea';
 export default {
-	props: ['opened', 'editData'],
+	props: ['opened', 'editData', 'modesList', 'roulettesList'],
 	components: {
 		field,
 		checkbox,
@@ -110,10 +110,10 @@ export default {
 		textField
 	},
 	data: () => ({
-		roulettesList: [],
+		// roulettesList: [],
 		rouletteFormShow: false,
 		roulette: {},
-		modesList: [],
+		// modesList: [],
 		modesListForDropDown: [],
 		dropDownListItem: '',
 		addModeName: '',
@@ -123,25 +123,18 @@ export default {
 		edit: false,
 	}),
 	methods: {
-		getRoulettes () {
-			this.$axios.get('/api/roulettes').then((result) => {
-				this.roulettesList = result.data.data
-			}).catch((error) => { this.roulettesList = [];})
-		},
-		getModes () {
-			this.$axios.get('/api/modes').then((result) => {
-				if(!result.data.data.length) {
-					return false;
-				}
+		// getRoulettes () {
+		// 	this.$axios.get('/api/roulettes').then((result) => {
+		// 		this.roulettesList = result.data.data
+		// 	}).catch((error) => { this.roulettesList = [];})
+		// },
+		getModesForDropdown () {
+			this.addModeName = this.modesList[0].name;
 
-				this.addModeName = result.data.data[0].name;
-
-				for(let mode of result.data.data) {
-					this.modesListForDropDown.push(mode.name);
-				}
-				this.roulette.gameFunctionForMode[0].modeName = this.addModeName;
-				this.modesList = result.data.data;
-			})
+			for(let mode of this.modesList) {
+				this.modesListForDropDown.push(mode.name);
+			}
+			this.roulette.gameFunctionForMode[0].modeName = this.addModeName;
 		},
 		getRouletteSchema () {
 			return {
@@ -195,6 +188,8 @@ export default {
 		},
 		setRouletteForEdit (index) {
 			this.roulette = this.roulettesList[index];
+			console.log(this.roulette);
+
 			this.edit = true;
 			this.rouletteFormShow = true;
 		},
@@ -220,23 +215,26 @@ export default {
 				this.cancelEdit();
 			}).catch((error) => {
 				this.error = true;
-			})
+			});
 		}
+	},
+	watch:
+	{
 	},
 	computed:
 	{
 		currentModeId () {
-			const mode_id = this.modesList.map((mode) => {if(mode.name == this.addModeName) return mode._id});
-			console.log(mode_id);
-
-			return mode_id[0];
+			const mode_id = this.modesList.filter(mode => mode.name == this.addModeName);
+			return mode_id[0]._id;
 		}
 	},
 	mounted () {
-		this.getRoulettes();
-		this.getModes();
+		// this.getRoulettes();
+		this.addModeName = this.modesList[0].name;
+		this.getModesForDropdown();
 	},
 	created () {
+		this.addModeName = this.modesList[0].name;
 		this.roulette = this.getRouletteSchema();
 	}
 }
