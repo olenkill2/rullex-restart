@@ -2,37 +2,41 @@
 	.tactic-add-wr
 		.tactic-add-top-actions
 			.tactic-add-top-actions__left
-				field(v-model="newTatic.name", label="Название", placeholder="Насос бабла")
+				field(v-model="newTactic[currentMode].name", label="Название", placeholder="Насос бабла")
 			.tactic-add-top-actions__right
 				dropdown(:list="rouletteModesList", v-model="currentMode", label="Режим")
 
 		.tactic-add-header
 			|Параметры этапа
 
-		.etap-form-wr(v-if="!load")
-			.etap-form__item(v-for="field in modeFields")
-				|{{currentModeScheme[currentMode]}}
-				|{{clearChema[currentMode]}}
+		.etap-form-wr(v-if="!load", :class="{'etap-form-load': load}")
+			.etap-form__item(v-for="(field, index) in modeFields[currentModeId]")
 				field(v-if="field.component == 'field'", v-model="currentModeScheme[currentMode][field.model]", :label="field.name", :placeholder="field.placeholder")
-				dropdown(v-if="field.component == 'dropdown'", :list="field.dropDownList", v-model="currentModeScheme[currentMode][field.model]", :label="field.name")
+				dropdown(v-if="field.component == 'dropdown'", :ref="field.model" :list="field.dropDownList", v-model="currentModeScheme[currentMode][field.model]", :label="field.name")
 
 		.etap-form-actions
 			button.btn.btn_red.etap-form-actions__clear(@click="clearForm")
 				|Очистить
 			button.btn.etap-form-actions__add(@click="addNewStage")
 				|Добавить этап
+
+		tactcViewer(:tactic="newTactic[currentMode]")
+
 </template>
 <script>
 import field from '@/components/input.vue';
 import dropdown from '@/components/drop-down.vue';
+import tactcViewer from '@/components/tactic-viewer.vue';
 export default {
 	name: 'tacticAdd',
 	components: {
 		field,
-		dropdown
+		dropdown,
+		tactcViewer
 	},
 	data: () => ({
-		newTatic: {
+		newTactic: {},
+		tacticSchema: {
 			name: '',
 			mode: '',
 			stages: [],
@@ -54,7 +58,7 @@ export default {
 		}
 	},
 	watch: {
-		currentMode() {
+		currentMode () {
 			this.getModeScheme();
 		}
 	},
@@ -63,9 +67,15 @@ export default {
 			this.newStage.rate = rate;
 		},
 		getModeScheme () {
+			this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
+			this.newTactic[this.currentMode].mode = this.currentMode;
+
+			if(typeof this.clearChema[this.currentMode] != 'undefined')
+				return false;
+
 			this.load = true;
 			this.axios.get('/modes/' + this.currentModeId).then((res) => {
-				this.modeFields = res.data.data.fields;
+				this.modeFields[this.currentModeId] = res.data.data.fields;
 				let schema = {};
 				for (let field of res.data.data.fields) {
 					schema[field.model] = '';
@@ -73,34 +83,53 @@ export default {
 
 				this.$set(this.currentModeScheme, this.currentMode, schema);
 				this.clearChema[this.currentMode] = Object.assign({}, this.currentModeScheme[this.currentMode], schema);
+
 				this.load = false;
 			}).catch((err) => {
 				this.load = false;
-				console.log(err.message);
 			})
 		},
 		addNewStage () {
-			this.newTatic.stages.push({ ...this.currentModeScheme[this.currentMode] });
+			if(!this.newTactic[this.currentMode].stages.length) {
+
+			}
+
+			this.newTactic[this.currentMode].stages.push({ ...this.currentModeScheme[this.currentMode] });
 			this.clearForm();
+		},
+		getSelectedValue () {
+			for (const iterator in this.$refs) {
+				console.log(this.$refs[iterator]);
+
+				if(this.$refs[iterator].length)
+					this.$refs[iterator][0].updateSelf()
+			}
 		},
 		clearForm () {
 			const mode = this.currentMode;
 			this.currentModeScheme[mode] = Object.assign({}, this.currentModeScheme[mode], this.clearChema[mode]);
+			this.getSelectedValue();
 		}
 	},
-	mounted () {
-	},
 	created: function (params) {
-		this.currentMode = this.roulette.gameFunctionForMode[0].modeName;
-		for(let mode of this.roulette.gameFunctionForMode)
-		{
+		for(const mode of this.roulette.gameFunctionForMode) {
 			this.rouletteModesList.push(mode.modeName)
 			this.rouletteModes[mode.modeName] = mode.mode_id;
 		}
+
+		this.currentMode = this.roulette.gameFunctionForMode[0].modeName;
+
+		this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
+		this.newTactic[this.currentMode].mode = this.currentMode;
 	}
 }
 </script>
 <style lang="scss">
+.tactic-add-wr
+{
+	// position: relative;
+	padding-bottom: 70px;
+}
 .tactic-add-top-actions
 {
 	padding-top: 22px;
@@ -132,10 +161,16 @@ export default {
 	align-items: center;
 	flex-wrap: wrap;
 	margin-bottom: 18px;
+	transition: 0.2s;
+	min-height: 100px;
 	&:last-child
 	{
 		margin-bottom: 0;
 	}
+}
+.etap-form-load
+{
+	background-color: purple;
 }
 .etap-form__item
 {
@@ -149,7 +184,7 @@ export default {
 	align-items: center;
 	padding-left: 10px;
 	padding-right: 10px;
-	padding-bottom: 40px;
+	// padding-bottom: 40px;
 }
 .btn.etap-form-actions__clear
 {

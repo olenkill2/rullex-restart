@@ -29,8 +29,8 @@ export default {
 			this.$emit("input", this.list[index]);
 			this.close();
 		},
-		updateSelf(name) {
-			this.$emit("input", name);
+		updateSelf() {
+			this.$emit("input", this.list[this.selected]);
 		},
 		close() {
 			this.open = false;
