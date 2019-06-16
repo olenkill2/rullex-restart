@@ -20,7 +20,7 @@
 			button.btn.etap-form-actions__add(@click="addNewStage")
 				|Добавить этап
 
-		tactcViewer(:tactic="newTactic[currentMode]")
+		tactcViewer(:newTacti="newTactic[currentMode]", @remove="removeStage", @edit="editStage")
 
 </template>
 <script>
@@ -35,12 +35,15 @@ export default {
 		tactcViewer
 	},
 	data: () => ({
+		editingStage: false,
 		newTactic: {},
 		tacticSchema: {
 			name: '',
 			mode: '',
+			labels: {},
 			stages: [],
 		},
+		labels: {},
 		modeFields: [],
 		currentMode: '',
 		currentModeScheme: {},
@@ -77,11 +80,14 @@ export default {
 			this.axios.get('/modes/' + this.currentModeId).then((res) => {
 				this.modeFields[this.currentModeId] = res.data.data.fields;
 				let schema = {};
+				let labels = {};
 				for (let field of res.data.data.fields) {
 					schema[field.model] = '';
+					labels[field.model] = field.name;
 				}
 
 				this.$set(this.currentModeScheme, this.currentMode, schema);
+				this.$set(this.labels, this.currentMode, labels);
 				this.clearChema[this.currentMode] = Object.assign({}, this.currentModeScheme[this.currentMode], schema);
 
 				this.load = false;
@@ -91,7 +97,9 @@ export default {
 		},
 		addNewStage () {
 			if(!this.newTactic[this.currentMode].stages.length) {
+				console.log(this.labels[this.currentMode]);
 
+				this.newTactic[this.currentMode].labels = {...this.labels[this.currentMode]};
 			}
 
 			this.newTactic[this.currentMode].stages.push({ ...this.currentModeScheme[this.currentMode] });
@@ -99,11 +107,18 @@ export default {
 		},
 		getSelectedValue () {
 			for (const iterator in this.$refs) {
-				console.log(this.$refs[iterator]);
-
 				if(this.$refs[iterator].length)
 					this.$refs[iterator][0].updateSelf()
 			}
+		},
+		removeStage (index) {
+			this.newTactic[this.currentMode].stages.splice(index, 1);
+			console.log('aaa');
+
+		},
+		editStage (index) {
+			console.log('aaa');
+
 		},
 		clearForm () {
 			const mode = this.currentMode;

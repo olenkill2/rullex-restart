@@ -56,7 +56,6 @@
 	display: block;
 	width: 20px;
 	height: 20px;
-	// background-image: url('../../assets/icons/edit.svg');
 	background-repeat: no-repeat;
 	background-position: center;
 	cursor: pointer;
@@ -65,4 +64,17 @@
 	{
 		transform: scale(1.2);
 	}
+}
+.btn-str
+{
+	font-size: 12px;
+	line-height: 14px;
+	border: none;
+	background-color: none;
+	cursor: pointer;
+	color: $blue;
+}
+.btn-str_remove
+{
+	color: rgba(255, 111, 121, 0.5);
 }

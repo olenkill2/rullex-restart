@@ -20,31 +20,68 @@ transition
 
 				button.btn.btn_accent.tv-save
 					|Сохранить
-		.tv-body(v-if="expand")
+
+		.tv-body
 			.tv-stages
-				|{{tactic}}
+				transition-group(name="list", tag="div")
+					.tv-stages-item(v-for="(stage, index, key) of tactic.stages", :key="index")
+						.tv-stages-item__top
+							.tv-stages-item__number
+								|{{index + 1}}
+							.tv-stages-item__data
+								.tv-stages-item__data-row(v-for="(item, index) of stage")
+									|{{tactic.labels[index]}}:
+									span.tv-stages-item__data-row-value
+										|  {{item}};
+
+						.tv-stages-actions
+							//- добавить confirm
+							button.btn-str.btn-str_remove(@click="$emit('remove', index)")
+								|Удалить
+							button.btn-str(@click="$emit('edit', index)")
+								|Изменить
 </template>
 <script>
 export default {
-	props: ['tactic'],
+	props: ['newTacti'],
 	data: () => ({
 		edit: false,
 		expand: false,
+		tactic: this.newTacti
 	}),
 	computed: {
 		etapsCount () {
-			const res = this.declOfNum(this.tactic.stages.length, ['этап', 'этапа', 'этапов']);
-			return res
+			return this.declOfNum(this.tactic.stages.length, ['этап', 'этапа', 'этапов']);
+		}
+	},
+	wath: {
+		tactic: {
+			handler(val){
+				if(!tactic.stages.length)
+					this.expand = false;
+			},
+			deep: true
 		}
 	},
 	methods: {
 		declOfNum(n, titles) {
 			return n + ' ' + titles[(n % 10 === 1 && n % 100 !== 11) ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2]
-		}
+		},
+	},
+	created () {
+		this.tactic = this.newTacti
 	}
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+	.list-enter-active, .list-leave-active {
+		transition: all .3s;
+	}
+	.list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
+		opacity: 0;
+		transform: translateX(30px);
+	}
+
 	.tv
 	{
 		position: absolute;
@@ -63,7 +100,7 @@ export default {
 	.tv_expand
 	{
 		max-height: 65%;
-		transform: translateY(-65%);
+		transform: translateY(calc(-100% + 54px));
 	}
 	.tv-header
 	{
@@ -109,7 +146,7 @@ export default {
 		cursor: pointer;
 		width: 80px;
 	}
-	.tv-save
+	.btn.tv-save
 	{
 		min-width: auto;
 		width: 100px;
@@ -122,5 +159,53 @@ export default {
 	.tv-body
 	{
 		overflow: auto;
+	}
+
+	.tv-stages
+	{
+		padding-bottom: 30px;
+		overflow: hidden;
+	}
+	.tv-stages-item
+	{
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 25px;
+		padding-bottom: 15px;
+		border-bottom: 1px solid #E1EEF6;
+	}
+	.tv-stages-item__top
+	{
+		display: flex;
+		justify-content: space-between;
+	}
+	.tv-stages-item__data
+	{
+		flex: 1;
+	}
+	.tv-stages-item__number
+	{
+		font-weight: 300;
+		font-size: 48px;
+		line-height: 57px;
+		color: rgba(41, 47, 68, 0.5);
+		padding-right: 23px;
+		flex-basis: 30px;
+		text-align: center;
+	}
+	.tv-stages-item__data-row
+	{
+		font-size: 14px;
+		line-height: 29px;
+		color: $main;
+	}
+	.tv-stages-item__data-row-value
+	{
+		color: $accent;
+	}
+	.tv-stages-actions
+	{
+		display: flex;
+		justify-content: flex-end;
 	}
 </style>
