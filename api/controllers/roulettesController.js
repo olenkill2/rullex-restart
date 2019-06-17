@@ -16,10 +16,12 @@ module.exports =
 
 		res.status(200).json({data: roulette});
 	},
+
 	getAll: async(req, res) => {
 		const roulette = await Roulette.find().populate('category');
 		res.status(200).json({data: roulette});
 	},
+
 	getAllPublicRoulettes: async(req, res) => {
 		const roulettes = await Roulette.find({private: false});
 
@@ -27,21 +29,23 @@ module.exports =
 
 		res.status(200).json({data: roulettes});
 	},
+
 	getOnePublicRoulette: async(req, res) => {
-		console.log(req.params.host);
 		const roulette = await Roulette.findOne({host: req.params.host}).select('-private -__v -created_at');
-		console.log(!roulette);
 
 		if(!roulette) return res.status(404).json({error: 'not found'});
 
 		res.status(200).json({data: roulette});
 	},
+
 	update: async(req, res) => {
 		const roulette = await Roulette.findOneAndUpdate({'_id': req.params.id}, req.body)
+
 		if(!roulette) return res.status(404).json({error: 'Not found'});
 
 		res.status(200).json({data: roulette});
 	},
+
 	delete: async(req, res) => {
 		const roulette = await Roulette.deleteOne({'_id': req.params.id});
 

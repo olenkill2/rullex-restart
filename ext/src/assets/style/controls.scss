@@ -40,6 +40,13 @@
 	background-color: transparent;
 	color: $red;
 	border: 1px solid $red;
+	&:disabled
+	{
+		background-color: #fff;
+		pointer-events: none;
+		color: rgba($red, 0.5);
+		border-color: rgba($red, 0.5);
+	}
 }
 .checkbox-label-wr
 {

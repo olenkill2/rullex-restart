@@ -19,7 +19,9 @@ module.exports =
 	},
 	get: async(req, res) => {
 		const result = await Category.find({});
+
 		if(!result) return res.status(404).json({error: 'Not found'})
+
 		res.status(200).json({data});
 	},
 	update: async(req, res) => {

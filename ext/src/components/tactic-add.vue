@@ -9,24 +9,33 @@
 		.tactic-add-header
 			|Параметры этапа
 
-		.etap-form-wr(v-if="!load", :class="{'etap-form-load': load}")
-			.etap-form__item(v-for="(field, index) in modeFields[currentModeId]")
-				field(v-if="field.component == 'field'", v-model="currentModeScheme[currentMode][field.model]", :label="field.name", :placeholder="field.placeholder")
-				dropdown(v-if="field.component == 'dropdown'", :ref="field.model" :list="field.dropDownList", v-model="currentModeScheme[currentMode][field.model]", :label="field.name")
+		form(@submit.prevent="addNewStage", @keyup.enter="addNewStage")
+			.etap-form-wr(v-if="!load", :class="{'etap-form-load': load}")
+				.etap-form__item(v-for="(field, index) in modeFields[currentModeId]")
+					field(v-if="field.component == 'field'",
+						v-model.trim="currentModeScheme[currentMode][field.model]",
+						:name="field.name" :label="field.name",
+						:placeholder="field.placeholder"
+						v-validate="'required'",
+						:error="errors.first(field.name)")
+
+					dropdown(v-if="field.component == 'dropdown'", :ref="field.model" :list="field.dropDownList", v-model="currentModeScheme[currentMode][field.model]", :label="field.name")
 
 		.etap-form-actions
-			button.btn.btn_red.etap-form-actions__clear(@click="clearForm")
+			button.btn.btn_red.etap-form-actions__clear(@click="clearForm", :disabled="!formNotClear")
 				|Очистить
-			button.btn.etap-form-actions__add(@click="addNewStage")
-				|Добавить этап
 
-		tactcViewer(:newTacti="newTactic[currentMode]", @remove="removeStage", @edit="editStage")
+			button.btn.etap-form-actions__add(@click="addNewStage", :disabled="isFormInValid")
+				|Добавить этап {{isFormInValid}}
+
+		tactcViewer(:tactic="newTactic[currentMode]", @remove="removeStage", @edit="editStage")
 
 </template>
 <script>
 import field from '@/components/input.vue';
 import dropdown from '@/components/drop-down.vue';
 import tactcViewer from '@/components/tactic-viewer.vue';
+
 export default {
 	name: 'tacticAdd',
 	components: {
@@ -58,7 +67,13 @@ export default {
 		},
 		currentModeId () {
 			return this.rouletteModes[this.currentMode];
-		}
+		},
+		formNotClear () {
+			return Object.keys(this.fields).some(key => this.fields[key].valid);
+		},
+		isFormInValid() {
+			return Object.keys(this.fields).some(key => { return this.fields[key].invalid || this.fields[key].invalid == null});
+		},
 	},
 	watch: {
 		currentMode () {
@@ -66,9 +81,6 @@ export default {
 		}
 	},
 	methods: {
-		setRate (rate) {
-			this.newStage.rate = rate;
-		},
 		getModeScheme () {
 			this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
 			this.newTactic[this.currentMode].mode = this.currentMode;
@@ -96,34 +108,27 @@ export default {
 			})
 		},
 		addNewStage () {
-			if(!this.newTactic[this.currentMode].stages.length) {
-				console.log(this.labels[this.currentMode]);
-
-				this.newTactic[this.currentMode].labels = {...this.labels[this.currentMode]};
-			}
-
-			this.newTactic[this.currentMode].stages.push({ ...this.currentModeScheme[this.currentMode] });
-			this.clearForm();
-		},
-		getSelectedValue () {
-			for (const iterator in this.$refs) {
-				if(this.$refs[iterator].length)
-					this.$refs[iterator][0].updateSelf()
-			}
+			this.$validator.validate().then(valid => {
+				if (valid) {
+					if(!this.newTactic[this.currentMode].stages.length) {
+						this.newTactic[this.currentMode].labels = {...this.labels[this.currentMode]};
+					}
+					this.newTactic[this.currentMode].stages.push({ ...this.currentModeScheme[this.currentMode] });
+					this.clearForm();
+				}
+			});
 		},
 		removeStage (index) {
 			this.newTactic[this.currentMode].stages.splice(index, 1);
-			console.log('aaa');
-
 		},
 		editStage (index) {
-			console.log('aaa');
-
+			// edit stage
 		},
 		clearForm () {
 			const mode = this.currentMode;
 			this.currentModeScheme[mode] = Object.assign({}, this.currentModeScheme[mode], this.clearChema[mode]);
-			this.getSelectedValue();
+			this.$validator.reset();
+			this.errors.clear();
 		}
 	},
 	created: function (params) {

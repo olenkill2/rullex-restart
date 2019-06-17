@@ -1,28 +1,35 @@
 <template lang="pug">
 	.input-wr
-		input.input(:value="name",
-			@input="updateSelf($event.target.value)",
-			@focus="focused = true; $emit('focus')",
-			@blur="focused = false; $emit('blur')",
+		input.input(:value="value",
+			@input="$emit('input', $event.target.value)",
+			@focus="focused = true; $emit('focus');",
+			@blur="focused = false; $emit('blur'); $emit('input', $event.target.value)",
+			@change="$emit('input', $event.target.value)",
 			:type="type",
-			:placeholder="placeholder"
-			:class="{'input_focused': focused || name !== '' || placeholder}")
+			:name="name",
+			:placeholder="placeholder",
+			:class="{'input_focused': focused || value !== '' || placeholder, 'input_error': !!error }")
+		span.input-error(v-if="!!error")
+			|{{error}}
 		.input-label
 			|{{label}} <span class="input-label__sub">{{labelSubText}}</span>
 </template>
 <script>
 export default {
-	model: {
-		prop: "name",
-	},
-	props: ["name", "label", "type", "labelSubText", "placeholder"],
+	props: ["value", "name", "label", "type", "labelSubText", "placeholder", "error"],
 	data: () => ({
 		focused: false
 	}),
-	methods: {
-		updateSelf(name) {
-			this.$emit("input", name);
+	$_veeValidate: {
+		name() {
+			return this.name;
+		},
+		value() {
+			return this.value;
 		}
+	},
+	created () {
+
 	}
 }
 </script>
@@ -64,6 +71,14 @@ export default {
 			top: -3px;
 			color: $accent;
 		}
+	}
+	.input-error
+	{
+		position: absolute;
+		left: 0;
+		font-size: 12px;
+		bottom: -18px;
+		color: $red;
 	}
 	.input-label
 	{

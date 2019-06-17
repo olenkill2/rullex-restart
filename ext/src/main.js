@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import VeeValidate from 'vee-validate';
+import { Validator } from 'vee-validate';
 import App from './App.vue';
 import store from './store';
 
@@ -9,6 +11,19 @@ Vue.config.productionTip = false;
 axios.defaults.baseURL = 'http://localhost:3002/';
 
 Vue.use(VueAxios, axios);
+
+
+const dictionary = {
+	en: {
+		messages:{
+			required: () => 'Поле не заполнено'
+		}
+	},
+};
+Validator.localize(dictionary);
+
+Vue.use(VeeValidate);
+
 
 new Vue({
 	store,
@@ -39,3 +54,4 @@ Vue.directive('click-outside',{
 		document.body.removeEventListener('click', el.clickOutsideEvent);
 	},
 });
+// console.log(Vue);

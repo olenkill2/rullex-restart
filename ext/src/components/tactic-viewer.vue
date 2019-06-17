@@ -24,7 +24,7 @@ transition
 		.tv-body
 			.tv-stages
 				transition-group(name="list", tag="div")
-					.tv-stages-item(v-for="(stage, index, key) of tactic.stages", :key="index")
+					.tv-stages-item(v-for="(stage, index) of tactic.stages", :key="JSON.stringify(stage)")
 						.tv-stages-item__top
 							.tv-stages-item__number
 								|{{index + 1}}
@@ -43,11 +43,11 @@ transition
 </template>
 <script>
 export default {
-	props: ['newTacti'],
+	props: ['tactic'],
 	data: () => ({
 		edit: false,
 		expand: false,
-		tactic: this.newTacti
+		// tactic: ''
 	}),
 	computed: {
 		etapsCount () {
@@ -69,13 +69,14 @@ export default {
 		},
 	},
 	created () {
-		this.tactic = this.newTacti
+		// this.tactic = this.newTacti
 	}
 }
 </script>
 <style lang="scss">
 	.list-enter-active, .list-leave-active {
-		transition: all .3s;
+		transition: all 3s;
+		// background-color: red;
 	}
 	.list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
 		opacity: 0;

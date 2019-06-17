@@ -1,7 +1,6 @@
 const post = require('../controllers/postsController.js');
 const { validateBody, schemas } = require('../middleware/validator');
 const { isAdmin } = require('../middleware/isAdmin');
-const passport = require('passport');
 const {JWT_auth} = require('../passport');
 
 module.exports = function(app, db)

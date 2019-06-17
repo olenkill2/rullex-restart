@@ -4,8 +4,8 @@ module.exports =
 {
 	add: async(req, res) => {
 		const { url, name, category, order, private } = req.body;
-
 		const result = await Menu.findOne({ 'url': url });
+
 		if(result) return res.status(403).json({error: 'Ссылка уже существует'});
 
 		const menuItemData = {
@@ -38,12 +38,14 @@ module.exports =
 			updatedLink.category = null;
 
 		const result = await Menu.findOneAndUpdate({'_id': updatedLink._id}, updatedLink);
+
 		if(!result) return res.status(404).json({error: 'Not found'});
 
 		res.status(200).json({data: result});
 	},
 	delete: async(req, res) => {
 		const deletedMenuItem = await Menu.deleteOne({'_id': req.body.link._id});
+
 		if(!deletedMenuItem) return res.status(404).json({error: 'Not found'});
 
 		res.status(200).json({data: deletedMenuItem});

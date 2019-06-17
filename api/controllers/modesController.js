@@ -16,6 +16,7 @@ module.exports =
 		await newMode.save();
 		res.status(200).json({data: newMode});
 	},
+
 	getPublicMode: async(req, res) => {
 		const mode = await Mode.findById(req.params.id);
 
@@ -23,10 +24,12 @@ module.exports =
 
 		res.status(200).json({data: mode});
 	},
+
 	getAll: async(req, res) => {
 		const modes = await Mode.find();
 		res.status(200).json({data: modes});
 	},
+
 	update: async(req, res) => {
 		const updatedMode = await Mode.findOneAndUpdate({'_id': req.params.id}, req.body);
 
@@ -34,6 +37,7 @@ module.exports =
 
 		res.status(200).json({data: updatedMode});
 	},
+
 	delete: async(req, res) => {
 		const deletedMode = await Mode.deleteOne({'_id': req.params.id});
 

@@ -18,7 +18,7 @@
 </template>
 <script>
 export default {
-	props: ["list", "label", "labelSubText"],
+	props: ["value", "list", "label", "labelSubText"],
 	data: () => ({
 		selected: 0,
 		open: false,
@@ -29,11 +29,14 @@ export default {
 			this.$emit("input", this.list[index]);
 			this.close();
 		},
-		updateSelf() {
-			this.$emit("input", this.list[this.selected]);
-		},
 		close() {
 			this.open = false;
+		}
+	},
+	watch: {
+		value (val) {
+			if(!val)
+				this.$emit("input", this.list[this.selected]);
 		}
 	},
 	computed: {
@@ -42,11 +45,9 @@ export default {
 		}
 	},
 	created () {
+		console.log(this.value);
 		this.$emit("input", this.list[this.selected]);
 	},
-	mounted () {
-		this.$emit("input", this.list[this.selected]);
-	}
 }
 </script>
 <style lang="scss">

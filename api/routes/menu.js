@@ -1,5 +1,4 @@
 const menu = require('../controllers/menuController.js');
-const passport = require('passport');
 const { isAdmin } = require('../middleware/isAdmin');
 const {JWT_auth} = require('../passport');
 const { validateBody, schemas } = require('../middleware/validator');

@@ -22,10 +22,12 @@ module.exports =
 
 		res.status(200).json({data: newPost});
 	},
+
 	getAll: async(req, res, next) => {
 		const result = await Post.find().populate('category', '-created_at').select('-__v');
 		res.status(200).json({data: result});
 	},
+
 	update: async(req, res) => {
 		const updatedPost = req.body.post;
 
@@ -38,6 +40,7 @@ module.exports =
 
 		res.status(200).json({data: updatedPostData});
 	},
+
 	delete: async(req, res) => {
 		const deletedPost = await Post.findByIdAndRemove({'_id': req.body.post});
 
@@ -45,6 +48,7 @@ module.exports =
 
 		res.status(200).json({data: deletedPost});
 	},
+
 	getPost: async(req, res, next) => {
 		if(req.params.id) return res.status(400).json({error: 'чего-то не хватает'});
 
@@ -54,6 +58,7 @@ module.exports =
 
 		res.status(200).json({data: result});
 	},
+
 	getSeo: async(req, res) => {
 		const result = await Post.findOne({'url': '/' + req.query.link});
 
