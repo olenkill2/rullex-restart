@@ -36,7 +36,16 @@ export default {
 	watch: {
 		value (val) {
 			if(!val)
+			{
 				this.$emit("input", this.list[this.selected]);
+				return false;
+			}
+
+			if(this.list[this.selected] != val)
+			{
+				this.selected = this.list.indexOf(val);
+			}
+
 		}
 	},
 	computed: {
@@ -45,7 +54,6 @@ export default {
 		}
 	},
 	created () {
-		console.log(this.value);
 		this.$emit("input", this.list[this.selected]);
 	},
 }

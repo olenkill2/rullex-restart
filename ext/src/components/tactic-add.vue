@@ -21,14 +21,20 @@
 
 					dropdown(v-if="field.component == 'dropdown'", :ref="field.model" :list="field.dropDownList", v-model="currentModeScheme[currentMode][field.model]", :label="field.name")
 
-		.etap-form-actions
-			button.btn.btn_red.etap-form-actions__clear(@click="clearForm", :disabled="!formNotClear")
-				|Очистить
+		.etap-form-actions(v-if="!editingStage")
+				button.btn.btn_red.etap-form-actions__clear(@click="clearForm", :disabled="!formNotClear")
+					|Очистить
 
-			button.btn.etap-form-actions__add(@click="addNewStage", :disabled="isFormInValid")
-				|Добавить этап {{isFormInValid}}
+				button.btn.etap-form-actions__add(@click="addNewStage", :disabled="isFormInValid")
+					|Добавить этап
+		.etap-form-actions(v-else-if="editingStage")
+			button.btn.btn_skin.etap-form-actions__clear(@click="clearForm", :disabled="!formNotClear")
+				|Отменить
 
-		tactcViewer(:tactic="newTactic[currentMode]", @remove="removeStage", @edit="editStage")
+			button.btn.etap-form-actions__add(@click="saveStage", :disabled="isFormInValid")
+				|Сохранить
+
+		tactcViewer(:tactic="newTactic[currentMode]", @remove="removeStage", @edit="editStage", :stagesLength="currentTacticStagesLength", @tacticSaved="tacticSaved")
 
 </template>
 <script>
@@ -45,6 +51,7 @@ export default {
 	},
 	data: () => ({
 		editingStage: false,
+		editingStageIndex: false,
 		newTactic: {},
 		tacticSchema: {
 			name: '',
@@ -60,6 +67,7 @@ export default {
 		rouletteModesList: [],
 		rouletteModes: {},
 		load: false,
+		currentTacticStagesLength: 0,
 	}),
 	computed: {
 		roulette () {
@@ -71,13 +79,19 @@ export default {
 		formNotClear () {
 			return Object.keys(this.fields).some(key => this.fields[key].valid);
 		},
-		isFormInValid() {
+		isFormInValid () {
 			return Object.keys(this.fields).some(key => { return this.fields[key].invalid || this.fields[key].invalid == null});
 		},
 	},
 	watch: {
 		currentMode () {
 			this.getModeScheme();
+		},
+		newTactic: {
+			deep: true,
+			handler (val) {
+				this.currentTacticStagesLength = val[this.currentMode].stages.length;
+			}
 		}
 	},
 	methods: {
@@ -101,7 +115,6 @@ export default {
 				this.$set(this.currentModeScheme, this.currentMode, schema);
 				this.$set(this.labels, this.currentMode, labels);
 				this.clearChema[this.currentMode] = Object.assign({}, this.currentModeScheme[this.currentMode], schema);
-
 				this.load = false;
 			}).catch((err) => {
 				this.load = false;
@@ -122,13 +135,29 @@ export default {
 			this.newTactic[this.currentMode].stages.splice(index, 1);
 		},
 		editStage (index) {
-			// edit stage
+			this.editingStage = true;
+			this.currentModeScheme[this.currentMode] = this.newTactic[this.currentMode].stages[index];
+			this.editingStageIndex = index;
+			console.log(this.$validator);
+			this.$nextTick().then(() => {
+				this.$validator.validate();
+			});
+		},
+		saveStage () {
+			this.editingStage = false;
+			this.newTactic[this.currentMode].stages[this.editingStageIndex] = {...this.currentModeScheme[this.currentMode]};
+			this.clearForm();
 		},
 		clearForm () {
 			const mode = this.currentMode;
 			this.currentModeScheme[mode] = Object.assign({}, this.currentModeScheme[mode], this.clearChema[mode]);
 			this.$validator.reset();
 			this.errors.clear();
+		},
+		tacticSaved (saveResult)
+		{
+			console.log(saveResult);
+
 		}
 	},
 	created: function (params) {

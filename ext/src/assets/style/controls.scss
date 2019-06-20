@@ -48,6 +48,19 @@
 		border-color: rgba($red, 0.5);
 	}
 }
+.btn_skin
+{
+	background-color: #fff;
+	color: $blue;
+	border: 1px solid $blue;
+	&:disabled
+	{
+		background-color: #fff;
+		pointer-events: none;
+		border-color: rgba($blue, 0.2);
+		color: rgba($blue, 0.2);
+	}
+}
 .checkbox-label-wr
 {
 	display: flex;

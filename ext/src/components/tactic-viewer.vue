@@ -1,6 +1,6 @@
 <template lang="pug">
 transition
-	.tv(v-if="tactic.stages.length", :class="{'tv_expand': expand}")
+	.tv(v-if="tactic.stages.length", :class="{'tv_expand': expand}", v-click-outside="close")
 		.tv-layout
 		.tv-header(:class="{'tv-header_expand': expand}")
 			.tv-header__left
@@ -18,7 +18,7 @@ transition
 				button.tv-change(v-else="", @click="expand = !expand")
 					|Свернуть
 
-				button.btn.btn_accent.tv-save
+				button.btn.btn_accent.tv-save(@click="saveTactic")
 					|Сохранить
 
 		.tv-body
@@ -38,35 +38,71 @@ transition
 							//- добавить confirm
 							button.btn-str.btn-str_remove(@click="$emit('remove', index)")
 								|Удалить
-							button.btn-str(@click="$emit('edit', index)")
+							button.btn-str(@click="$emit('edit', index); expand = false")
 								|Изменить
 </template>
 <script>
 export default {
-	props: ['tactic'],
+	props: ['tactic', 'stagesLength'],
 	data: () => ({
 		edit: false,
 		expand: false,
-		// tactic: ''
 	}),
 	computed: {
 		etapsCount () {
 			return this.declOfNum(this.tactic.stages.length, ['этап', 'этапа', 'этапов']);
 		}
 	},
-	wath: {
-		tactic: {
-			handler(val){
-				if(!tactic.stages.length)
-					this.expand = false;
-			},
-			deep: true
+	watch: {
+		stagesLength (val) {
+			if(val == 0)
+				this.expand = false;
 		}
 	},
 	methods: {
 		declOfNum(n, titles) {
 			return n + ' ' + titles[(n % 10 === 1 && n % 100 !== 11) ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2]
 		},
+		saveTactic () {
+			try {
+				let savedTactics = JSON.parse(localStorage.getItem('userTactics'));
+				if(savedTactics == null)
+				{
+					localStorage.setItem('userTactics', JSON.stringify(savedTactics));
+					savedTactics = {};
+				}
+
+				const hash = this.hashObject({...this.tactic});
+
+				if(typeof savedTactics[hash] == 'undefined')
+				{
+					savedTactics[hash] = this.tactic;
+					localStorage.setItem('userTactics', JSON.stringify(savedTactics));
+				}
+				this.$emit('tacticSaved', true);
+			} catch (error) {
+				this.$emit('tacticSaved', false);
+			}
+		},
+		close() {
+			this.expand = false;
+		},
+		hashObject(object) {
+			const objectString = JSON.stringify(object);
+
+			let hash = 0, i, chr;
+			if (objectString.length === 0) return hash;
+
+			for (i = 0; i < objectString.length; i++) {
+				chr   = objectString.charCodeAt(i);
+				hash  = ((hash << 5) - hash) + chr;
+				hash |= 0; // Convert to 32bit integer
+			}
+
+			if(hash < 0) hash *= -1;
+
+ 			return hash;
+		}
 	},
 	created () {
 		// this.tactic = this.newTacti
