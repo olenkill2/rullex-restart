@@ -35,7 +35,8 @@ export default new Vuex.Store({
 			current: 'FirstScreen',
 			history: [],
 		},
-		currentRoulette: {}
+		currentRoulette: {},
+		userSavedTactics: [],
 	},
 	mutations: {
 		updateExpand (state, expanded) {
@@ -59,23 +60,50 @@ export default new Vuex.Store({
 		updateBalanceMinus(state, balanceMinus) {
 			state.balanceMinus = balanceMinus;
 		},
-		setRoute(state, route) {
+		setRoute(state, route, params) {
 			state.router.history.push(state.router.current);
 			state.router.current = route;
+			console.log(params);
+
+			if (typeof params != 'undefined') {
+				state.router.params = params;
+			}
 		},
 		updateLoadState(state, loaded) {
 			state.loaded = loaded;
 			if(!loaded)
 				state.loadStatus = 'Пиздец! Тут все сломалось(';
 		},
-		setCurrentRoulette(state, roulette) {
+		setCurrentRoulette(state, roulette, params) {
 			state.currentRoulette = roulette;
-		}
+		},
 	},
 	actions: {
 		routerBack ({state}, route) {
 			state.router.current = state.router.history[state.router.history.length - 1];
 			state.router.history.splice(-1, 1);
+		},
+		getUserSavedTactics ({state}) {
+			let savedTactics = JSON.parse(localStorage.getItem('userTactics'));
+
+			if(savedTactics == null)
+			{
+				savedTactics = {};
+				localStorage.setItem('userTactics', JSON.stringify(savedTactics));
+				state.userSavedTactics = [];
+				return false;
+			}
+
+			if(typeof savedTactics[state.currentRoulette.name] == 'undefined')
+			{
+				return false
+			}
+
+			for (const tactic in savedTactics[state.currentRoulette.name]) {
+				const userTactic =  savedTactics[state.currentRoulette.name][tactic];
+				state.userSavedTactics.push(userTactic)
+			}
+			// console.log('savedTactics');
 		}
 	}
 })

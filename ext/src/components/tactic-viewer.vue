@@ -1,6 +1,6 @@
 <template lang="pug">
-transition
-	.tv(v-if="tactic.stages.length", :class="{'tv_expand': expand}", v-click-outside="close")
+
+	.tv(:class="{'tv_expand': expand}", v-click-outside="close")
 		.tv-layout
 		.tv-header(:class="{'tv-header_expand': expand}")
 			.tv-header__left
@@ -24,10 +24,10 @@ transition
 		.tv-body
 			.tv-stages
 				transition-group(name="list", tag="div")
-					.tv-stages-item(v-for="(stage, index) of tactic.stages", :key="JSON.stringify(stage)")
+					.tv-stages-item(v-for="(stage, key) of tactic.stages", :key="key")
 						.tv-stages-item__top
 							.tv-stages-item__number
-								|{{index + 1}}
+								|{{key + 1}}
 							.tv-stages-item__data
 								.tv-stages-item__data-row(v-for="(item, index) of stage")
 									|{{tactic.labels[index]}}:
@@ -56,7 +56,11 @@ export default {
 	watch: {
 		stagesLength (val) {
 			if(val == 0)
-				this.expand = false;
+			{
+				setTimeout(() => {
+					this.expand = false;
+				}, 300);
+			}
 		}
 	},
 	methods: {
@@ -66,6 +70,7 @@ export default {
 		saveTactic () {
 			try {
 				let savedTactics = JSON.parse(localStorage.getItem('userTactics'));
+
 				if(savedTactics == null)
 				{
 					localStorage.setItem('userTactics', JSON.stringify(savedTactics));
@@ -76,11 +81,16 @@ export default {
 
 				if(typeof savedTactics[hash] == 'undefined')
 				{
-					savedTactics[hash] = this.tactic;
+					if(typeof savedTactics[this.$store.state.currentRoulette.name] == 'undefined')
+						savedTactics[this.$store.state.currentRoulette.name] = {};
+
+					savedTactics[this.$store.state.currentRoulette.name][hash] = this.tactic;
 					localStorage.setItem('userTactics', JSON.stringify(savedTactics));
 				}
+
 				this.$emit('tacticSaved', true);
 			} catch (error) {
+				console.log('какая-то хуйня');
 				this.$emit('tacticSaved', false);
 			}
 		},
@@ -89,19 +99,17 @@ export default {
 		},
 		hashObject(object) {
 			const objectString = JSON.stringify(object);
-
 			let hash = 0, i, chr;
+
 			if (objectString.length === 0) return hash;
 
 			for (i = 0; i < objectString.length; i++) {
 				chr   = objectString.charCodeAt(i);
 				hash  = ((hash << 5) - hash) + chr;
-				hash |= 0; // Convert to 32bit integer
+				hash |= 0;
 			}
 
-			if(hash < 0) hash *= -1;
-
- 			return hash;
+ 			return Math.abs(hash);
 		}
 	},
 	created () {
@@ -111,8 +119,7 @@ export default {
 </script>
 <style lang="scss">
 	.list-enter-active, .list-leave-active {
-		transition: all 3s;
-		// background-color: red;
+		transition: all 0.3s;
 	}
 	.list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
 		opacity: 0;

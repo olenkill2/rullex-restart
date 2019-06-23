@@ -13,7 +13,7 @@
 				p И что ты собираешься ставить? <br> Даже {{$store.state.minBet}} {{$store.state.currency}} нет (
 				p Можешь получить бонус по коду <span class="code">*код*</span>
 				p.freebie-wr <a href="#" class="freebie-link">Больше халявы здесь</a>
-		.first-wr(v-if="$store.state.stateName == 'ready'")
+		.first-wr(v-if="$store.state.stateName == 'ready' && !$store.state.userSavedTactics.length")
 			.first__content
 				h2.first__header
 					|Пора начинать
@@ -22,6 +22,18 @@
 			.first-screen-actions-wr
 				button.btn.btn_add-tactic(@click="$store.commit('setRoute', 'tactics')")
 					|Создать тактику
+		.first-wr(v-if="$store.state.stateName == 'ready' && $store.state.userSavedTactics.length")
+			.first__content
+				h2.first__header
+					|Пора начинать
+				p Выберу одну из своих тактик или создай новый "Насос бабла 3 000"!
+				p <a href="#">Детальная инструкция</a>
+			.first-screen-actions-wr.first-screen-actions-wr_tactics
+				button.btn.btn_add-tactic(@click="$store.commit('setRoute', 'tactics')")
+					|Создать тактику
+				button.btn.btn_add-tactic.btn_accent(@click="$store.commit('setRoute', 'tactics', 'tacticSaved')")
+					|Выбрать тактику
+
 </template>
 <script>
 export default {
@@ -71,9 +83,23 @@ export default {
 	.first-screen-actions-wr
 	{
 		padding-top: 24px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 	.btn_add-tactic
 	{
 		width: 100%;
+	}
+	.first-screen-actions-wr_tactics
+	{
+		.btn_add-tactic
+		{
+			flex-basis: 47%;
+			font-size: 12px;
+			padding-left: 0;
+			padding-right: 0;
+			min-width: auto;
+		}
 	}
 </style>

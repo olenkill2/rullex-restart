@@ -21,7 +21,7 @@
 
 					dropdown(v-if="field.component == 'dropdown'", :ref="field.model" :list="field.dropDownList", v-model="currentModeScheme[currentMode][field.model]", :label="field.name")
 
-		.etap-form-actions(v-if="!editingStage")
+		.etap-form-actions(v-if="!editingStage && !load")
 				button.btn.btn_red.etap-form-actions__clear(@click="clearForm", :disabled="!formNotClear")
 					|Очистить
 
@@ -33,8 +33,8 @@
 
 			button.btn.etap-form-actions__add(@click="saveStage", :disabled="isFormInValid")
 				|Сохранить
-
-		tactcViewer(:tactic="newTactic[currentMode]", @remove="removeStage", @edit="editStage", :stagesLength="currentTacticStagesLength", @tacticSaved="tacticSaved")
+		transition(name="slide-up")
+			tactcViewer(v-if="currentTacticStagesLength", :tactic="newTactic[currentMode]", @remove="removeStage", @edit="editStage", :stagesLength="currentTacticStagesLength", @tacticSaved="tacticSaved")
 
 </template>
 <script>
@@ -138,7 +138,7 @@ export default {
 			this.editingStage = true;
 			this.currentModeScheme[this.currentMode] = this.newTactic[this.currentMode].stages[index];
 			this.editingStageIndex = index;
-			console.log(this.$validator);
+
 			this.$nextTick().then(() => {
 				this.$validator.validate();
 			});
@@ -156,8 +156,12 @@ export default {
 		},
 		tacticSaved (saveResult)
 		{
-			console.log(saveResult);
-
+			if(saveResult)
+			{
+				console.log('all clear');
+				this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
+				this.clearForm();
+			}
 		}
 	},
 	created: function (params) {
@@ -174,9 +178,17 @@ export default {
 }
 </script>
 <style lang="scss">
+.slide-up-enter-active, .slide-up-leave-active
+{
+	transition: all 0.3s;
+	transform: translateY(-34px);
+}
+.slide-up-enter, .slide-up-leave-to
+{
+	transform: translateY(0);
+}
 .tactic-add-wr
 {
-	// position: relative;
 	padding-bottom: 70px;
 }
 .tactic-add-top-actions

@@ -8,7 +8,7 @@
 				@click="currentTabId = index",
 				:key="index",
 				:class="{'tabs-nav__item_active': currentTabId == index}")
-				|{{tab.name}}
+				|{{tab.name}} <span v-if="tab.customName()">{{tab.customName()}}</span>
 
 		.tabs-container
 			.tab(v-for="(tab, index) in tabs", :key="index", v-show="currentTabId == index")
@@ -30,15 +30,30 @@ export default {
 		tabs: [
 			{
 				name: 'Новая',
-				component: 'tacticAdd'
+				component: 'tacticAdd',
+				customName: () => {
+					return '';
+				}
 			},
 			{
 				name: 'Сохраненные',
-				component: 'tacticSaved'
+				component: 'tacticSaved',
+				customName: () => {
+					let savedTactics = JSON.parse(localStorage.getItem('userTactics'));
+					if(savedTactics == null)
+					{
+						return 'false';
+					}
+
+					console.log(savedTactics);
+				}
 			},
 			{
 				name: 'Импорт',
-				component: 'tacticImport'
+				component: 'tacticImport',
+				customName: () => {
+					return '';
+				}
 			},
 		],
 		currentTabId: 0
@@ -53,7 +68,7 @@ export default {
 
 	},
 	mounted () {
-		// console.log(this.axios.get(''));
+		// console.log(this.$store.state.router);
 
 	}
 }

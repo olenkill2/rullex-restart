@@ -28,7 +28,7 @@ export default {
 	}),
 	mounted () {
 	},
-	created: async function() {
+	async created () {
 		// () => {return function() { ++this.result}}
 		try {
 			const res = await this.axios.get('/public/roulette/' + window.location.host);
@@ -67,6 +67,8 @@ export default {
 			this.$store.commit('updateBalanceMinus', false);
 			this.$store.commit('updateStateMessage', 'Готов к работе');
 		}
+
+		this.$store.dispatch('getUserSavedTactics');
 	}
 }
 </script>
