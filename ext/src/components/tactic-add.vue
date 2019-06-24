@@ -27,12 +27,14 @@
 
 				button.btn.etap-form-actions__add(@click="addNewStage", :disabled="isFormInValid")
 					|Добавить этап
+
 		.etap-form-actions(v-else-if="editingStage")
 			button.btn.btn_skin.etap-form-actions__clear(@click="clearForm", :disabled="!formNotClear")
 				|Отменить
 
 			button.btn.etap-form-actions__add(@click="saveStage", :disabled="isFormInValid")
 				|Сохранить
+
 		transition(name="slide-up")
 			tactcViewer(v-if="currentTacticStagesLength", :tactic="newTactic[currentMode]", @remove="removeStage", @edit="editStage", :stagesLength="currentTacticStagesLength", @tacticSaved="tacticSaved")
 
@@ -144,8 +146,9 @@ export default {
 			});
 		},
 		saveStage () {
-			this.editingStage = false;
 			this.newTactic[this.currentMode].stages[this.editingStageIndex] = {...this.currentModeScheme[this.currentMode]};
+			this.editingStage = false;
+			this.editingStageIndex = false;
 			this.clearForm();
 		},
 		clearForm () {
@@ -156,12 +159,13 @@ export default {
 		},
 		tacticSaved (saveResult)
 		{
-			if(saveResult)
-			{
-				console.log('all clear');
-				this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
-				this.clearForm();
-			}
+			if(!saveResult) return false;
+
+			this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
+			this.editingStage = false;
+			this.editingStageIndex = false;
+			this.$store.dispatch('getUserSavedTactics');
+			this.clearForm();
 		}
 	},
 	created: function (params) {

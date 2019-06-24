@@ -8,12 +8,11 @@
 				@click="currentTabId = index",
 				:key="index",
 				:class="{'tabs-nav__item_active': currentTabId == index}")
-				|{{tab.name}} <span v-if="tab.customName()">{{tab.customName()}}</span>
+				|{{tab.name}} <span v-if="tab.component == 'tacticSaved' && savedTacticsCount">({{savedTacticsCount}})</span>
 
 		.tabs-container
 			.tab(v-for="(tab, index) in tabs", :key="index", v-show="currentTabId == index")
-				transition(name="fade", tag="div", mode="out-in")
-					component(:is="tab.component")
+				component(:is="tab.component")
 </template>
 <script>
 import tacticAdd from '@/components/tactic-add.vue';
@@ -31,29 +30,14 @@ export default {
 			{
 				name: 'Новая',
 				component: 'tacticAdd',
-				customName: () => {
-					return '';
-				}
 			},
 			{
 				name: 'Сохраненные',
 				component: 'tacticSaved',
-				customName: () => {
-					let savedTactics = JSON.parse(localStorage.getItem('userTactics'));
-					if(savedTactics == null)
-					{
-						return 'false';
-					}
-
-					console.log(savedTactics);
-				}
 			},
 			{
 				name: 'Импорт',
 				component: 'tacticImport',
-				customName: () => {
-					return '';
-				}
 			},
 		],
 		currentTabId: 0
@@ -62,14 +46,27 @@ export default {
 	computed: {
 		currentTab () {
 			return this.tabs[this.currentTabId].component;
+		},
+		savedTacticsCount () {
+			return this.$store.state.userSavedTactics.length;
 		}
 	},
 	methods: {
 
 	},
 	mounted () {
-		// console.log(this.$store.state.router);
+		const query = this.$store.state.router;
+		if(typeof query.params != 'undefined' && query.params.query === 'open-tab')
+		{
+			this.tabs.map((tab, index) => {
+				if(tab.component == query.params.value)
+				{
+					this.currentTabId = index;
 
+				}
+				console.log(tab, index);
+			 })
+		}
 	}
 }
 </script>

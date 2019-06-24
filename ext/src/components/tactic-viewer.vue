@@ -36,9 +36,9 @@
 
 						.tv-stages-actions
 							//- добавить confirm
-							button.btn-str.btn-str_remove(@click="$emit('remove', index)")
+							button.btn-str.btn-str_remove(@click="$emit('remove', key)")
 								|Удалить
-							button.btn-str(@click="$emit('edit', index); expand = false")
+							button.btn-str(@click="$emit('edit', key); expand = false")
 								|Изменить
 </template>
 <script>

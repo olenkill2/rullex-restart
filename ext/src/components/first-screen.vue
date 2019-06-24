@@ -20,7 +20,7 @@
 				p Для работы нужны тактики игр <br>Их можно создать самому или взять тактики других пользователей
 				p <a href="#">Детальная инструкция</a>
 			.first-screen-actions-wr
-				button.btn.btn_add-tactic(@click="$store.commit('setRoute', 'tactics')")
+				button.btn.btn_add-tactic(@click="$store.commit('setRoute', {route: 'tactics'})")
 					|Создать тактику
 		.first-wr(v-if="$store.state.stateName == 'ready' && $store.state.userSavedTactics.length")
 			.first__content
@@ -29,18 +29,23 @@
 				p Выберу одну из своих тактик или создай новый "Насос бабла 3 000"!
 				p <a href="#">Детальная инструкция</a>
 			.first-screen-actions-wr.first-screen-actions-wr_tactics
-				button.btn.btn_add-tactic(@click="$store.commit('setRoute', 'tactics')")
+				button.btn.btn_add-tactic(@click="$store.commit('setRoute', {route: 'tactics'})")
 					|Создать тактику
-				button.btn.btn_add-tactic.btn_accent(@click="$store.commit('setRoute', 'tactics', 'tacticSaved')")
+				button.btn.btn_add-tactic.btn_accent(@click="$store.commit('setRoute', {route: 'tactics', params: {query: 'open-tab', value: 'tacticSaved'}})")
 					|Выбрать тактику
 
 </template>
 <script>
+import dayjs from 'dayjs'
 export default {
 	name: 'first-screen',
 	data: () => ({
 	}),
 	methods: {
+	},
+	mounted () {
+		console.log(dayjs().format('HH:MM DD.MM.YYYY'));
+
 	}
 }
 </script>
