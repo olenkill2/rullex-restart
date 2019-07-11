@@ -49,7 +49,7 @@
 	import realStat from '~/components/real-stat.vue';
 	export default {
 		async asyncData ({$axtion}) {
-
+			console.log('alah alah');
 		},
 		components: {
 			realStat

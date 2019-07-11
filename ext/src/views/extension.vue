@@ -29,7 +29,6 @@ export default {
 	mounted () {
 	},
 	async created () {
-		// () => {return function() { ++this.result}}
 		try {
 			const res = await this.axios.get('/public/roulette/' + window.location.host);
 			const roulette = res.data.data;
@@ -38,11 +37,11 @@ export default {
 			this.$store.commit('updateLoadState', true);
 			this.$store.commit('setCurrentRoulette', roulette);
 		} catch (error) {
-			console.log(error);
-
 			this.$store.commit('updateLoadState', false);
 			return false;
 		}
+		// console.log(a);
+
 
 		const userAuth = this.authCheckFunction();
 		const userBalance = this.getBalanceFunction();
@@ -69,6 +68,7 @@ export default {
 		}
 
 		this.$store.dispatch('getUserSavedTactics');
+
 	}
 }
 </script>

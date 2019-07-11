@@ -48,7 +48,7 @@ export default {
 			return this.tabs[this.currentTabId].component;
 		},
 		savedTacticsCount () {
-			return this.$store.state.userSavedTactics.length;
+			return this.$store.state.userSavedTacticsCount;
 		}
 	},
 	methods: {

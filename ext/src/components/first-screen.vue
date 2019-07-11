@@ -13,7 +13,7 @@
 				p И что ты собираешься ставить? <br> Даже {{$store.state.minBet}} {{$store.state.currency}} нет (
 				p Можешь получить бонус по коду <span class="code">*код*</span>
 				p.freebie-wr <a href="#" class="freebie-link">Больше халявы здесь</a>
-		.first-wr(v-if="$store.state.stateName == 'ready' && !$store.state.userSavedTactics.length")
+		.first-wr(v-if="$store.state.stateName == 'ready' && !$store.state.userSavedTacticsCount")
 			.first__content
 				h2.first__header
 					|Пора начинать
@@ -22,7 +22,7 @@
 			.first-screen-actions-wr
 				button.btn.btn_add-tactic(@click="$store.commit('setRoute', {route: 'tactics'})")
 					|Создать тактику
-		.first-wr(v-if="$store.state.stateName == 'ready' && $store.state.userSavedTactics.length")
+		.first-wr(v-if="$store.state.stateName == 'ready' && $store.state.userSavedTacticsCount")
 			.first__content
 				h2.first__header
 					|Пора начинать
@@ -36,7 +36,8 @@
 
 </template>
 <script>
-import dayjs from 'dayjs'
+// import dayjs from 'dayjs';
+// import 'dayjs/locale/ru'
 export default {
 	name: 'first-screen',
 	data: () => ({
@@ -44,8 +45,6 @@ export default {
 	methods: {
 	},
 	mounted () {
-		console.log(dayjs().format('HH:MM DD.MM.YYYY'));
-
 	}
 }
 </script>

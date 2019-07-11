@@ -35,8 +35,12 @@ export default new Vuex.Store({
 			current: 'FirstScreen',
 			history: [],
 		},
+		// текущая рулетка и данные для нее
 		currentRoulette: {},
-		userSavedTactics: [],
+		// сохраненные тактики пользователя
+		userSavedTactics: {},
+		// количество тактик для текущей рулетки
+		userSavedTacticsCount: 0,
 	},
 	mutations: {
 		updateExpand (state, expanded) {
@@ -84,23 +88,26 @@ export default new Vuex.Store({
 			state.router.history.splice(-1, 1);
 		},
 		getUserSavedTactics ({state}) {
-			let savedTactics = JSON.parse(localStorage.getItem('userTactics'));
+			state.userSavedTactics = {};
 
+			let savedTactics = JSON.parse(localStorage.getItem('userTactics'));
+			console.log(savedTactics);
 			if(savedTactics == null) {
 				savedTactics = {};
 				localStorage.setItem('userTactics', JSON.stringify(savedTactics));
-				state.userSavedTactics = [];
+				state.userSavedTactics = {};
 				return false;
 			}
 
 			if(typeof savedTactics[state.currentRoulette.name] == 'undefined') return false
 
-			state.userSavedTactics = [];
-
+			let tacticsCount = 0;
 			for (const tactic in savedTactics[state.currentRoulette.name]) {
-				const userTactic =  savedTactics[state.currentRoulette.name][tactic];
-				state.userSavedTactics.push(userTactic)
+				const userTactic = savedTactics[state.currentRoulette.name][tactic];
+				state.userSavedTactics[tactic] = userTactic;
+				tacticsCount++;
 			}
+			state.userSavedTacticsCount = tacticsCount;
 		}
 	}
 })
