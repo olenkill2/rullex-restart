@@ -1,22 +1,22 @@
 <template lang="pug">
 	.header__center
-		.header-stat-wr
-			.header-stat-item
-				|Установок
-				span.header-stat-item__value
-					|432
-			.header-stat-item
-				|Играют
-				span.header-stat-item__value
-					|432
-			.header-stat-item
-				|Ставок
-				span.header-stat-item__value
-					|432
-			.header-stat-item
-				|Выиграли
-				span.header-stat-item__value
-					|432
+		//- .header-stat-wr
+		//- 	.header-stat-item
+		//- 		|Установок
+		//- 		span.header-stat-item__value
+		//- 			|432
+		//- 	.header-stat-item
+		//- 		|Играют
+		//- 		span.header-stat-item__value
+		//- 			|432
+		//- 	.header-stat-item
+		//- 		|Ставок
+		//- 		span.header-stat-item__value
+		//- 			|432
+		//- 	.header-stat-item
+		//- 		|Выиграли
+		//- 		span.header-stat-item__value
+		//- 			|432
 </template>
 <script>
 export default {

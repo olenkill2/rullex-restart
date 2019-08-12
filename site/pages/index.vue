@@ -1,6 +1,6 @@
 <template lang="pug">
 	div.page-content
-		|lorem
+		| Тут описание проекта
 </template>
 
 <script>

@@ -5,6 +5,10 @@ const {JWT_auth} = require('../passport');
 
 module.exports = function(app, db)
 {
+	app.post('/testing', (req, res) => {
+		console.log(req.body);
+		res.status(200).json({success: true})
+	});
 	app.post('/posts', JWT_auth, isAdmin, validateBody(schemas.post), post.add);
 	app.put('/posts/:id', JWT_auth, isAdmin, validateBody(schemas.post), isAdmin, post.update);
 	app.delete('/posts/:id', JWT_auth, isAdmin, post.delete);

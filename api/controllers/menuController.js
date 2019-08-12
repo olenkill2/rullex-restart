@@ -31,6 +31,13 @@ module.exports =
 
 		res.status(200).json({data: result});
 	},
+	getPublic: async(req, res) => {
+		const result = await Menu.find({private: false}).populate('category');
+
+		if(!result) return res.status(404).json({error: 'Not found'});
+
+		res.status(200).json({data: result});
+	},
 	update: async(req, res) => {
 		const updatedLink = req.body.link;
 

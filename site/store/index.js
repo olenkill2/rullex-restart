@@ -8,7 +8,9 @@ export const mutations = {
 	}
 }
 export const actions = {
-	async nuxtServerInit({ commit }, { req }) {
+	async nuxtServerInit({ commit, dispatch }, { req }) {
+		dispatch('menu/getMenu');
+
 		if (req.headers.cookie) {
 
 			const parsed = cookieparser.parse(req.headers.cookie);
@@ -20,7 +22,7 @@ export const actions = {
 					let res = await this.$axios.post('http://127.0.0.1:3002/signin-token');
 					await commit('user/setAuth', res.data)
 				} catch (error) {
-					console.log('error');
+					console.log(error);
 				}
 			}
 		}

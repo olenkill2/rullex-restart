@@ -9,7 +9,7 @@
 				return { pageData: result.data.data }
 			}).catch((error) => {
 				redirect('/404');
-			})
+			});
 		},
 		head () {
 			return {
