@@ -9,7 +9,7 @@ export const mutations = {
 }
 export const actions = {
 	async nuxtServerInit({ commit, dispatch }, { req }) {
-		dispatch('menu/getMenu');
+		await dispatch('menu/getMenu');
 
 		if (req.headers.cookie) {
 

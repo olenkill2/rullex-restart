@@ -1,12 +1,19 @@
 {
   "libs": [
-    "browser"
+    "browser",
+    "ecmascript",
+    "vue",
+    "nuxt"
   ],
   "plugins": {
      "node": {},
      "modules": {},
-     "requirejs": {},
+     "webpack": {},
      "es_modules": {},
-     "jasmine": {}
+     "jasmine": {},
+      "requirejs": {
+        "baseURL": "./",
+        "paths": {}
+      }
   }
 }

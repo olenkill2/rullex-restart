@@ -4,7 +4,6 @@ module.exports =
 {
 	add: async(req, res) => {
 		const post = req.body;
-
 		const result = await Post.findOne({ 'url': post.url })
 
 		if(result)

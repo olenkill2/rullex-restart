@@ -1,11 +1,13 @@
 <template lang="pug">
-	.checkbox-wr
+	label.checkbox-wr
 		input.checkbox(
 			@change="updateSelf($emit('input', $event.target.checked))",
 			:checked="name"
 			type="checkbox"
 			:class="{'checked': name != false}")
+		.checkbox-box
 		.checkbox-label
+			|{{label}}
 </template>
 <script>
 export default {
@@ -17,7 +19,6 @@ export default {
 	}),
 	methods: {
 		updateSelf(name) {
-			;
 		}
 	}
 }
@@ -27,18 +28,19 @@ export default {
 	.checkbox-wr
 	{
 		position: relative;
-		display: inline-block;
+		display: flex;
+		align-items: center;
 	}
 	.checkbox
 	{
 		display: none;
-		&:checked ~ .checkbox-label
+		&:checked ~ .checkbox-box
 		{
 			border-color: $main;
 			background-size: 12px;
 		}
 	}
-	.checkbox-label
+	.checkbox-box
 	{
 		width: 20px;
 		height: 20px;
@@ -50,5 +52,12 @@ export default {
 		background-position: center;
 		background-size: 0;
 		background-repeat: no-repeat;
+	}
+	.checkbox-label
+	{
+		margin-left: 8px;
+		line-height: 16px;
+		color: $main;
+		font-size: 16px;
 	}
 </style>

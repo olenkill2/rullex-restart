@@ -4,6 +4,7 @@ export const state = () => ({
 
 export const mutations = {
 	setMenu(state, menu) {
+		console.log(menu);
 		state.items = menu;
 	},
 }
@@ -28,7 +29,7 @@ export const actions = {
 				}
 			}
 
-			await commit('setMenu', menuArray);
+			commit('setMenu', menuArray);
 		} catch (error) {
 			console.log(error);
 		}

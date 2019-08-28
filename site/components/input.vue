@@ -31,7 +31,7 @@ export default {
 	.input-wr
 	{
 		position: relative;
-		padding-top: 12px;
+		padding-top: 10px;
 	}
 	.input
 	{
@@ -62,7 +62,7 @@ export default {
 		& ~ .input-label
 		{
 			font-size: 12px;
-			top: -3px;
+			top: -2px;
 			color: $accent;
 		}
 	}

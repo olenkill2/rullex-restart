@@ -46,7 +46,20 @@ module.exports =
 		const token = signToken(req.user);
 		res.status(200).json({ token, role: req.user.role });
 	},
-	// авторизация по мылу и паролю
+	// авторизация через гугл
+	oauthGoogle: async(req, res) =>
+	{
+		const token = signToken(req.user);
+		res.status(200).json({ token, role: req.user.role });
+		// res.status(200).json({alah: req.user.google.id})
+	},
+	// авторизация через гугл
+	oauthVk: async(req, res) =>
+	{
+		console.log(req);
+		res.status(200).json({alah: req})
+	},
+	// получение роли пользоваетля
 	getUserInfo: async(req, res) =>
 	{
 		const token = signToken(req.user);

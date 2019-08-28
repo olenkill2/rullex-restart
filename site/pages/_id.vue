@@ -4,11 +4,11 @@
 
 <script>
 	export default {
-		asyncData ({$axios, redirect, res, route}) {
+		asyncData ({$axios, redirect, res, route, error}) {
 			return $axios.get('http://127.0.0.1:3002/posts' + route.params.id).then((result, error) => {
 				return { pageData: result.data.data }
-			}).catch((error) => {
-				redirect('/404');
+			}).catch((err) => {
+				error({ statusCode: 404, message: 'Post not found' })
 			});
 		},
 		head () {
