@@ -39,7 +39,7 @@ module.exports =
 		res.status(200).json({data: result});
 	},
 	update: async(req, res) => {
-		const updatedLink = req.body.link;
+		const updatedLink = req.body;
 
 		if(typeof updatedLink.category == 'undefined')
 			updatedLink.category = null;

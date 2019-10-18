@@ -1,7 +1,10 @@
 <template lang="pug">
 	div.main-auth
 		button.btn-login-activator(@click="open")
-			|Войти в личный кабинет
+			.btn-login-activator__text
+				|Войти в личный кабинет
+			.btn-login-activator__icon
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 612 612" fill="#292F44"><path d="M331.685 425.378c-7.478 7.479-7.478 19.584 0 27.043 7.479 7.478 19.584 7.478 27.043 0l131.943-131.962c3.979-3.979 5.681-9.276 5.412-14.479.269-5.221-1.434-10.499-5.412-14.477L358.728 159.56c-7.459-7.478-19.584-7.478-27.043 0-7.478 7.478-7.478 19.584 0 27.042l100.272 100.272H19.125C8.568 286.875 0 295.443 0 306s8.568 19.125 19.125 19.125h412.832L331.685 425.378zM535.5 38.25H153c-42.247 0-76.5 34.253-76.5 76.5v76.5h38.25v-76.5c0-21.114 17.117-38.25 38.25-38.25h382.5c21.133 0 38.25 17.136 38.25 38.25v382.5c0 21.114-17.117 38.25-38.25 38.25H153c-21.133 0-38.25-17.117-38.25-38.25v-76.5H76.5v76.5c0 42.247 34.253 76.5 76.5 76.5h382.5c42.247 0 76.5-34.253 76.5-76.5v-382.5c0-42.247-34.253-76.5-76.5-76.5z"/></svg>
 
 		.auth-popover-wr(:class="{'auth-popover-wr_opened': opened}" v-if="opened" v-click-outside="close")
 			.auth-popover-tab(v-if="activeTab == 'signIn'")
@@ -233,5 +236,26 @@ export default {
 		font-size: 14px;
 		white-space: nowrap;
 		padding-right: 0;
+	}
+	.btn-login-activator__icon
+	{
+		display: none;
+	}
+
+	@media (max-width: $mobile)
+	{
+		.main-auth
+		{
+			flex: 1;
+		}
+		.btn-login-activator__text
+		{
+			display: none;
+		}
+		.btn-login-activator__icon
+		{
+			line-height: 0;
+			display: block;
+		}
 	}
 </style>

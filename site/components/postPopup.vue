@@ -87,7 +87,7 @@ export default {
 		},
 		updateItem () {
 			this.postData.content = this.$refs.editor.invoke('getHtml');
-			this.$axios.put('/api/posts', {post: this.postData}).then((result, error) => {
+			this.$axios.put('/api/posts/' + this.postData._id, this.postData).then((result, error) => {
 				this.$emit('update');
 				this.close();
 			}).catch((error) => {

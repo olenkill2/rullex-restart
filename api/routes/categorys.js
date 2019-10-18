@@ -7,5 +7,5 @@ const {JWT_auth} = require('../passport');
 module.exports = function(app, db)
 {
 	app.post('/categorys', JWT_auth, isAdmin, validateBody(schemas.category), category.add);
-	app.get('/categorys', JWT_auth, isAdmin, validateBody(schemas.category), category.get);
+	app.get('/categorys', JWT_auth, isAdmin, category.get);
 }

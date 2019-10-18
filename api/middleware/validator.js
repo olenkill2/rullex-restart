@@ -3,6 +3,7 @@ const Joi = require('joi');
 module.exports = {
 	validateBody: (schema) => {
 		return (req, res, next) => {
+			console.log(req.body);
 			const result = Joi.validate(req.body, schema);
 
 			if(result.error)
@@ -24,12 +25,12 @@ module.exports = {
 		}).options({ allowUnknown: true }),
 
 		post: Joi.object().keys({
-			category: Joi.string().required(),
+			category: Joi.required(),
 			name: Joi.string().required().min(3).max(512),
-			url: Joi.string().required().min(3).max(512),
+			url: Joi.string().required().min(1).max(512),
 			title: Joi.string().required().min(3).max(512),
 			description: Joi.string().required().min(3).max(512),
-			content: Joi.string().required(),
+			// content: Joi.string().required(),
 			private: Joi.boolean().required(),
 		}).options({ allowUnknown: true }),
 
@@ -50,10 +51,10 @@ module.exports = {
 		}).options({ allowUnknown: true }),
 
 		menu: Joi.object().keys({
-			name: Joi.string().required().min(3).max(512),
-			url: Joi.string().required().min(3).max(2024),
+			name: Joi.string().required(),
+			url: Joi.string().required().min(1).max(2024),
 			order: Joi.number().required().min(0),
-			category: Joi.string().required(),
+			// category: Joi.string().required(),
 			private: Joi.boolean().required(),
 		}).options({ allowUnknown: true }),
 	}

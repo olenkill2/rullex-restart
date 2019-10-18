@@ -22,7 +22,7 @@ module.exports =
 
 		if(!result) return res.status(404).json({error: 'Not found'})
 
-		res.status(200).json({data});
+		res.status(200).json(result);
 	},
 	update: async(req, res) => {
 		console.log('update');

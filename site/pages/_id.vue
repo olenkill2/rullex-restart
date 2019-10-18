@@ -5,8 +5,8 @@
 <script>
 	export default {
 		asyncData ({$axios, redirect, res, route, error}) {
-			return $axios.get('http://127.0.0.1:3002/posts' + route.params.id).then((result, error) => {
-				return { pageData: result.data.data }
+			return $axios.get('http://127.0.0.1:3002/post-public/' + route.params.id).then((result, error) => {
+				return { pageData: result.data }
 			}).catch((err) => {
 				error({ statusCode: 404, message: 'Post not found' })
 			});
@@ -27,11 +27,11 @@
 </script>
 
 <style lang="scss">
-	.page-content
-	{
-		padding-top: 30px;
-		padding-left: 25px;
-		padding-right: 20px;
-		padding-bottom: 39px;
-	}
+	// .page-content
+	// {
+	// 	padding-top: 30px;
+	// 	padding-left: 25px;
+	// 	padding-right: 20px;
+	// 	padding-bottom: 39px;
+	// }
 </style>

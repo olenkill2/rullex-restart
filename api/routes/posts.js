@@ -12,7 +12,7 @@ module.exports = function(app, db)
 	app.post('/posts', JWT_auth, isAdmin, validateBody(schemas.post), post.add);
 	app.put('/posts/:id', JWT_auth, isAdmin, validateBody(schemas.post), isAdmin, post.update);
 	app.delete('/posts/:id', JWT_auth, isAdmin, post.delete);
-	app.get('/posts/:id', post.getPost);
 	app.get('/posts', post.getAll);
-	app.get('/page-seo', post.getSeo);
+	app.get('/post-public/:id', post.getPost);
+	app.get('/page-seo/', post.getSeo);
 }

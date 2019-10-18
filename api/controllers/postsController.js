@@ -24,11 +24,11 @@ module.exports =
 
 	getAll: async(req, res, next) => {
 		const result = await Post.find().populate('category', '-created_at').select('-__v');
-		res.status(200).json({data: result});
+		res.status(200).json(result);
 	},
 
 	update: async(req, res) => {
-		const updatedPost = req.body.post;
+		const updatedPost = req.body;
 
 		if(typeof updatedPost.category == 'undefined')
 			updatedPost.category = null;
@@ -37,7 +37,7 @@ module.exports =
 
 		if(!updatedPostData) return res.status(404).json({error: 'Not found'});
 
-		res.status(200).json({data: updatedPostData});
+		res.status(200).json(updatedPostData);
 	},
 
 	delete: async(req, res) => {
@@ -45,21 +45,22 @@ module.exports =
 
 		if(!deletedPost) return res.status(404).json({error: 'Not found'});
 
-		res.status(200).json({data: deletedPost});
+		res.status(200).json(deletedPost);
 	},
 
 	getPost: async(req, res, next) => {
-		if(req.params.id) return res.status(400).json({error: 'чего-то не хватает'});
+		console.log(req.params);
+		if(!req.params.id) return res.status(400).json({error: 'чего-то не хватает'});
 
 		const result = await Post.findOne({'url': '/' + req.params.id});
 
 		if(!result || result.private) return res.status(404).json('error');
 
-		res.status(200).json({data: result});
+		res.status(200).json(result);
 	},
 
 	getSeo: async(req, res) => {
-		const result = await Post.findOne({'url': '/' + req.query.link});
+		const result = await Post.findOne({'url': req.query.link});
 
 		if(!result || result.private) return res.status(404).json('error');
 

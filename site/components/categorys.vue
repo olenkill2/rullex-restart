@@ -44,7 +44,8 @@ export default {
 	methods: {
 		addCategory () {
 			this.$axios.post('/api/categorys', {category: this.category}).then((result, error) => {
-				this.categoryList.push(result.data);
+				console.log(result);
+				this.categoryList = result;
 				this.selectCategory(this.categoryList.length - 1);
 			}).catch((error) => {
 				this.error = true;
@@ -64,7 +65,7 @@ export default {
 			this.category = this.selected.category.category;
 
 		this.$axios.get('/api/categorys').then((result, error) => {
-			this.categoryList = result.data.data;
+			this.categoryList = result.data;
 		}).catch((error) => {
 			this.error = true;
 		});

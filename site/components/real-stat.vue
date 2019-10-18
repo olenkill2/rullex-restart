@@ -46,6 +46,9 @@ export default {
 		flex: 1;
 		margin-left: 4%;
 		margin-right: 4%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		position: relative;
 	}
 	.header-stat-items
@@ -142,6 +145,13 @@ export default {
 		.header-stat-wr
 		{
 			flex-wrap: wrap;
+		}
+	}
+	@media (max-width: $mobile)
+	{
+		.header-stat-wr
+		{
+			display: none;
 		}
 	}
 </style>

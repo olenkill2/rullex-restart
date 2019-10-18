@@ -69,7 +69,7 @@ export default {
 				this.linkData.category = null
 		},
 		updateItem () {
-			this.$axios.put('/api/menu', {link: this.linkData}).then((result, error) => {
+			this.$axios.put('/api/menu', this.linkData).then((result, error) => {
 				this.$emit('update');
 				this.close();
 			}).catch((error) => {

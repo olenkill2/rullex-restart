@@ -8,7 +8,7 @@
 		async asyncData ({$axios, redirect, res, route}) {
 			try
 			{
-				var seo = await $axios('http://127.0.0.1:3002/page-seo', {params: {link: route.path}})
+				var seo = await $axios('http://127.0.0.1:3002/page-seo/', {params: {link: route.path}})
 				return seo.data;
 			} catch(err) {
 				return {

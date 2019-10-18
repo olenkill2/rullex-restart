@@ -44,7 +44,7 @@ export default {
 	},
 	asyncData (req) {
 		return req.$axios.get('http://127.0.0.1:3002/posts').then((result, error) => {
-			return { postList: result.data.data }
+			return { postList: result.data }
 		}).catch((error) => {
 			return { postList: []}
 		})
@@ -68,8 +68,8 @@ export default {
 			this.showPostPopup = true;
 		},
 		updatePosts (newItem) {
-			this.$axios.get('/api/post').then((result, error) => {
-				this.postList = result.data.data;
+			this.$axios.get('/api/posts').then((result, error) => {
+				this.postList = result.data;
 			}).catch((error) => {
 				this.error = true;
 			})
