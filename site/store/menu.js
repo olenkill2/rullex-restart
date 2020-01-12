@@ -12,7 +12,7 @@ export const mutations = {
 export const actions = {
 	async getMenu({ commit }) {
 		try {
-			let res = await this.$axios.get('http://127.0.0.1:3002/menu/public');
+			let res = await this.$axios.get('http://127.0.0.1:3002/api/v1/menu/public');
 			let menuArray = {withoutCategory: {name: 'none', items: []}};
 
 			for(var link of res.data.data)

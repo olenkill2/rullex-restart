@@ -62,8 +62,8 @@ export default {
 	},
 	async asyncData (req) {
 		try {
-			var getLinks = await req.$axios.get('http://127.0.0.1:3002/menu');
-			var getPosts = await req.$axios.get('http://127.0.0.1:3002/posts');
+			var getLinks = await req.$axios.get('/api/menu');
+			var getPosts = await req.$axios.get('/api/posts');
 			return await { navItems: getLinks.data.data, allPosts: getPosts.data.data};
 		} catch (err) {
 			return await { navItems: '', allPosts: ''};
@@ -106,7 +106,6 @@ export default {
 }
 </script>
 <style lang="scss">
-	@import '~/assets/style/variables.scss';
 	.nav-settings-wr
 	{
 		display: flex;

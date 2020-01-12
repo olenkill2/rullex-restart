@@ -8,6 +8,10 @@ const rouletteSchema = new Schema(
 		type: String,
 		required: true
 	},
+	description: {
+		type: String,
+		default: ''
+	},
 	host:
 	{
 		type: String,
@@ -19,31 +23,44 @@ const rouletteSchema = new Schema(
 		type: Boolean,
 		default: true
 	},
-	authValidationRuleFunction:
+	color:
 	{
 		type: String,
-		default: '',
+		required: true,
+		default: '#0492F2'
 	},
-	balanceParseFunction:
+	modes: [{type: Schema.Types.ObjectId, ref: 'Mode'}],
+	supportedModes: [{type: Schema.Types.ObjectId, ref: 'Mode'}],
+	functions:
 	{
-		type: String,
-		default: '',
-	},
-	gameFunctionForMode:
-	[
-		{
-			type: Object,
-			default: {
-				modeName: '',
-				function: '',
-				mode_id: ''
-			}
+		type: Object,
+		default: {
+			authValidationRuleFunction:
+			{
+				type: String,
+				default: '',
+			},
+			balanceParseFunction:
+			{
+				type: String,
+				default: '',
+			},
+			referalChangeFunction:
+			{
+				type: String,
+				default: '',
+			},
+			gameFunctionForMode:
+			[
+				{
+					default: {
+						modeName: '',
+						function: '',
+						mode_id: ''
+					}
+				}
+			],
 		}
-	],
-	referalChangeFunction:
-	{
-		type: String,
-		default: '',
 	},
 	referal:
 	{

@@ -1,27 +1,54 @@
 <template lang="pug">
 	label.checkbox-wr
 		input.checkbox(
-			@change="updateSelf($emit('input', $event.target.checked))",
-			:checked="name"
-			type="checkbox"
-			:class="{'checked': name != false}")
+			@change="change",
+			:name="name",
+			type="checkbox",
+			:checked="isChecked",
+			:class="{'checked': isChecked}")
 		.checkbox-box
 		.checkbox-label
 			|{{label}}
 </template>
 <script>
 export default {
+	name: "checkbox",
 	model: {
-		prop: "name",
+		prop: "checked",
+		event: "change"
 	},
-	props: ["name", "label", "type"],
-	data: () => ({
-	}),
+	props: ["checked", "value", "name", "label"],
+	computed: {
+		isChecked() {
+			if(typeof this.checked != 'boolean')
+				return this.checked.includes(this.value);
+			else
+			{
+				console.log(this.checked);
+				return this.checked;
+			}
+		}
+	},
 	methods: {
-		updateSelf(name) {
+		change(e) {
+			if(typeof this.checked != 'boolean')
+			{
+				const checked = this.checked.slice();
+				const found = checked.indexOf(this.value);
+				if (found !== -1) {
+					checked.splice(found, 1);
+				} else {
+					checked.push(this.value);
+				}
+				this.$emit("change", checked);
+			}
+			else
+			{
+				this.$emit("change", e.target.checked);
+			}
 		}
 	}
-}
+};
 </script>
 <style lang="scss">
 	@import '~/assets/style/variables.scss';
@@ -37,7 +64,7 @@ export default {
 		&:checked ~ .checkbox-box
 		{
 			border-color: $main;
-			background-size: 12px;
+			background-image: url('../assets/icons/check.svg');
 		}
 	}
 	.checkbox-box
@@ -48,9 +75,8 @@ export default {
 		background-color: #fff;
 		cursor: pointer;
 		transition: 0.2s;
-		background-image: url('../assets/icons/check.svg');
+		background-size: 70%;
 		background-position: center;
-		background-size: 0;
 		background-repeat: no-repeat;
 	}
 	.checkbox-label

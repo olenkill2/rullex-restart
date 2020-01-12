@@ -64,7 +64,8 @@
 }
 .checkbox-label-wr
 {
-	display: flex;
+	display: inline-flex;
+	line-height: 0;
 	align-items: center
 }
 .label-text

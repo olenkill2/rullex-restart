@@ -21,18 +21,14 @@
 		"jsonwebtoken": "^8.3.0",
 		"mongoose": "^5.2.8",
 		"morgan": "^1.9.1",
-		"multer": "^1.4.1",
 		"passport": "^0.4.0",
 		"passport-google-plus-token": "^2.1.0",
 		"passport-jwt": "^4.0.0",
 		"passport-local": "^1.0.0",
-		"swagger-jsdoc": "^3.2.9",
-		"swagger-ui-express": "^4.0.2",
 		"winston": "^3.2.1",
 		"winston-mongodb": "^5.0.0"
 	},
 	"devDependencies": {
-		"jest": "^24.8.0",
 		"nodemon": "^1.18.4"
 	}
 }

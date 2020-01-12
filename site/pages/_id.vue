@@ -5,7 +5,7 @@
 <script>
 	export default {
 		asyncData ({$axios, redirect, res, route, error}) {
-			return $axios.get('http://127.0.0.1:3002/post-public/' + route.params.id).then((result, error) => {
+			return $axios.get('/post-public/' + route.params.id).then((result, error) => {
 				return { pageData: result.data }
 			}).catch((err) => {
 				error({ statusCode: 404, message: 'Post not found' })

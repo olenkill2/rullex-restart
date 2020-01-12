@@ -24,7 +24,7 @@ export default {
 		// }
 	},
 	mounted () {
-		this.axios.get('http://localhost:3002/public/roulettes').then((res) => {
+		this.axios.get('/roulettes/public').then((res) => {
 			this.roulette = res.data.data;
 			// this.gameFunctionStr = eval(this.roulette[0].authValidationRuleFunction).call(this);
 		}).catch((err) => {

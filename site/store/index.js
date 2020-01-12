@@ -17,9 +17,9 @@ export const actions = {
 
 			if(parsed.authorization) {
 				const token = parsed.authorization;
-				this.$axios.setHeader('Authorization', token);
+				this.$axios.setHeader('Authorization', 'Bearer ' + token);
 				try {
-					let res = await this.$axios.post('http://127.0.0.1:3002/signin-token');
+					let res = await this.$axios.post('http://127.0.0.1:3002/api/v1/users/signin-token');
 					await commit('user/setAuth', res.data)
 				} catch (error) {
 					console.log(error);

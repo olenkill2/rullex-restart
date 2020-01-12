@@ -51,12 +51,10 @@ module.exports =
 	{
 		const token = signToken(req.user);
 		res.status(200).json({ token, role: req.user.role });
-		// res.status(200).json({alah: req.user.google.id})
 	},
 	// авторизация через гугл
 	oauthVk: async(req, res) =>
 	{
-		console.log(req);
 		res.status(200).json({alah: req})
 	},
 	// получение роли пользоваетля
@@ -64,5 +62,6 @@ module.exports =
 	{
 		const token = signToken(req.user);
 		res.status(200).json({ token, role: req.user.role });
+		// res.status(200).json({'a':1})
 	},
 }

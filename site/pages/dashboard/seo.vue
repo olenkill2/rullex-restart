@@ -1,11 +1,9 @@
 <template lang="pug">
-	div
-		|халява
 </template>
 
 <script>
 export default {
-	name: 'freebie',
+	name: 'seo',
 	layout: 'dashboard',
 	data() {
 		return {

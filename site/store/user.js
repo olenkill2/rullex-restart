@@ -15,7 +15,6 @@ export const mutations = {
 		state.auth = false;
 		state.token = null;
 		state.role = 'user';
-		console.log('this');
 		cookieparser.remove('authorization');
 	}
 }

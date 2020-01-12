@@ -2,12 +2,15 @@
 	.dropdown-wr
 		.dropdown-selected(@click="open = !open")
 			.dropdown-selected__text
-				|{{selectedValue}}
+				slot(name="selected", v-bind:current="selectedValue")
+					|{{selectedValue}}
 			.dropdown-selected__icon(v-if="list.length > 1", :class="{'dropdown-selected__icon_open': open}")
+				<svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.1014.116a.3964.3964 0 00-.5603 0L5.6135 5.053.6763.116a.3965.3965 0 00-.5604 0 .3965.3965 0 000 .5604l5.2078 5.2078A.387.387 0 005.6039 6a.4034.4034 0 00.2802-.116L11.0918.6764a.3882.3882 0 00.0096-.5604z" fill="#62677D"/></svg>
 
 		.dropdown-list(v-if="open", v-click-outside="close")
-			.dropdown-list__item(v-for="(item, index) in list", @click="select(index)", v-if="index != selected")
-				|{{item}}
+				.dropdown-list__item(v-for="(item, index) in list", @click="select(index)", v-show="index != selected")
+					slot(name="items", v-bind:item="item")
+						|{{item}}
 
 		.dropdown-label
 			|{{label}} <span class="dropdown-label__sub">{{labelSubText}}</span>
@@ -23,6 +26,7 @@ export default {
 		select(index) {
 			this.selected = index;
 			this.$emit("input", this.list[index]);
+			this.$emit("select", this.list[index]);
 			this.close();
 		},
 		updateSelf(name) {
@@ -55,19 +59,17 @@ export default {
 	}
 	.dropdown-selected
 	{
-		box-shadow: none;
-		border: none;
 		background-color: transparent;
-		font-size: 16px;
 		border-bottom: 1px solid $accent;
-		left: 0;
-		min-height: 32px;
 		z-index: 1;
 		position: relative;
-		padding-bottom: 3px;
 		font-size: 14px;
-		display: block;
 		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		cursor: pointer;
+		min-height: 32px;
 	}
 	.dropdown-label
 	{
@@ -93,7 +95,7 @@ export default {
 		top: 100%;
 		width: 100%;
 		background-color: #fff;
-		z-index: 9;
+		z-index: 2;
 		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 	}
 	.dropdown-list__item
@@ -103,35 +105,27 @@ export default {
 		text-overflow: ellipsis;
 		font-size: 14px;
 		color: $main;
-		transition: 0.2s;
+		// transition: 0.2s;
 		&:hover
 		{
 			background-color: rgba($main, 0.05);
 			color: $accent;
 		}
 	}
-	.dropdown-selected
-	{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		cursor: pointer;
-	}
 	.dropdown-selected__icon
 	{
-		position: absolute;
-		width: 8px;
-		height: 8px;
-		right: 0;
-		border-right: 1px solid $main;
-		border-bottom: 1px solid $main;
-		transform: rotate(45deg);
-		transform-origin: center;
-		transition: 0.2s;
+		svg
+		{
+			transform-origin: center;
+			transition: transform .24s;
+		}
 	}
 	.dropdown-selected__icon_open
 	{
-		transform: rotate(225deg);
-		margin-top: 4px;
+		svg
+		{
+
+			transform: rotate(180deg);
+		}
 	}
 </style>

@@ -30,7 +30,7 @@ export default {
 	},
 	async created () {
 		try {
-			const res = await this.axios.get('/public/roulette/' + window.location.host);
+			const res = await this.axios.get('/roulettes/public/' + window.location.host);
 			const roulette = res.data.data;
 			this.authCheckFunction = eval(roulette.authValidationRuleFunction).call(this);
 			this.getBalanceFunction = eval(roulette.balanceParseFunction).call(this);
@@ -40,8 +40,6 @@ export default {
 			this.$store.commit('updateLoadState', false);
 			return false;
 		}
-		// console.log(a);
-
 
 		const userAuth = this.authCheckFunction();
 		const userBalance = this.getBalanceFunction();
@@ -59,8 +57,8 @@ export default {
 
 		if(userBalance < this.$store.state.minBet) {
 			this.$store.commit('updateStateName', 'need-balance');
-			this.$store.commit('updateStateMessage', 'Не хватит даже на оду ставку');
 			this.$store.commit('updateBalanceMinus', true);
+			this.$store.commit('updateStateMessage', 'Не хватит даже на оду ставку');
 		} else {
 			this.$store.commit('updateStateName', 'ready');
 			this.$store.commit('updateBalanceMinus', false);
@@ -68,7 +66,6 @@ export default {
 		}
 
 		this.$store.dispatch('getUserSavedTactics');
-
 	}
 }
 </script>

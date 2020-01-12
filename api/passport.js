@@ -8,8 +8,8 @@ const JWT_SECRET  = require('config').get('JWT_SECRET');
 
 //JSON WEB TOKEN STRATEGY
 passport.use(new JwtStrategy({
-		jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-		secretOrKey: JWT_SECRET
+		jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+		secretOrKey: JWT_SECRET,
 	},
 	async (payload, done) => {
 		try {
@@ -23,6 +23,8 @@ passport.use(new JwtStrategy({
 		}
 	})
 )
+
+// console.log(passport);
 
 // GOOGLE TOKEN STRATEGY
 passport.use(new GooglePlusStrategy({

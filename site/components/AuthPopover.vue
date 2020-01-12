@@ -8,7 +8,7 @@
 
 		.auth-popover-wr(:class="{'auth-popover-wr_opened': opened}" v-if="opened" v-click-outside="close")
 			.auth-popover-tab(v-if="activeTab == 'signIn'")
-				form
+				form(@submit="auth")
 					.auth-popover-header
 						|Авторизация
 					.auth-popover-fields
@@ -101,6 +101,10 @@ export default {
 		open() {
 			this.opened = !this.opened;
 		},
+		auth()
+		{
+			console.log(this.authData);
+		}
 	}
 }
 </script>

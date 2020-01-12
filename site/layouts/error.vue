@@ -16,7 +16,6 @@ export default {
 </script>
 
 <style lang="scss">
-	@import '~/assets/style/variables.scss';
 	.error-404-wr
 	{
 		text-align: center;

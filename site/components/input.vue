@@ -1,21 +1,67 @@
 <template lang="pug">
-	.input-wr
+	ValidationProvider.input-wr(tag="label",
+		:vid="vid",
+		:name="name || label",
+		v-slot="{ errors, required, ariaInput, ariaMsg }")
 		input.input(:value="name",
 			@input="updateSelf($event.target.value)",
 			@focus="focused = true; $emit('focus')",
 			@blur="focused = false; $emit('blur')",
 			:type="type",
 			:placeholder="placeholder"
-			:class="{'input_focused': focused || name !== '' || placeholder}")
+			:class="{'input_focused': focused || name !== '' || placeholder, 'input_error': errors[0]}")
 		.input-label
 			|{{label}}
+		span.input-error(v-if="errors[0]")
+			|{{ errors[0] }}
 </template>
 <script>
+import { ValidationProvider } from "vee-validate";
+
 export default {
 	model: {
 		prop: "name",
 	},
-	props: ["name", "label", "type", "placeholder"],
+	components: {
+		ValidationProvider
+	},
+	props: {
+		name: {
+			type: String,
+			default: ""
+		},
+		label: {
+			type: String,
+			default: ""
+		},
+		type: {
+			type: String,
+			default: "text",
+			validator(value) {
+				return [
+					"url",
+					"text",
+					"password",
+					"tel",
+					"search",
+					"number",
+					"email"
+				].includes(value);
+			}
+		},
+		placeholder: {
+			type: String,
+			default: ""
+		},
+		rules: {
+			type: String,
+			default: ""
+		},
+		vid: {
+			type: String,
+			default: undefined
+		},
+	},
 	data: () => ({
 		focused: false
 	}),
@@ -32,6 +78,7 @@ export default {
 	{
 		position: relative;
 		padding-top: 10px;
+		display: block;
 	}
 	.input
 	{
@@ -39,9 +86,7 @@ export default {
 		border: none;
 		background-color: transparent;
 		border-bottom: 1px solid $accent;
-		left: 0;
 		min-height: 32px;
-		z-index: 1;
 		position: relative;
 		padding-bottom: 3px;
 		font-size: 14px;
@@ -72,7 +117,7 @@ export default {
 		width: 100%;
 		top: 16px;
 		left: 0;
-		z-index: 0;
+		// z-index: -1;
 		transition: 0.2s;
 		color: rgba($main, 0.5);
 	}

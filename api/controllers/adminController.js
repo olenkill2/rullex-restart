@@ -18,8 +18,8 @@ signToken = user =>
 module.exports =
 {
 	signin: async(req, res) => {
-		if(req.user.isAdmin)
-			return res.status(200).json({token: signToken(req.user), status: req.user.isAdmin});
+		if(req.user.role == 'admin')
+			return res.status(200).json({token: signToken(req.user), role: req.user.role});
 		else
 			return res.status(401).json({error: 'notauthorized'});
 	},

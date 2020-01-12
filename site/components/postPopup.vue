@@ -22,7 +22,7 @@
 
 				.content-editor
 					//- <froala :tag="'textarea'" :config="config" v-model="postData.content"></froala>
-					editor(v-model="postData.content", ref="editor", :value="postData.content", :options="editorOptions", :html="editorHtml", :visible="editorVisible", previewStyle="vertical", mode="wysiwyg")
+					//- editor(v-model="postData.content", ref="editor", :value="postData.content", :options="editorOptions", :html="editorHtml", :visible="editorVisible", previewStyle="vertical", mode="wysiwyg")
 
 			.popup-footer
 				button.btn.btn_red.popup-footer__btn(v-if="edit", @click="removeItem")

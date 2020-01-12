@@ -3,35 +3,19 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import VeeValidate from 'vee-validate';
 import { Validator } from 'vee-validate';
-import * as Sentry from '@sentry/browser';
-import * as Integrations from '@sentry/integrations';
 import App from './App.vue';
 import store from './store';
 
-if(process.env.NODE_ENV === 'production')
-	Sentry.init({
-		dsn: 'http://1bd2d9c09f1747d0bb239e733e589077@82.202.236.184:9000/2',
-		integrations: [
-			new Integrations.Vue({
-				Vue,
-				attachProps: true,
-			}),
-		],
-		debug: true,
-		beforeSend(event) {
-			console.log(event);
-			return event;
-		}
-	});
-
 Vue.config.productionTip = false;
 
-axios.defaults.baseURL = 'http://localhost:3002/';
+axios.defaults.baseURL = 'http://localhost:3002/api/v1/';
 axios.interceptors.response.use((response) => response, (error) => {
 	Sentry.captureException(error);
 	return Promise.reject(error);
 });
+
 Vue.use(VueAxios, axios);
+
 const dictionary = {
 	en: {
 		messages:{

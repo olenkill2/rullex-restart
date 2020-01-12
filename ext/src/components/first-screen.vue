@@ -13,6 +13,7 @@
 				p И что ты собираешься ставить? <br> Даже {{$store.state.minBet}} {{$store.state.currency}} нет (
 				p Можешь получить бонус по коду <span class="code">*код*</span>
 				p.freebie-wr <a href="#" class="freebie-link">Больше халявы здесь</a>
+
 		.first-wr(v-if="$store.state.stateName == 'ready' && !$store.state.userSavedTacticsCount")
 			.first__content
 				h2.first__header
@@ -22,6 +23,7 @@
 			.first-screen-actions-wr
 				button.btn.btn_add-tactic(@click="$store.commit('setRoute', {route: 'tactics'})")
 					|Создать тактику
+
 		.first-wr(v-if="$store.state.stateName == 'ready' && $store.state.userSavedTacticsCount")
 			.first__content
 				h2.first__header

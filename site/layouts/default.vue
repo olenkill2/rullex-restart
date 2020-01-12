@@ -103,22 +103,18 @@
 		},
 		computed: {
 			menu() {
-				console.log(this.$store.state.menu.items);
 				return this.$store.state.menu.items;
 			},
-			browserIcon()
-			{
+			browserIcon() {
 
 			}
 		},
-		mounted()
-		{
+		mounted() {
 			this.detectBrowser();
 		}
 	}
 </script>
 
 <style lang="scss">
-	@import '~/assets/style/variables.scss';
 
 </style>

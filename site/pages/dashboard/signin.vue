@@ -33,7 +33,7 @@ export default {
 	data: () => ({
 		valid: false,
 		email: 'a@a.ru',
-		password: '1',
+		password: '123456',
 		save: false,
 		error: false,
 		errorText: ''
@@ -47,7 +47,7 @@ export default {
 			}
 			e.preventDefault()
 
-			this.$axios.post('/api/signin', data).then((result, error) => {
+			this.$axios.post('/api/admin/signin', data).then((result, error) => {
 				if(this.save)
 					Cookie.set('authorization', result.data.token);
 				this.$store.commit('user/setAuth', result.data);
@@ -60,7 +60,6 @@ export default {
 }
 </script>
 <style lang="scss">
-	@import '~/assets/style/variables.scss';
 	@keyframes error-set {
 		0%
 		{

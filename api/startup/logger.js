@@ -3,17 +3,16 @@ const config = require('config');
 require('express-async-errors');
 require('winston-mongodb');
 
-process.on('uncaughtException', (err) => {
-	logger.error(err.message, err);
-	console.log(err);
-	process.exit(1);
-});
-process.on('unhandledRejection', (err) => {
-	throw err;
-});
+// process.on('uncaughtException', (err) => {
+// 	logger.error(err.message, err);
+// 	console.log(err);
+// 	process.exit(1);
+// });
+// process.on('unhandledRejection', (err) => {
+// 	throw err;
+// });
 
 const logger = winston.createLogger({
-	// format: winston.format.json(),
 	defaultMeta: { time: Date() },
 	transports: [
 		new winston.transports.File({ filename: 'info.log', level: 'info' }),

@@ -1,5 +1,5 @@
 <template lang="pug">
-	.textarea-wr
+	label.textarea-wr
 		textarea.textarea(:value="name",
 			@input="updateSelf($event.target.value)",
 			@focus="focused = true; $emit('focus')",
@@ -30,6 +30,7 @@ export default {
 	{
 		position: relative;
 		padding-top: 12px;
+		display: block;
 	}
 	.textarea
 	{
@@ -40,7 +41,6 @@ export default {
 		border-bottom: 1px solid $accent;
 		left: 0;
 		min-height: 32px;
-		z-index: 1;
 		position: relative;
 		padding-bottom: 3px;
 		padding-top: 5px;

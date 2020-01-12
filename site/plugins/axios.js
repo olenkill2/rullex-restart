@@ -3,7 +3,7 @@ export default function ({ $axios, store }) {
 
 		const token = store.state.user.token
 		if (token) {
-			request.headers.common['Authorization'] = token
+			request.headers.common['Authorization'] = 'Bearer ' + token;
 		}
 		return request
 	})

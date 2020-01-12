@@ -91,7 +91,7 @@ export default new Vuex.Store({
 			state.userSavedTactics = {};
 
 			let savedTactics = JSON.parse(localStorage.getItem('userTactics'));
-			console.log(savedTactics);
+
 			if(savedTactics == null) {
 				savedTactics = {};
 				localStorage.setItem('userTactics', JSON.stringify(savedTactics));
@@ -102,11 +102,13 @@ export default new Vuex.Store({
 			if(typeof savedTactics[state.currentRoulette.name] == 'undefined') return false
 
 			let tacticsCount = 0;
+
 			for (const tactic in savedTactics[state.currentRoulette.name]) {
 				const userTactic = savedTactics[state.currentRoulette.name][tactic];
 				state.userSavedTactics[tactic] = userTactic;
 				tacticsCount++;
 			}
+
 			state.userSavedTacticsCount = tacticsCount;
 		}
 	}
