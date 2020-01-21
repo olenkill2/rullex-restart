@@ -17,20 +17,18 @@
 </template>
 <script>
 export default {
-	props: ["list", "label", "labelSubText"],
+	props: ["list", "model", "value", "label", "labelSubText"],
 	data: () => ({
 		selected: 0,
 		open: false,
 	}),
+	model: { prop: 'model', event: 'change' },
 	methods: {
 		select(index) {
 			this.selected = index;
-			this.$emit("input", this.list[index]);
+			this.$emit("change", this.list[index]);
 			this.$emit("select", this.list[index]);
 			this.close();
-		},
-		updateSelf(name) {
-			this.$emit("input", name);
 		},
 		close() {
 			this.open = false;
@@ -38,14 +36,14 @@ export default {
 	},
 	computed: {
 		selectedValue() {
-			return this.list[this.selected];
+			return this.model;
 		}
 	},
 	created () {
-		this.$emit("input", this.list[this.selected]);
+		this.$emit("change", this.list[this.selected]);
 	},
 	mounted () {
-		this.$emit("input", this.list[this.selected]);
+		this.$emit("change", this.list[this.selected]);
 	}
 }
 </script>

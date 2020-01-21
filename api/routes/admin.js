@@ -2,9 +2,7 @@ const router = require('express').Router();
 const admin = require('../controllers/adminController.js');
 const passport = require('passport');
 const { isAdmin } = require('../middleware/isAdmin');
-// const { validateBody, schemas } = require('../helpers/validator');
 const {JWT_auth} = require('../passport');
-const multer = require('multer');
 
 router
 	.route('/signin')

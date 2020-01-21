@@ -1,97 +1,101 @@
 <template lang="pug">
 	.page-content
-		.modes-wr
-		.modes-header
-			.modes-header__left
+		.pages-wr
+		.pages-header
+			.pages-header__left
 				|Всего рулеток - {{roulettes.length}}
-			.modes-header__right
+			.pages-header__right
 				button.btn.btn_small(v-if="!rouletteFormShow", @click="rouletteFormShow = !rouletteFormShow", :class="{'btn_skin': rouletteFormShow}")
 					|Добавить
 				button.btn.btn_small(v-else="", @click="cancelEdit", :class="{'btn_skin': rouletteFormShow}")
 					|Отменить
 
-		.roulette-form-wr(v-if="rouletteFormShow")
-			.roulette-form-groups
-				.roulette-form-groups__item
-					.roulette-form__item-label Новая рулетка
+		.pages-form-wr(v-if="rouletteFormShow")
+			.pages-form-groups
+				.pages-form-groups__item
+					.pages-form__item-label Новая рулетка
 
-					.roulette-form-groups-field-wr
-						field(v-model="roulette.name", label="Название рулетки", type="text")
+					.pages-form-groups-field-wr
+						field(v-model="roulette.name", label="Название рулетки", type="text", rules="required")
 
-					.roulette-form-groups-field-wr
-						text-field(v-model="roulette.description", label="Описание", type="text")
+					.pages-form-groups-field-wr
+						text-field(v-model="roulette.description", label="Описание", type="text", rules="required")
 
-					.roulette-form-groups-field-wr
-						field(v-model="roulette.host", label="Host", type="text")
+					.pages-form-groups-field-wr
+						field(v-model="roulette.host", label="Host", type="text", rules="required")
 
-					.roulette-form-groups-field-wr
-						label.checkbox-label-wr
-							checkbox(v-model="roulette.private")
-							span.label-text
-								|Приватная
+					.pages-form-groups-field-wr
+						field(v-model="roulette.currency.symbol", label="Символ валюты", placeholder="$", type="text", rules="required")
 
-					.roulette-form-group(v-if="modes.length")
-						.roulette-form-group-label
+					.pages-form-groups-field-wr
+						field(v-model="roulette.currency.name", label="Название валюты", placeholder="Доллар", type="text", rules="required")
+
+					.pages-form-groups-field-wr
+						checkbox(v-model="roulette.private", label="Приватная")
+
+					.pages-form-group(v-if="modes.length")
+						.pages-form-group-label
 							|Поддерживаемые режимы
-						.roulette-form-group-item.roulette-form-groups-field-wr_select-mode(:key="key", v-for="(mode, key) in modes")
-							checkbox(v-model="roulette.modes", name="modes", :value="mode", :label="mode.name")
-							.roulette-form-group-add-function(@click="addMode(mode)", v-if="modeIsNotAdded(mode)")
-								|Добавить функцию
-							.roulette-form-group-add-function(@click="removeMode(mode)", v-else="")
-								|Удалить функцию
 
-					.roulette-form-groups-field-wr(v-else="")
+						.pages-form-group-item.pages-form-groups-field-wr_select-mode(:key="key", v-for="(mode, key) in modes")
+							checkbox(type="checkbox", v-model="roulette.modes", name="modes", :value="mode", :key="key", :label="mode.name")
+							.pages-form-group-add-function-wr
+								.pages-form-group-add-function(@click="addMode(mode)" v-if="!modeSupported(mode)")
+									|Добавить функцию
+								.pages-form-group-add-function(@click="removeMode(mode)", v-else="")
+									|Удалить функцию
+
+					.pages-form-groups-field-wr(v-else="")
 						|Доступных режимов нет
 						button.btn.btn_small(@click="$emit('changeTab', 1)") Создать
 
-					.roulette-form-groups-field-wr
-						.roulette-form-modes
-							.roulette-form-mode(v-for="")
+					.pages-form-groups-field-wr
+						.pages-form-modes
+							.pages-form-mode(v-for="")
 
-					.roulette-form-groups-field-wr
+					.pages-form-groups-field-wr
 						dropdown(:list="refTypesList", v-model="roulette.referal.refType", label="Тип рефералки")
 
-					.roulette-form-groups-field-wr(v-if="roulette.referal.refType == 'url'")
+					.pages-form-groups-field-wr(v-if="roulette.referal.refType == 'url'")
 						field(v-model="roulette.referal.url", label="Реф. ссылка", type="text")
 
-					.roulette-form-groups-field-wr(v-else="")
+					.pages-form-groups-field-wr(v-else="")
 						field(v-model="roulette.referal.code", label="Реф. код", type="text")
 
-				.roulette-form-groups__item
-					.roulette-form__item-label Функции
+				.pages-form-groups__item
+					.pages-form__item-label Функции
 
-					.roulette-form-groups-field-wr
+					.pages-form-groups-field-wr
 						text-field(v-model="roulette.functions.authValidationRuleFunction", label="Функция валидации")
 
-					.roulette-form-groups-field-wr
+					.pages-form-groups-field-wr
 						text-field(v-model="roulette.functions.balanceParseFunction", label="Функция получения баланса")
 
-					.roulette-form-groups-field-wr
+					.pages-form-groups-field-wr
 						text-field(v-model="roulette.functions.referalChangeFunction", label="Функция получения подмены рефки")
 
-					.roulette-form__item-label Игровые функции
+					.pages-form__item-label Игровые функции
 
-					.roulette-form-groups-field-wr.roulette-form-groups-field-wr_modes(v-if="roulette.functions.gameFunctionForMode.length", v-for="(modeGameFunction, index) in roulette.functions.gameFunctionForMode")
-						text-field(v-model="modeGameFunction.function", :label="'Игровая функция для ' + modeGameFunction.modeName")
-						.remove-function(@click="removeMode(index)")
+					.pages-form-groups-field-wr.pages-form-groups-field-wr_modes(v-if="roulette.gameFunctionForMode.length", v-for="(func, index) in roulette.gameFunctionForMode", :key="index")
+						text-field( v-model="func.gameFunc", :label="'Игровая функция для ' + func.mode.name")
 
 			div(v-if="addRouletteErrors")
 				|{{addRouletteErrors}}
 
-			.roulette-form-actions(v-if="!edit")
-				.roulette-form-actions__item
+			.pages-form-actions(v-if="!edit")
+				.pages-form-actions__item
 					button.btn.btn_small.btn_red(@click="clearForm") Очистить
-				.roulette-form-actions__item
+				.pages-form-actions__item
 					button.btn.btn_small.btn_accent(@click="addRoulette") Добавить
 
-			.roulette-form-actions(v-else="")
-				.roulette-form-actions__item
+			.pages-form-actions(v-else="")
+				.pages-form-actions__item
 					button.btn.btn_small.btn_red(@click="deleteRoulette") Удалить рулетку
-				.roulette-form-actions__item
+				.pages-form-actions__item
 					button.btn.btn_small.btn_accent(@click="updateRoulette") Сохранить
 
 		.page-data-container
-			.modes-message(v-if="!roulettes.length")
+			.pages-message(v-if="!roulettes.length")
 				|Рулеток пока нет
 
 			table.roulettes-list(v-else="")
@@ -102,21 +106,26 @@
 						th Host
 						th Ref
 						th Режимы
+						th Доступные режимы
 						th Приватная
 						th Редактирование
+
 					tr(v-for="(roulette, index) in roulettes")
 						td {{index + 1}}
 						td {{roulette.name}}
 						td {{roulette.host}}
-						td {{roulette.referal.refType}} - {{roulette.referal[roulette.referal.refType]}}
-						td(v-if="roulette.functions")
-							span(v-if="roulette.functions.gameFunctionForMode" v-for="mode in roulette.functions.gameFunctionForMode")
-								|  {{mode.modeName}},
 						td
-							span(v-if="roulette.private")
-								|Да
-							span(v-else="")
-								|Нет
+							span(v-if="roulette.referal[roulette.referal.refType]") {{roulette.referal.refType}} - {{roulette.referal[roulette.referal.refType]}}
+							span(v-else) Не задана
+						td(v-if="roulette.modes")
+							nuxt-link(v-for="(mode, index) in roulette.modes", :key="index", :to="'/dashboard/modes?id=' + mode._id")
+								|  {{mode.name}};
+						td(v-if="roulette.gameFunctionForMode")
+							nuxt-link(v-for="(gameFunction, index) in roulette.gameFunctionForMode", :key="index", :to="'/dashboard/modes?id=' + gameFunction.mode._id")
+								|{{gameFunction.mode.name}}
+						td
+							span(v-if="roulette.private") Да
+							span(v-else="") Нет
 						td
 							.edit-field.edit-field_roulette(@click="setRouletteForEdit(index)")
 </template>
@@ -126,6 +135,7 @@ import field from '~/components/input';
 import dropdown from '~/components/drop-down';
 import checkbox from '~/components/checkbox';
 import textField from '~/components/textarea';
+
 export default {
 	async asyncData ({$axios, redirect, res, route}) {
 		try {
@@ -145,39 +155,36 @@ export default {
 		field,
 		checkbox,
 		dropdown,
-		textField
+		textField,
 	},
 	data: () => ({
-		roulettes: [],
-		rouletteFormShow: true,
 		roulette: {},
 		modes: [],
+		roulettes: [],
 		modesForDropDown: [],
 		dropDownListItem: '',
 		currentMode: '',
-		componentsList: ['field', 'dropdown'],
-		refTypesList: ['url', 'code'],
 		refType: 'url',
+		refTypesList: ['url', 'code'],
+		componentsList: ['field', 'dropdown'],
 		edit: false,
-		addRouletteErrors: false,
+		rouletteFormShow: false,
+		addRouletteErrors: false
 	}),
 	computed: {
 	},
 	methods: {
-		modeIsNotAdded (mode) {
-			for(let gameFunctionForMode of this.roulette.functions.gameFunctionForMode)
-				if(gameFunctionForMode.mode_id.indexOf(mode._id) != -1)
-				{
-					console.log(gameFunctionForMode, mode);
-					return false
-				}
-			return true;
+		modeSupported (mode) {
+			const index = this.roulette.gameFunctionForMode.findIndex(supportedMode => supportedMode.mode._id == mode._id);
+			return this.roulette.gameFunctionForMode[index] ? true : false;
 		},
+
 		getRoulettes () {
 			this.$axios.get('/api/roulettes').then((response) => {
 				this.roulettes = response.data.data
 			}).catch((error) => { this.roulettes = [];})
 		},
+
 		getRouletteSchema () {
 			return {
 				name: '',
@@ -186,13 +193,16 @@ export default {
 				private: true,
 				color: '#333333',
 				modes: [],
-				supportedModes: [],
+				currency: {
+					symbol: '',
+					name: ''
+				},
 				functions: {
 					authValidationRuleFunction: '',
 					balanceParseFunction: '',
 					referalChangeFunction: '',
-					gameFunctionForMode: [],
 				},
+				gameFunctionForMode: [],
 				referal: {
 					refType: this.refType,
 					url: '',
@@ -200,28 +210,32 @@ export default {
 				}
 			}
 		},
-		addMode (mode) {
-			this.roulette.supportedModes.push(mode);
-			this.roulette.functions.gameFunctionForMode.push({
-				modeName: mode.name,
-				function: '',
-				mode_id: mode._id
-			});
+
+		addMode (supportedMode) {
+			this.roulette.gameFunctionForMode.push({mode: {...supportedMode}, gameFunc: ''});
+		},
+
+		removeMode (mode) {
+			const index = this.roulette.gameFunctionForMode.findIndex(addModed => addModed._id == mode._id);
+			this.roulette.gameFunctionForMode.splice(index, 1);
 		},
 
 		setRouletteForEdit (index) {
-			this.roulette = this.roulettes[index];
 			this.edit = true;
+			this.roulette = JSON.parse(JSON.stringify(this.roulettes[index]));
 			this.rouletteFormShow = true;
 		},
+
 		clearForm () {
 			this.roulette = this.getRouletteSchema();
 		},
+
 		cancelEdit () {
 			this.roulette = this.getRouletteSchema();
 			this.edit = false;
 			this.rouletteFormShow = false;
 		},
+
 		addRoulette () {
 			this.$axios.post('/api/roulettes', this.roulette).then((response, error) => {
 				this.getRoulettes();
@@ -230,6 +244,7 @@ export default {
 				this.addRouletteErrors = error;
 			})
 		},
+
 		deleteRoulette () {
 			this.$axios.delete('/api/roulettes/' + this.roulette._id).then((response, error) => {
 				this.getRoulettes();
@@ -238,6 +253,7 @@ export default {
 				this.error = true;
 			})
 		},
+
 		updateRoulette () {
 			this.$axios.put('/api/roulettes/' + this.roulette._id, this.roulette).then((response, error) => {
 				this.getRoulettes();
@@ -274,77 +290,7 @@ export default {
 			}
 		}
 	}
-	.modes-header
-	{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding-bottom: 40px;
-	}
-	.modes-header
-	{
-		font-size: 28px;
-		color: $accent;
-	}
-	.modes-message
-	{
-		text-align: center;
-		font-size: 20px;
-		text-transform: uppercase;
-	}
-	.roulette-form-wr
-	{
-		padding-bottom: 60px;
-	}
-	.roulette-form-groups
-	{
-		display: flex;
-		justify-content: space-between;
-	}
-	.roulette-form-group
-	{
-		margin-bottom: 20px;
-	}
-	.roulette-form-group-label
-	{
-		margin-bottom: 10px;
-	}
-	.roulette-form-group-item
-	{
-		margin-bottom: 15px;
-		&:last-child
-		{
-			margin-bottom: 0;
-		}
-	}
-	.roulette-form-groups__item
-	{
-		flex-basis: calc(50% - 17px);
-	}
-	.roulette-form-groups-field-wr
-	{
-		margin-bottom: 16px;
-		&:last-child
-		{
-			margin-bottom: 0;
-		}
-	}
-	.roulette-form-groups-field-wr_select-mode
-	{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		.btn
-		{
-			margin-left: 15px;
-		}
-	}
-	.roulette-form-actions
-	{
-		display: flex;
-		justify-content: flex-end;
-		padding-top: 40px;
-	}
+
 	.field-droplist-items-top
 	{
 		display: flex;
@@ -369,14 +315,7 @@ export default {
 		display: flex;
 		align-items: center;
 	}
-	.roulette-form-actions__item
-	{
-		margin-left: 20px;
-		&:first-child
-		{
-			margin-left: 0;
-		}
-	}
+
 	.mode-field-item
 	{
 		margin-bottom: 15px;
@@ -387,22 +326,6 @@ export default {
 		{
 			margin-bottom: 0;
 		}
-	}
-	.edit-field
-	{
-		max-width: 20px;
-		height: 20px;
-		max-width: 20px;
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		cursor: pointer;
-		margin-left: 20px;
-	}
-	.edit-field
-	{
-		background-image: url('../../assets/icons/edit.svg');
-		background-size: 80%;
 	}
 	.roulettes-list
 	{

@@ -1,50 +1,43 @@
 <template lang="pug">
-	label.checkbox-wr
-		input.checkbox(
-			@change="change",
-			:name="name",
-			type="checkbox",
-			:checked="isChecked",
-			:class="{'checked': isChecked}")
+	label.checkbox-wr(:class="[ $options._componentTag, { checked: checked, disabled: $attrs.disabled == true }]")
+		input.checkbox-input(type="checkbox", v-bind="$attrs", :checked="checked", :value="value", @change="update")
 		.checkbox-box
 		.checkbox-label
-			|{{label}}
+			slot
+				|{{label}}
 </template>
 <script>
 export default {
-	name: "checkbox",
-	model: {
-		prop: "checked",
-		event: "change"
+	inheritAttrs: false,
+	model: { prop: 'model', event: 'change' },
+	props: {
+		value:      { default: null  },
+		model:      { default: false },
+		trueValue:  { default: true  },
+		falseValue: { default: false },
+		label:      { default: '' }
 	},
-	props: ["checked", "value", "name", "label"],
 	computed: {
-		isChecked() {
-			if(typeof this.checked != 'boolean')
-				return this.checked.includes(this.value);
-			else
-			{
-				console.log(this.checked);
-				return this.checked;
+		checked() {
+			if(this.model instanceof Array) {
+				for(let mode of this.model) {
+					if(JSON.stringify(mode) == JSON.stringify(this.value)) return mode;
+				}
+			}
+			else {
+				return (this.model === this.trueValue);
 			}
 		}
 	},
 	methods: {
-		change(e) {
-			if(typeof this.checked != 'boolean')
-			{
-				const checked = this.checked.slice();
-				const found = checked.indexOf(this.value);
-				if (found !== -1) {
-					checked.splice(found, 1);
-				} else {
-					checked.push(this.value);
-				}
-				this.$emit("change", checked);
-			}
-			else
-			{
-				this.$emit("change", e.target.checked);
+		update(e) {
+			let checked = e.target.checked;
+			if (this.model instanceof Array) {
+				let value = [...this.model];
+				(checked) ? value.push(this.value) : value.splice(value.indexOf(this.value), 1);
+				this.$emit('change', value);
+			} else {
+				this.$emit('change', checked ? this.trueValue : this.falseValue);
 			}
 		}
 	}
@@ -58,7 +51,7 @@ export default {
 		display: flex;
 		align-items: center;
 	}
-	.checkbox
+	.checkbox-input
 	{
 		display: none;
 		&:checked ~ .checkbox-box

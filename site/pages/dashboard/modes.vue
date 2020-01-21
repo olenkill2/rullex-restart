@@ -1,10 +1,10 @@
 <template lang="pug">
 	.page-content
 		.modes-wr(v-if="modes")
-			.modes-header
-				.modes-header__left
+			.pages-header
+				.pages-header__left
 					|Всего режимов - {{modes.length}}
-				.modes-header__right
+				.pages-header__right
 					button.btn.btn_small(v-if="!modeFormShow", @click="modeFormShow = !modeFormShow", :class="{'btn_skin': modeFormShow}")
 						|Добавить
 					button.btn.btn_small(v-else="", @click="cancelEdit", :class="{'btn_skin': modeFormShow}")
@@ -19,24 +19,24 @@
 						.mode-form__item-label Добавление полей
 
 						.mode-form-groups-field-wr
-							field(v-model="fieldObject.name", label="Название поля", type="text")
+							field(v-model="field.name", label="Название поля", type="text")
 
 						.mode-form-groups-field-wr
-							field(v-model="fieldObject.placeholder", label="Плейсхолдер поля", type="text")
+							field(v-model="field.placeholder", label="Плейсхолдер поля", type="text")
 
 						.mode-form-groups-field-wr
-							field(v-model="fieldObject.model", label="Название модели", type="text")
+							field(v-model="field.model", label="Название модели", type="text")
 
 						.mode-form-groups-field-wr
-							dropdown(:list="componentsList", v-model="fieldObject.component", label="Тип компонента")
+							dropdown(:list="componentsList", v-model="field.component", label="Тип компонента")
 
-						.mode-form-groups-field-wr(v-if="fieldObject.component == 'dropdown'")
+						.mode-form-groups-field-wr(v-if="field.component == 'dropdown'")
 							.field-droplist-items-wr
 								.field-droplist-items-top
 									field(v-model="dropDownListItem", label="Параметр", type="text")
 									button.btn.btn_skin.btn_small(@click="addDropListItem") Добавить
 								.field-droplist-items-added
-									.field-droplist-item(v-for="(dropItem, index) in fieldObject.dropDownList")
+									.field-droplist-item(v-for="(dropItem, index) in field.dropDownList")
 										|{{dropItem}}
 										.field-droplist-item_remove(@click="removeDropListItem(index)")
 
@@ -66,7 +66,7 @@
 						button.btn.btn_small.btn_accent(@click="updateMode") Сохранить изменения
 
 
-			.modes-message(v-if="modes.length == 0")
+			.pages-message(v-if="modes.length == 0")
 				|Режимов пока нет
 
 			table.modes-list(v-else="")
@@ -119,7 +119,7 @@ export default {
 			name: '',
 			fields: [],
 		},
-		fieldObject: {},
+		field: {},
 		showModeFieldsList: false,
 		dropDownListItem: '',
 		componentsList: ['field', 'dropdown'],
@@ -128,37 +128,37 @@ export default {
 		editFieldIndex: 0,
 	}),
 	methods: {
-		getFieldObjectSchema () {
+		getFieldSchema () {
 			return {
 				name: '',
 				placeholder: '',
 				model: '',
-				component: this.fieldObject.component,
+				component: this.field.component,
 				dropDownList: [],
 			}
 		},
 		removeDropListItem (index) {
-			this.fieldObject.dropDownList.splice(index, 1);
+			this.field.dropDownList.splice(index, 1);
 		},
 		addField () {
-			this.mode.fields.push(this.fieldObject);
-			this.fieldObject = this.getFieldObjectSchema();
+			this.mode.fields.push(this.field);
+			this.field = this.getFieldSchema();
 		},
 		editField (index) {
 			this.editingField = true;
 			this.editFieldIndex = index;
-			this.fieldObject = {...this.mode.fields[this.editFieldIndex]};
+			this.field = {...this.mode.fields[this.editFieldIndex]};
 		},
 		updateField () {
-			this.mode.fields[this.editFieldIndex] = this.fieldObject;
+			this.mode.fields[this.editFieldIndex] = this.field;
 			this.editingField = false;
-			this.fieldObject = this.getFieldObjectSchema();
+			this.field = this.getFieldSchema();
 		},
 		removeField (index) {
 			this.mode.fields.splice(index, 1);
 		},
 		addDropListItem () {
-			this.fieldObject.dropDownList.push(this.dropDownListItem);
+			this.field.dropDownList.push(this.dropDownListItem);
 			this.dropDownListItem = '';
 		},
 		addMode () {
@@ -193,7 +193,7 @@ export default {
 		cancelEdit () {
 			this.editingMode = false;
 			this.modeFormShow = false;
-			this.fieldObject = this.getFieldObjectSchema();
+			this.field = this.getFieldSchema();
 			this.mode = {
 				name: '',
 				fields: [],
@@ -206,6 +206,7 @@ export default {
 		}
 	},
 	mounted () {
+		this.field = this.getFieldSchema();
 	}
 }
 </script>
@@ -310,6 +311,7 @@ export default {
 	.edit-field
 	{
 		max-width: 20px;
+		width: 100%;
 		height: 20px;
 		background-size: cover;
 		background-position: center;

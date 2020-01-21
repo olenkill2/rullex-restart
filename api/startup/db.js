@@ -6,9 +6,9 @@ module.exports = function () {
 	mongoose.set('useNewUrlParser', true);
 	mongoose.set('useFindAndModify', false);
 	mongoose.set('useCreateIndex', true);
-	// console.log(config.get('dbUrl'));
+	mongoose.set('useUnifiedTopology', true);
 
-	mongoose.connect(config.get('dbUrl')).then(() => {
+	mongoose.connect(config.get('dbUrl'), {keepAlive: 1}).then(() => {
 		logger.info('DB connected');
 	});
 }

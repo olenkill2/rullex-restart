@@ -5,6 +5,7 @@ const categorysRoutes = require('./categorys');
 const postsRoutes = require('./posts');
 const modesRoutes = require('./modes');
 const roulettesRoutes = require('./roulettes');
+const freebiesRoutes = require('./freebies');
 const error = require('../middleware/error');
 
 module.exports = function(app, db)
@@ -15,5 +16,6 @@ module.exports = function(app, db)
 	app.use('/api/v1/posts', postsRoutes);
 	app.use('/api/v1/modes', modesRoutes);
 	app.use('/api/v1/menu', menuRoutes);
+	app.use('/api/v1/freebies', freebiesRoutes);
 	app.use(error);
 }

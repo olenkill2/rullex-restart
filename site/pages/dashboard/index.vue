@@ -21,9 +21,6 @@ export default {
 
 	}),
 	methods: {
-		// async onSubmit(e) {
-
-		// }
 	}
 }
 </script>

@@ -1,9 +1,7 @@
 {
   "libs": [
     "browser",
-    "ecmascript",
-    "vue",
-    "nuxt"
+    "ecmascript"
   ],
   "plugins": {
      "node": {},
