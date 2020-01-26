@@ -98,7 +98,7 @@
 			.pages-message(v-if="!roulettes.length")
 				|Рулеток пока нет
 
-			table.roulettes-list(v-else="")
+			table.dashboard-table(v-else="")
 				tbody
 					tr
 						th №
@@ -277,19 +277,7 @@ export default {
 		overflow-x: auto;
 
 	}
-	.roulettes-list
-	{
-		width: 100%;
-		td,th
-		{
-			padding-right: 15px;
-			white-space: nowrap;
-			&:last-child
-			{
-				padding-right: 0;
-			}
-		}
-	}
+
 
 	.field-droplist-items-top
 	{

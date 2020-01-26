@@ -41,7 +41,7 @@ module.exports =
 	},
 
 	delete: async(req, res) => {
-		const deletedPost = await Post.findByIdAndRemove({'_id': req.body.post});
+		const deletedPost = await Post.findByIdAndRemove({'_id': req.params.id});
 
 		if(!deletedPost) return res.status(404).json({error: 'Not found'});
 
@@ -49,14 +49,16 @@ module.exports =
 	},
 
 	getPost: async(req, res, next) => {
-		console.log(req.params);
-		if(!req.params.id) return res.status(400).json({error: 'чего-то не хватает'});
+		console.log(req.query);
 
-		const result = await Post.findOne({'url': '/' + req.params.id});
+		if (!req.query.url) return res.status(400).json({error: 'чего-то не хватает'});
 
-		if(!result || result.private) return res.status(404).json('error');
+		const result = await Post.findOne({'url': req.query.url, private: true});
 
-		res.status(200).json(result);
+		if(!result) return res.status(404).json('error');
+		console.log(result);
+
+		res.status(200).json({ data: result});
 	},
 
 	getSeo: async(req, res) => {

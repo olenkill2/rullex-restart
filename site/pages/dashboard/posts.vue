@@ -1,85 +1,193 @@
 <template lang="pug">
 	.page-content
-		.dashboard-header-wr
-			.dashboard-header__left
-				|Управление статьями
+		.pages-wr
+			.pages-header
+				.pages-header__left
+					|Всего статей - {{posts.length}}
+				.pages-header__right
+					button.btn.btn_small(v-if="!postFormShow", @click="postFormShow = !postFormShow", :class="{'btn_skin': postFormShow}")
+						|Добавить
+					button.btn.btn_small(v-else="", @click="cancelEdit", :class="{'btn_skin': postFormShow}")
+						|Отменить
 
-			.dashboard-header__right
-				button.btn(@click="showPostPopup = true")
-					|Добавить статью
+			.pages-form-wr(v-if="postFormShow")
+				.pages-form-groups
+					.pages-form-groups__item
+						.pages-form-groups-field-wr
+							field(v-model="post.url", label="Url", type="text", rules="required")
 
-		.post-settings-wr
-				table.post-settings-table
+						.pages-form-groups-field-wr
+							field(v-model="post.title", label="Заголовок", type="text", rules="required")
+
+						.pages-form-groups-field-wr
+							checkbox(v-model="post.private", label="Приватная", name="private")
+
+				editor(
+					ref="editor",
+					class="editor-js-box-wr",
+					holder-id="codex-editor",
+					save-button-id="save-button",
+					placeholder="Контент статьи",
+					:init-data="initData",
+					@change="save",
+					@save="onSave")
+
+				.pages-form-actions(v-if="!edit")
+					.pages-form-actions__item
+						button.btn.btn_small.btn_red(@click="clearForm") Очистить
+					.pages-form-actions__item
+						button.btn.btn_small.btn_accent(@click="addPost") Добавить
+
+				.pages-form-actions(v-else="")
+					.pages-form-actions__item
+						button.btn.btn_small.btn_red(@click="deletePost") Удалить рулетку
+					.pages-form-actions__item
+						button.btn.btn_small.btn_accent(@click="updatePost") Сохранить
+
+			.page-data-container
+				.pages-message(v-if="!posts.length")
+					|Статей пока нет
+
+				table.dashboard-table(v-else="")
 					tbody
 						tr
 							th №
-							th Название
-							th Url
-							th Title
-							th Description
-							th Раздел
-							th Публичная
-							th Управление
-						tr(v-for="(item, index) of postList")
+							th Заголовок
+							th Описание
+							th Тип
+							th Приватная
+							th Редактирование
+						tr(v-for="(post, index) in posts")
 							td {{index + 1}}
-							td {{item.name}}
-							td {{item.url}}
-							td {{item.title}}
-							td {{item.description}}
+							td {{post.title}}
+							td {{post.description}}
+							td {{post.pageType}}
 							td
-								div(v-if="item.category != null") {{item.category.category}}
+								span(v-if="post.private") Да
+								span(v-else="") Нет
 							td
-								span(v-if="!item.private") Нет
-								span(v-else) Да
-							td
-								.edit-btn(@click="editPost(index)")
-
-		postPopup(v-if="showPostPopup", :editData="editData", @close="closePopup", @update="updatePosts")
+								.edit-field.edit-field_roulette(@click="setPostForEdit(index)")
 </template>
 <script>
-import postPopup from '~/components/postPopup.vue';
+import field from '~/components/input';
+import dropdown from '~/components/drop-down';
+import checkbox from '~/components/checkbox';
+import textField from '~/components/textarea';
+
 export default {
-	layout (context) {
-		return 'dashboard'
-	},
-	asyncData (req) {
-		return req.$axios.get('/api/posts').then((result, error) => {
-			return { postList: result.data }
+	layout: 'dashboard',
+	async asyncData (req) {
+		return req.$axios.get('/api/post').then((result, error) => {
+			return { posts: result.data }
 		}).catch((error) => {
-			return { postList: []}
+			return { posts: []}
 		})
 	},
-	components: {
-		postPopup,
-	},
 	middleware: ['authenticated'],
+	components: {
+		field,
+		checkbox,
+		dropdown,
+		textField
+	},
 	data: () => ({
-		showPostPopup: false,
-		editData: false,
-		postList: [],
+		posts: [],
+		postFormShow: false,
+		post: {},
+		statusList: ['private', 'work', 'end'],
+		edit: false,
+		error: false,
+		content: {},
+		initData: {
+			blocks: [],
+		}
 	}),
+	computed: {
+	},
 	methods: {
-		closePopup () {
-			this.showPostPopup = false;
-			this.editData = '';
+		getPosts () {
+			this.$axios.get('/api/post').then((response) => {
+				this.posts = response.data
+			}).catch((error) => { this.posts = [];})
 		},
-		editPost (itemIndex) {
-			this.editData = this.postList[itemIndex];
-			this.showPostPopup = true;
+
+		getPostSchema () {
+			return {
+				url: '',
+				title: '',
+				content: '',
+				private: true
+			}
 		},
-		updatePosts (newItem) {
-			this.$axios.get('/api/posts').then((result, error) => {
-				this.postList = result.data;
-			}).catch((error) => {
+
+		setPostForEdit (index) {
+			this.edit = true;
+			this.post = JSON.parse(JSON.stringify(this.posts[index]));
+			this.initData = JSON.parse(JSON.stringify(this.post.content));
+			this.postFormShow = true;
+		},
+
+		clearForm () {
+			this.post = this.getPostSchema();
+		},
+
+		cancelEdit () {
+			this.post = this.getPostSchema();
+			this.edit = false;
+			this.postFormShow = false;
+		},
+
+		addPost () {
+			// this.$refs.editor.save();
+			this.$axios.post('/api/post', this.post).then((response, error) => {
+				this.getPosts();
+				this.cancelEdit();
+			}).catch((error, res) => {
+				// this.addPostErrors = error;
+			})
+		},
+
+		deletePost () {
+			this.$axios.delete('/api/post/' + this.post._id).then((response, error) => {
+				this.getPosts();
+				this.cancelEdit();
+			}).catch((error, res) => {
 				this.error = true;
 			})
 		},
+
+		updatePost () {
+
+			console.log(this.post.content);
+
+			this.$axios.put('/api/post/' + this.post._id, this.post).then((response, error) => {
+				console.log(this.post.content);
+
+				this.getPosts();
+				this.cancelEdit();
+			}).catch((error) => {
+				console.log(error);
+
+				this.error = true;
+			});
+		},
+		save() {
+			this.$refs.editor.save();
+		},
+		onSave (response) {
+			this.post.content = response;
+		}
+	},
+	created () {
+		this.post = this.getPostSchema();
 	}
 }
 </script>
 <style lang="scss">
-	.post-settings-table
+	.editor-js-box-wr
 	{
-		width: 100%;
+		border: 1px solid $dark-gray;
+		margin-top: 45px;
+		padding-top: 20px;
 	}
 </style>

@@ -3,55 +3,53 @@ const mongoose = require('mongoose');
 module.exports =
 {
 	add: async(req, res) => {
-		const { url, name, category, order, private } = req.body;
-		const result = await Menu.findOne({ 'url': url });
+		const newMenuItem = req.body;
+		const result = await Menu.findOne({ 'url': newMenuItem.url, 'label': newMenuItem.label});
 
 		if(result) return res.status(403).json({error: 'Ссылка уже существует'});
 
-		const menuItemData = {
-			url,
-			name,
-			private,
-			order,
-			created_at: Date.now()
-		}
+		const newMenuItemData = await Menu.create(newMenuItem);
 
-		if(mongoose.Types.ObjectId.isValid(category))
-			menuItemData.category = category;
-
-		const newMenuItem = new Menu(menuItemData)
-		await newMenuItem.save();
-
-		res.status(200).json({data: newMenuItem});
+		res.status(200).json({ data: newMenuItemData});
 	},
 	get: async(req, res) => {
-		const result = await Menu.find().populate('category');
+		const result = await Menu.find();
 
 		if(!result) return res.status(404).json({error: 'Not found'});
 
 		res.status(200).json({data: result});
 	},
 	getPublic: async(req, res) => {
-		const result = await Menu.find({private: false}).populate('category');
+		const aggregate = await Menu.aggregate([
+			{ $match: { private: false } },
+			{ $sort: {'order':1, 'category': 1} },
+			{
+				$group: {
+					'_id': "$category",
+					items: { $push: "$$ROOT" },
+				}
+			},
+			{ $sort: { '_id': 1 } },
+		]);
 
-		if(!result) return res.status(404).json({error: 'Not found'});
+		if (!aggregate.length) return res.status(404).json({error: 'Not found'});
 
-		res.status(200).json({data: result});
+		res.status(200).json({ data: aggregate});
 	},
 	update: async(req, res) => {
-		const updatedLink = req.body;
+		const updatedItem = req.body;
 
-		if(typeof updatedLink.category == 'undefined')
-			updatedLink.category = null;
+		if(typeof updatedItem.category == 'undefined')
+			updatedItem.category = null;
 
-		const result = await Menu.findOneAndUpdate({'_id': updatedLink._id}, updatedLink);
+		const result = await Menu.findOneAndUpdate({'_id': updatedItem._id}, updatedItem);
 
 		if(!result) return res.status(404).json({error: 'Not found'});
 
 		res.status(200).json({data: result});
 	},
 	delete: async(req, res) => {
-		const deletedMenuItem = await Menu.deleteOne({'_id': req.body.link._id});
+		const deletedMenuItem = await Menu.deleteOne({'_id': req.params.id});
 
 		if(!deletedMenuItem) return res.status(404).json({error: 'Not found'});
 

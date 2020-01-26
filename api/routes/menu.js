@@ -7,12 +7,15 @@ const validateBody = require('../middleware/validator');
 router
 	.route('/')
 	.post(JWT_auth, isAdmin, validateBody('menu'), menu.add)
-	.put(JWT_auth, isAdmin, validateBody('menu'), menu.update)
 	.get(JWT_auth, isAdmin, menu.get)
+
+router
+	.route('/:id')
+	.put(JWT_auth, isAdmin, validateBody('menu'), menu.update)
 	.delete(JWT_auth, isAdmin, menu.delete);
 
 router
 	.route('/public')
-	.get(menu.getPublic);
+	.get(menu.getPublic)
 
 module.exports = router;

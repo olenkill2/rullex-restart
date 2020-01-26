@@ -2,10 +2,10 @@
 	div.error-404-wr
 		.error-404-text(v-if="error.statusCode == 404")
 			span 404
-			| Тут ничего нет(((( <br>
-			|Посмотри&nbsp;
-			router-link.def-link(to="/")
-				|на главной
+			//- | Тут ничего нет(((( <br>
+			//- |Посмотри&nbsp;
+			//- router-link.def-link(to="/")
+			//- 	|на главной
 </template>
 
 <script>

@@ -273,14 +273,13 @@ p
 	margin-left: 16px;
 	margin-right: 16px;
 	min-height: 100%;
+	min-height: 100vh;
+	flex: 1;
+	overflow-x: hidden;
 }
 .content_popup
 {
 	background-color: transparent;
-}
-.sidebar-nav__item-wr
-{
-	padding-top: 14px;
 }
 .sidebar-nav-item
 {

@@ -1,35 +1,35 @@
 <template lang="pug">
 	div.page-content
-		| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, aut incidunt magnam itaque quisquam! Nostrum expedita tempore dolorum iure asperiores deleniti quae ullam error! Quos, consequuntur, tenetur. Voluptatum laudantium reiciendis quisquam consectetur natus aliquam exercitationem velit ducimus mollitia vitae dignissimos expedita explicabo sapiente deleniti, consequuntur, tempora soluta omnis ratione quia quis harum incidunt amet labore assumenda? Quaerat maiores ipsa, aperiam obcaecati quibusdam voluptatum facere unde neque fuga odit quas voluptas. Ad fugiat facere expedita numquam ipsam dolore amet eos, cum deserunt autem. Sed fugit, minus debitis, magni aliquid, dolores laboriosam laborum eos voluptatum ab distinctio culpa tempora expedita ratione? Optio atque quaerat excepturi possimus! Sed magni minus autem eaque neque? Minus dolorum adipisci architecto, optio suscipit corporis. Ipsum fugiat placeat dicta perspiciatis dolores, vero rerum nesciunt qui perferendis blanditiis explicabo enim accusantium sit suscipit odio dignissimos inventore ipsam non distinctio laboriosam voluptas dolorem unde quo temporibus repellendus! Neque aspernatur aliquam ducimus vero cupiditate voluptatibus saepe deleniti a voluptate repudiandae molestiae voluptatem ratione ipsum temporibus id excepturi quae omnis dignissimos sit obcaecati consequatur, inventore quisquam quis. Officia quos animi explicabo quas nemo mollitia nisi ut esse cumque consequuntur expedita enim impedit dignissimos quia ad, earum dolor cum, repellat tenetur quisquam. Doloribus voluptate placeat, maxime est temporibus! Aliquam error hic dolorum expedita excepturi, odit sunt, eius quibusdam, accusantium, in porro fuga voluptatum fugiat quasi tenetur architecto debitis laborum similique esse. Possimus ducimus debitis ex suscipit commodi totam rerum repellendus facilis recusandae. Magni excepturi veniam error aliquid eveniet, quae nostrum, quidem, quod odit earum quibusdam mollitia dolor. Aperiam neque autem ducimus cumque distinctio, officiis commodi possimus laudantium perferendis. Odio provident incidunt minima ullam animi neque officia quis deserunt corporis architecto voluptatibus soluta quasi, non vel iste, delectus sunt at libero earum tenetur facilis sapiente similique. Provident et aliquid quis cum, cumque temporibus officia, atque, numquam labore doloremque, praesentium maxime. Autem repudiandae dolores sapiente natus delectus dolorum quisquam ab voluptatum a minus tenetur, neque beatae consequatur totam culpa asperiores, recusandae sint porro perspiciatis, consequuntur excepturi voluptatibus corrupti aspernatur reiciendis. Delectus non magni sapiente sint, voluptas deserunt fugiat sed accusantium aliquid, expedita quae corporis! Illum id amet, velit nesciunt facere adipisci ipsum reprehenderit, minus provident nulla consequuntur fuga similique voluptate assumenda. Veniam recusandae commodi iure odio harum, dolor magnam numquam placeat quo at, voluptatem, error dolore molestias officia possimus, ipsam cupiditate amet similique! Facilis voluptatum debitis sunt ut repellat consequuntur vero optio voluptatibus vitae delectus atque nesciunt, laboriosam, impedit ipsam aut! Officia cumque placeat impedit alias dicta aspernatur voluptas inventore dolores, facere, illo possimus. Atque voluptates nam necessitatibus facere ratione quas impedit suscipit placeat quam maiores. Est molestias reprehenderit quaerat explicabo praesentium laborum animi quia, reiciendis amet facere ducimus dolore eveniet esse eum numquam quibusdam atque sed sequi, provident eaque, quis autem illum delectus! A repudiandae officia tempore sit nulla voluptatibus odio eaque, itaque excepturi quaerat nam beatae veritatis suscipit, molestias quisquam libero quasi placeat earum amet illum soluta corporis maxime. Eaque impedit, nam, dolor quis culpa enim velit debitis, quos aliquid consequuntur placeat sequi earum minus nihil nostrum vero repellendus in tenetur sed omnis laboriosam aspernatur, modi inventore. Nisi possimus ad suscipit eum fugiat. Quam recusandae, voluptatum a perspiciatis numquam quod architecto aut modi odio expedita voluptas temporibus ut hic quos ad! Nobis debitis eligendi consequatur saepe autem, facilis asperiores quia quasi, quis quidem voluptates illum quas impedit molestiae corporis perferendis cum, aperiam facere explicabo totam incidunt iste! Cupiditate corrupti ratione delectus, doloremque officia tempora! Accusantium quia laudantium nisi nemo rerum laborum veritatis dolorum temporibus, perferendis obcaecati hic ex praesentium magnam, cupiditate odit debitis aperiam optio, magni explicabo amet quidem velit maxime natus aut. Quas sit veritatis quidem odio! Perferendis, laboriosam architecto beatae voluptatem aut consectetur vel hic voluptatibus quae recusandae iusto, fuga, eaque expedita error saepe reiciendis! Vel culpa quod ipsam ab, libero mollitia iste quam aspernatur, aperiam at facere maxime qui nesciunt doloremque incidunt minima magni natus fuga earum dignissimos rem aliquam harum omnis laboriosam quos. Deleniti, alias natus cupiditate commodi possimus illum reiciendis officiis facilis accusamus, laboriosam tempora cumque earum consequuntur id obcaecati, voluptas sunt repellat voluptatum odit adipisci cum! Autem sit ratione illo doloribus alias. Fugit blanditiis culpa neque. Aliquid tempore vel ab, ipsum fuga sit exercitationem nam deleniti culpa voluptates eos similique? Itaque corporis, repellat eveniet odit tempora dicta veritatis tempore commodi magni omnis, earum quaerat placeat nam nostrum eius minima ipsum ab! Tempora quod odit quam provident id ipsam eveniet molestias voluptatum, mollitia, accusantium cum sed! Error dignissimos, accusamus corporis veritatis hic excepturi id asperiores quas debitis explicabo officia culpa ut fugiat, nisi non porro esse! Provident voluptatibus, nulla quibusdam ipsa facere expedita illo vel dicta eveniet? Mollitia deleniti aliquid odit a dignissimos enim nihil voluptates doloribus culpa veritatis, nemo ad ipsam placeat, vel dolore molestias inventore! Harum odio velit iure cumque accusamus nisi natus fugiat deleniti sint nemo consectetur asperiores rem, iste hic nihil nam aperiam eveniet expedita, earum. Consequuntur totam veritatis eligendi eum aspernatur iusto quaerat sunt id saepe esse, maiores nam error molestias sit nihil! Nobis quia placeat nihil fuga laboriosam alias culpa quae doloribus. Sit fuga soluta repellendus, consectetur, iusto autem ratione earum perferendis aut architecto quisquam! Voluptates quibusdam illum eos tempora neque? Labore consequuntur quisquam, fugit enim rem animi officiis nam voluptatibus unde! Quia ut sit tempore? Dolor laboriosam ex vel sapiente perferendis omnis aliquid, veniam nemo aperiam. Dolorem deserunt nobis aspernatur eum odit minus alias sequi veritatis quae dicta ea laboriosam rem illum architecto eius provident necessitatibus, totam accusantium nam sapiente quisquam reiciendis omnis itaque perferendis. Vel mollitia ex doloremque, deserunt non, optio vero minus quidem, eos sapiente sed saepe ipsum illo accusamus, voluptas placeat officia maiores commodi. Consequuntur officia impedit inventore, praesentium ut esse quod ullam illo, eum ducimus accusamus, tempora illum harum neque animi. Distinctio minus porro sapiente ut laboriosam illo, ducimus dicta fugiat facilis labore laudantium repellat praesentium sed. Laudantium odit laborum possimus totam quia, maiores unde ipsum culpa consequatur sed non, in nobis inventore, praesentium magnam aliquid provident. Sapiente ullam ipsa ab quam eum at excepturi, accusantium itaque!
+		| Описание страницы
 </template>
 
 <script>
 	export default {
 		async asyncData ({$axios, redirect, res, route}) {
-			try
-			{
-				var seo = await $axios('http://127.0.0.1:3002/api/v1/page-seo/', {params: {link: route.path}})
-				return seo.data;
-			} catch(err) {
-				return {
-					title: 'Rullex',
-					description: 'Бот для рулеток'
-				};
-			}
+			// try
+			// {
+			// 	var seo = await $axios('http://127.0.0.1:3002/api/v1/page-seo/', {params: {link: route.path}})
+			// 	return seo.data;
+			// } catch(err) {
+			// 	return {
+			// 		title: 'Rullex',
+			// 		description: 'Бот для рулеток'
+			// 	};
+			// }
 		},
 		head () {
-			return {
-				title: this.title,
-				meta: [
-					// hid is used as unique identifier. Do not use `vmid` for it as it will not work
-					{ hid: 'description', name: 'description', content: this.description }
-				]
-			}
+			// return {
+			// 	title: this.title,
+			// 	meta: [
+			// 		// hid is used as unique identifier. Do not use `vmid` for it as it will not work
+			// 		{ hid: 'description', name: 'description', content: this.description }
+			// 	]
+			// }
 		},
 		data: () => ({
-			title: 'Rullex',
-			description: 'Бот для рулеток',
-			content: 'Расширение для рулеток'
+			// title: 'Rullex',
+			// description: 'Бот для рулеток',
+			// content: 'Расширение для рулеток'
 		}),
 	}
 </script>

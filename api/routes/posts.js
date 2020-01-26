@@ -15,12 +15,9 @@ router
 	.delete(JWT_auth, isAdmin, post.delete);
 
 router
-	.route('/public/:id')
+	.route('/public/')
 	.get(post.getPost);
 
-router
-	.route('/data/:id')
-	.get(post.getSeo);
 // app.put('/posts/:id',;
 // app.delete('/posts/:id', );
 

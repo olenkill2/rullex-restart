@@ -98,29 +98,31 @@ export default {
 	},
 	methods: {
 		getModeScheme () {
-			this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
-			this.newTactic[this.currentMode].mode = this.currentMode;
+			// this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
+			// this.newTactic[this.currentMode].mode = this.currentMode;
 
-			if(typeof this.clearChema[this.currentMode] != 'undefined')
-				return false;
+			// if(typeof this.clearChema[this.currentMode] != 'undefined')
+			// 	return false;
 
-			this.load = true;
-			this.axios.get('/modes/' + this.currentModeId).then((res) => {
-				this.modeFields[this.currentModeId] = res.data.data.fields;
-				let schema = {};
-				let labels = {};
-				for (let field of res.data.data.fields) {
-					schema[field.model] = '';
-					labels[field.model] = field.name;
-				}
+			// this.load = true;
+			// this.axios.get('/modes/' + this.currentModeId).then((res) => {
+			// 	this.modeFields[this.currentModeId] = res.data.data.fields;
+			// 	console.log(this.modeFields);
 
-				this.$set(this.currentModeScheme, this.currentMode, schema);
-				this.$set(this.labels, this.currentMode, labels);
-				this.clearChema[this.currentMode] = Object.assign({}, this.currentModeScheme[this.currentMode], schema);
-				this.load = false;
-			}).catch((err) => {
-				this.load = false;
-			})
+			// 	let schema = {};
+			// 	let labels = {};
+			// 	for (let field of res.data.data.fields) {
+			// 		schema[field.model] = '';
+			// 		labels[field.model] = field.name;
+			// 	}
+
+			// 	this.$set(this.currentModeScheme, this.currentMode, schema);
+			// 	this.$set(this.labels, this.currentMode, labels);
+			// 	this.clearChema[this.currentMode] = Object.assign({}, this.currentModeScheme[this.currentMode], schema);
+			// 	this.load = false;
+			// }).catch((err) => {
+			// 	this.load = false;
+			// })
 		},
 		addNewStage () {
 			this.$validator.validate().then(valid => {
@@ -137,47 +139,47 @@ export default {
 			this.newTactic[this.currentMode].stages.splice(index, 1);
 		},
 		editStage (index) {
-			this.editingStage = true;
-			this.currentModeScheme[this.currentMode] = this.newTactic[this.currentMode].stages[index];
-			this.editingStageIndex = index;
+			// this.editingStage = true;
+			// this.currentModeScheme[this.currentMode] = this.newTactic[this.currentMode].stages[index];
+			// this.editingStageIndex = index;
 
-			this.$nextTick().then(() => {
-				this.$validator.validate();
-			});
+			// this.$nextTick().then(() => {
+			// 	this.$validator.validate();
+			// });
 		},
 		saveStage () {
-			this.newTactic[this.currentMode].stages[this.editingStageIndex] = {...this.currentModeScheme[this.currentMode]};
-			this.editingStage = false;
-			this.editingStageIndex = false;
-			this.clearForm();
+			// this.newTactic[this.currentMode].stages[this.editingStageIndex] = {...this.currentModeScheme[this.currentMode]};
+			// this.editingStage = false;
+			// this.editingStageIndex = false;
+			// this.clearForm();
 		},
 		clearForm () {
-			const mode = this.currentMode;
-			this.currentModeScheme[mode] = Object.assign({}, this.currentModeScheme[mode], this.clearChema[mode]);
-			this.$validator.reset();
-			this.errors.clear();
+			// const mode = this.currentMode;
+			// this.currentModeScheme[mode] = Object.assign({}, this.currentModeScheme[mode], this.clearChema[mode]);
+			// this.$validator.reset();
+			// this.errors.clear();
 		},
 		tacticSaved (saveResult)
 		{
-			if(!saveResult) return false;
+			// if(!saveResult) return false;
 
-			this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
-			this.editingStage = false;
-			this.editingStageIndex = false;
-			this.$store.dispatch('getUserSavedTactics');
-			this.clearForm();
+			// this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
+			// this.editingStage = false;
+			// this.editingStageIndex = false;
+			// this.$store.dispatch('getUserSavedTactics');
+			// this.clearForm();
 		}
 	},
 	created: function (params) {
-		for(const mode of this.roulette.gameFunctionForMode) {
-			this.rouletteModesList.push(mode.modeName)
-			this.rouletteModes[mode.modeName] = mode.mode_id;
-		}
+		// for(const func of this.roulette.gameFunctionForMode) {
+		// 	this.rouletteModesList.push(func.mode.name)
+		// 	this.rouletteModes[func.mode.name] = func.mode._id;
+		// }
 
-		this.currentMode = this.roulette.gameFunctionForMode[0].modeName;
+		// this.currentMode = this.roulette.gameFunctionForMode[0].mode.name;
 
-		this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
-		this.newTactic[this.currentMode].mode = this.currentMode;
+		// this.$set(this.newTactic, this.currentMode, {...this.tacticSchema, stages: []});
+		// this.newTactic[this.currentMode].mode = this.currentMode;
 	}
 }
 </script>

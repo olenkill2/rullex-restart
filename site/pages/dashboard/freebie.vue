@@ -56,7 +56,7 @@
 				.pages-message(v-if="!freebies.length")
 					|Акций пока нет
 
-				table.roulettes-list(v-else="")
+				table.dashboard-table(v-else="")
 					tbody
 						tr
 							th №

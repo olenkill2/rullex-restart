@@ -69,7 +69,7 @@
 			.pages-message(v-if="modes.length == 0")
 				|Режимов пока нет
 
-			table.modes-list(v-else="")
+			table.dashboard-table(v-else="")
 				tbody
 					tr
 						th №
@@ -338,14 +338,6 @@ export default {
 		&.edit-field_mode
 		{
 			margin-left: 0;
-		}
-	}
-	.modes-list
-	{
-		vertical-align: top;
-		th
-		{
-			vertical-align: top;
 		}
 	}
 </style>
