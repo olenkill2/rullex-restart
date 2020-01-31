@@ -55,13 +55,13 @@ module.exports =
 	// авторизация через гугл
 	oauthVk: async(req, res) =>
 	{
-		res.status(200).json({alah: req})
+		console.log(req.user.profile);
+
+		res.status(200).json({ profile: req.user.profile})
 	},
 	// получение роли пользоваетля
 	getUserInfo: async(req, res) =>
 	{
-		const token = signToken(req.user);
-		res.status(200).json({ token, role: req.user.role });
-		// res.status(200).json({'a':1})
+		res.status(200).json({'a':1})
 	},
 }

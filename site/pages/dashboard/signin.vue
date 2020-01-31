@@ -20,16 +20,9 @@
 </template>
 <script>
 const Cookie = process.client ? require('js-cookie') : undefined;
-import field from '~/components/input';
-import checkbox from '~/components/checkbox';
-
 export default {
 	middleware: 'notAuthenticated',
 	layout: 'dashboard',
-	components: {
-		field,
-		checkbox
-	},
 	data: () => ({
 		valid: false,
 		email: 'a@a.ru',

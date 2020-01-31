@@ -10,5 +10,5 @@ module.exports = function () {
 
 	mongoose.connect(config.get('dbUrl'), {keepAlive: 1}).then(() => {
 		logger.info('DB connected');
-	});
+	}).catch(err => console.log(err));
 }

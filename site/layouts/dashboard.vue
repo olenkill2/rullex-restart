@@ -34,9 +34,9 @@
 					router-link.sidebar-nav-item(to="/dashboard/roulettes") Рулетки
 					router-link.sidebar-nav-item(to="/dashboard/modes") Режимы
 					router-link.sidebar-nav-item(to="/dashboard/freebie") Халява
-
-			.content(:class="{'content_popup': !$store.state.user.auth}")
-				nuxt
+			.content-wr
+				.content(:class="{'content_popup': !$store.state.user.auth}")
+					nuxt
 
 			aside.sidebar-wr(v-if="$store.state.user.role == 'admin'")
 				| всякие штуки

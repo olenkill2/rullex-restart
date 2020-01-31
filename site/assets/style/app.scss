@@ -253,27 +253,23 @@ p
 }
 .sidebar-wr
 {
-	// height: calc(100vh - 106px);
+	height: calc(100vh - 106px);
+	position: sticky;
+	top: 106px;
 	flex-basis: 19%;
 	flex-shrink: 1;
 }
 .sidebar-content
 {
-	position: sticky;
-	top: 100px;
 }
 .content-wr
 {
 	max-width: 59%;
 	flex: 1;
-	min-height: calc(100vh - 106px);
 }
 .content
 {
-	margin-left: 16px;
-	margin-right: 16px;
-	min-height: 100%;
-	min-height: 100vh;
+	min-height: calc(100vh - 106px);
 	flex: 1;
 	overflow-x: hidden;
 }

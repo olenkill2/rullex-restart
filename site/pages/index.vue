@@ -1,6 +1,7 @@
 <template lang="pug">
 	div.page-content
 		| Описание страницы
+
 </template>
 
 <script>

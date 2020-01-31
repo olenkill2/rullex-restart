@@ -53,7 +53,7 @@ module.exports =
 
 		if (!req.query.url) return res.status(400).json({error: 'чего-то не хватает'});
 
-		const result = await Post.findOne({'url': req.query.url, private: true});
+		const result = await Post.findOne({'url': req.query.url, private: false});
 
 		if(!result) return res.status(404).json('error');
 		console.log(result);

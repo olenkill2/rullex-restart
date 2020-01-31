@@ -21,16 +21,19 @@
 
 						.pages-form-groups-field-wr
 							checkbox(v-model="post.private", label="Приватная", name="private")
-
-				editor(
-					ref="editor",
-					class="editor-js-box-wr",
-					holder-id="codex-editor",
-					save-button-id="save-button",
-					placeholder="Контент статьи",
-					:init-data="initData",
-					@change="save",
-					@save="onSave")
+				client-only
+					editor(
+						ref="editor",
+						class="editor-js-box-wr",
+						holder-id="codex-editor",
+						save-button-id="save-button",
+						placeholder="Контент статьи",
+						:init-data="initData",
+						v-bind="config",
+						:customTools="customTools",
+						@change="save",
+						@save="onSave"
+					)
 
 				.pages-form-actions(v-if="!edit")
 					.pages-form-actions__item
@@ -69,14 +72,16 @@
 								.edit-field.edit-field_roulette(@click="setPostForEdit(index)")
 </template>
 <script>
-import field from '~/components/input';
-import dropdown from '~/components/drop-down';
-import checkbox from '~/components/checkbox';
-import textField from '~/components/textarea';
+let linkTool = {};
+let image = {};
+if (process.client) {
+  linkTool = require('@editorjs/link');
+  image = require('@editorjs/image');
+}
 
 export default {
 	layout: 'dashboard',
-	async asyncData (req) {
+	asyncData (req) {
 		return req.$axios.get('/api/post').then((result, error) => {
 			return { posts: result.data }
 		}).catch((error) => {
@@ -84,12 +89,7 @@ export default {
 		})
 	},
 	middleware: ['authenticated'],
-	components: {
-		field,
-		checkbox,
-		dropdown,
-		textField
-	},
+	components: {},
 	data: () => ({
 		posts: [],
 		postFormShow: false,
@@ -100,7 +100,44 @@ export default {
 		content: {},
 		initData: {
 			blocks: [],
-		}
+		},
+		config: {
+			header: {
+				inlineToolbar: true
+			},
+			text: {
+				inlineToolbar: ['link']
+			},
+			list: {
+				inlineToolbar: true
+			},
+			checlist: {
+				inlineToolbar: true
+			},
+			table: {
+				inlineToolbar: true
+			},
+			rawHtml: {
+				inlineToolbar: true
+			},
+			code: {
+				inlineToolbar: true
+			},
+			inlineCode: {
+				inlineToolbar: true
+			},
+			marker: {
+				inlineToolbar: true
+			},
+			delimiter: {
+				inlineToolbar: true
+			},
+			quote: {
+				inlineToolbar: true
+			},
+
+		},
+		customTools: {}
 	}),
 	computed: {
 	},
@@ -133,17 +170,16 @@ export default {
 
 		cancelEdit () {
 			this.post = this.getPostSchema();
+			this.initData = {};
 			this.edit = false;
 			this.postFormShow = false;
 		},
 
 		addPost () {
-			// this.$refs.editor.save();
 			this.$axios.post('/api/post', this.post).then((response, error) => {
 				this.getPosts();
 				this.cancelEdit();
 			}).catch((error, res) => {
-				// this.addPostErrors = error;
 			})
 		},
 
@@ -157,12 +193,7 @@ export default {
 		},
 
 		updatePost () {
-
-			console.log(this.post.content);
-
 			this.$axios.put('/api/post/' + this.post._id, this.post).then((response, error) => {
-				console.log(this.post.content);
-
 				this.getPosts();
 				this.cancelEdit();
 			}).catch((error) => {
@@ -172,6 +203,8 @@ export default {
 			});
 		},
 		save() {
+			console.log(this.$refs.editor);
+
 			this.$refs.editor.save();
 		},
 		onSave (response) {
@@ -180,6 +213,35 @@ export default {
 	},
 	created () {
 		this.post = this.getPostSchema();
+	},
+	mounted() {
+		if(process.browser)
+		{
+
+			this.customTools.linkTool = {
+				class: linkTool,
+				config: {
+					endpoint: 'http://localhost:3002/api/v1/uploads/url',
+					additionalRequestHeaders: {
+						'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJMZXNoaXkiLCJzdWIiOiI1ZTA1YzBmZTY2MjE4OTBlN2MwODA2NGEiLCJpYXQiOjE1Nzc2NDY5OTUzNjUsImV4cCI6MTU3NzczMzM5NTM2NX0.HbH-QL5_YiyyG1sMTAlRt1AiH1qtnNPYpyavAZ8-P2Y'
+					},
+				}
+			}
+			this.customTools.images = {
+				class: image,
+				config: {
+					endpoints: {
+						byFile: 'http://localhost:3002/api/v1/uploads/img',
+						byUrl: 'http://localhost:3002/api/v1/uploads/img-by-url',
+					},
+					additionalRequestHeaders: {
+						'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJMZXNoaXkiLCJzdWIiOiI1ZTA1YzBmZTY2MjE4OTBlN2MwODA2NGEiLCJpYXQiOjE1Nzc2NDY5OTUzNjUsImV4cCI6MTU3NzczMzM5NTM2NX0.HbH-QL5_YiyyG1sMTAlRt1AiH1qtnNPYpyavAZ8-P2Y'
+					},
+					field: 'image',
+					types: 'image/*',
+				}
+			}
+		}
 	}
 }
 </script>

@@ -7,8 +7,8 @@ const {JWT_auth} = require('../passport');
 
 router
 	.route('/')
-	.get(passport.authenticate('jwt', {session: false}), isAdmin, roulette.getAll)
-	.post(passport.authenticate('jwt', {session: false}), isAdmin, validateBody('roulette'), roulette.add);
+	.get(JWT_auth, isAdmin, roulette.getAll)
+	.post(JWT_auth, isAdmin, validateBody('roulette'), roulette.add);
 
 router
 	.route('/public/')
@@ -20,8 +20,8 @@ router
 
 router
 	.route('/:id')
-	.delete(passport.authenticate('jwt', {session: false}), isAdmin, roulette.delete)
-	.put(passport.authenticate('jwt', {session: false}), isAdmin, validateBody('roulette'), roulette.update);
+	.delete(JWT_auth, isAdmin, roulette.delete)
+	.put(JWT_auth, isAdmin, validateBody('roulette'), roulette.update);
 
 
 module.exports = router;

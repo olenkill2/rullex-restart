@@ -1,12 +1,12 @@
 const adminRoutes = require('./admin');
 const usersRoutes = require('./users');
 const menuRoutes = require('./menu');
-const categorysRoutes = require('./categorys');
 const postsRoutes = require('./posts');
 const modesRoutes = require('./modes');
 const roulettesRoutes = require('./roulettes');
 const freebiesRoutes = require('./freebies');
 const seoRoutes = require('./seo');
+const uploadRoutes = require('./uploads');
 const error = require('../middleware/error');
 
 module.exports = function(app, db) {
@@ -17,6 +17,7 @@ module.exports = function(app, db) {
     app.use('/api/v1/modes', modesRoutes);
     app.use('/api/v1/menu', menuRoutes);
     app.use('/api/v1/freebies', freebiesRoutes);
+    app.use('/api/v1/uploads', uploadRoutes);
     app.use('/api/v1/seo', seoRoutes);
     app.use(error);
 }

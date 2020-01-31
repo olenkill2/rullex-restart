@@ -11,13 +11,13 @@ router
 
 router
     .route('/')
-    .get(passport.authenticate('jwt', { session: false }), isAdmin, seo.getAll)
-    .post(passport.authenticate('jwt', { session: false }), isAdmin, validateBody('seo'), seo.add);
+    .get(JWT_auth, isAdmin, seo.getAll)
+    .post(JWT_auth, isAdmin, validateBody('seo'), seo.add);
 
 router
     .route('/:id')
-    .delete(passport.authenticate('jwt', { session: false }), isAdmin, seo.delete)
-    .put(passport.authenticate('jwt', { session: false }), isAdmin, validateBody('seo'), seo.update);
+    .delete(JWT_auth, isAdmin, seo.delete)
+    .put(JWT_auth, isAdmin, validateBody('seo'), seo.update);
 
 
 module.exports = router;

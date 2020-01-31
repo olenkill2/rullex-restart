@@ -15,9 +15,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 require('./routes/index')(app);
 
+app.use('/uploads', express.static(__dirname + "/uploads"));
 app.use('*', (req, res) => {
 	res.status(404).json({error: 'method not exist'});
 })

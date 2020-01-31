@@ -64,6 +64,7 @@ module.exports = {
 		'~/plugins/directives',
 		'~/plugins/axios',
 		'~/plugins/vee-validate',
+		'~/plugins/customGlobalComponents',
 		{src: '~/plugins/editor', ssr: false},
 	],
 

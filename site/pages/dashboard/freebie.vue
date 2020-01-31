@@ -82,10 +82,6 @@
 </template>
 
 <script>
-import field from '~/components/input';
-import dropdown from '~/components/drop-down';
-import checkbox from '~/components/checkbox';
-import textField from '~/components/textarea';
 export default {
 	async asyncData ({$axios, redirect, res, route}) {
 		try {
@@ -102,12 +98,6 @@ export default {
 	},
 	name: 'freebie',
 	middleware: ['authenticated'],
-	components: {
-		field,
-		checkbox,
-		dropdown,
-		textField
-	},
 	data: () => ({
 		freebies: [],
 		freebieFormShow: false,

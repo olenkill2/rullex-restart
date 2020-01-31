@@ -90,9 +90,6 @@
 							.edit-field.edit-field_mode(@click="editMode(index)")
 </template>
 <script>
-import field from '~/components/input';
-import dropdown from '~/components/drop-down';
-import checkbox from '~/components/checkbox';
 export default {
 	layout (context) {
 		return 'dashboard'
@@ -104,11 +101,6 @@ export default {
 		} catch (err) {
 			return { modes: []};
 		}
-	},
-	components: {
-		field,
-		checkbox,
-		dropdown
 	},
 	middleware: ['authenticated'],
 	data: () => ({
