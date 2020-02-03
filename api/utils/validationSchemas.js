@@ -2,7 +2,8 @@ const Joi = require('joi');
 module.exports = {
     newUser: Joi.object().keys({
         email: Joi.string().email().required(),
-        password: Joi.string().required().min(6).max(255)
+        password: Joi.string().required().min(6).max(255),
+        againPassword: Joi.string().required().valid(Joi.ref('password')).min(6).max(255)
     }).options({ allowUnknown: true }),
 
     category: Joi.object().keys({

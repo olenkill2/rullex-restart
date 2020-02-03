@@ -1,7 +1,7 @@
 <template lang="pug">
 	div.page-content
 		| Описание страницы
-
+		a(href="https://accounts.google.com/o/oauth2/v2/auth?client_id=48660716713-fo9d7bgkr98800vjicot1r5uofkb3qke.apps.googleusercontent.com&redirect_uri=http://localhost:3334/vk/?google-auth&scope=https://www.googleapis.com/auth/userinfo.email&response_type=code&access_type=offline&prompt=consent", target="blank") lol
 </template>
 
 <script>

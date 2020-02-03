@@ -1,5 +1,5 @@
 export default function ({ store, redirect }) {
-	if (!store.state.user.auth) {
-		return redirect('/dashboard/signin')
+	if (!store.state.user.authorized) {
+		return redirect('/')
 	}
 }

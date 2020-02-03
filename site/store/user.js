@@ -1,12 +1,12 @@
 const cookieparser = require('js-cookie');
 export const state = () => ({
 	auth: false,
-	role: 'user',
+	role: 'guest',
 	token: null,
 })
 
 export const mutations = {
-	setAuth(state, userData) {
+	setUser(state, userData) {
 		state.auth = true;
 		state.token = userData.token;
 		state.role = userData.role;
@@ -20,5 +20,8 @@ export const mutations = {
 }
 
 export const actions = {
-
+	auth({ commit }, data) {
+		commit('setUser', data);
+		cookieparser.set('authorization', data.token);
+	}
 };

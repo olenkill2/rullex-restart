@@ -20,7 +20,9 @@ export const actions = {
 				this.$axios.setHeader('Authorization', 'Bearer ' + token);
 				try {
 					let res = await this.$axios.post('http://127.0.0.1:3002/api/v1/users/signin-token');
-					await commit('user/setAuth', res.data)
+					console.log(res.data);
+
+					dispatch('user/auth', res.data)
 				} catch (error) {
 					console.log(error);
 				}

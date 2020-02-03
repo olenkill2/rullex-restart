@@ -1,14 +1,13 @@
 <template lang="pug">
-	div
-		.page-content
-			h1.page-content__header {{pageData.title}}
+	div.page-content
+		h1.page-content__header {{pageData.title}}
 
-			component(
-				v-for="(block, key) in pageData.content.blocks",
-				:key="key"
-				:is="'co_' + block.type",
-				v-if="haveComponent('co_' + block.type)",
-				:block="block")
+		component(
+			v-for="(block, key) in pageData.content.blocks",
+			:key="key"
+			:is="'co_' + block.type",
+			v-if="haveComponent('co_' + block.type)",
+			:block="block")
 
 </template>
 
