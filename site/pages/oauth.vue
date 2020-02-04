@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     loyout: 'none',
     data() {
@@ -17,6 +18,9 @@ export default {
             loading: true
         }
     },
+    methods: {
+        ...mapActions({ auth: 'user/auth'}),
+    },
     async mounted() {
         if(this.$store.state.user.auth)
             return this.$router.push('/');
@@ -24,17 +28,14 @@ export default {
         try {
             const result = await this.$axios.get('/api/users/oauth/' + this.$route.query.from, {params: {code: this.$route.query.code}})
             const pageCountToRedirect = this.$route.query.from == 'google' ? -2 : -1;
+
+            this.auth(result.data);
+
             return this.$router.go(pageCountToRedirect);
         } catch (error) {
             this.loading = false;
             this.error = true;
         }
-        // if(a.data)
-        // {
-        //     console.log(a.data);
-        //     // this.$router.back();
-        // }
-
     }
 }
 </script>

@@ -15,7 +15,7 @@ export const actions = {
 
 			commit('setMenu', res.data.data);
 		} catch (error) {
-			console.log(error);
+			commit('setMenu', [])
 		}
 	}
 };

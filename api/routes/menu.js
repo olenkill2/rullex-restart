@@ -6,7 +6,7 @@ const validateBody = require('../middleware/validator');
 
 router
 	.route('/')
-	.post(JWT_auth, isAdmin, validateBody('menu'), menu.add)
+	.post(JWT_auth, isAdmin,  menu.add)
 	.get(JWT_auth, isAdmin, menu.get)
 
 router

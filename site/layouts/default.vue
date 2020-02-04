@@ -18,7 +18,7 @@
 						.sidebar-nav__item-wr(v-for="(group, index) in menu")
 							.single-item(v-if="group.items.length == 1 || group._id == ''", v-for="navItem in group.items")
 								router-link.sidebar-nav-item(:to="navItem.url")
-									span(v-if="group.items.length == 1") {{group._id}} –
+									span(v-if="group.items.length == 1 && group._id != ''") {{group._id}} –
 									span  {{navItem.label}}
 
 							sidebar-group(
