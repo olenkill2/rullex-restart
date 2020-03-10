@@ -32,16 +32,12 @@ export default {
 		try {
 			const res = await this.axios.get('/roulettes/public/' + window.location.host);
 			const roulette = res.data.data;
-			console.log(roulette);
 
 			this.authCheckFunction = eval(roulette.functions.authValidationRuleFunction).call(this);
 			this.getBalanceFunction = eval(roulette.functions.balanceParseFunction).call(this);
 			this.$store.commit('updateLoadState', true);
 			this.$store.commit('setCurrentRoulette', roulette);
 		} catch (error) {
-			console.log(error);
-
-			// this.$store.commit('updateLoadState', false);
 			return false;
 		}
 
@@ -70,6 +66,9 @@ export default {
 		}
 
 		this.$store.dispatch('getUserSavedTactics');
+	},
+	methods: {
+
 	}
 }
 </script>
