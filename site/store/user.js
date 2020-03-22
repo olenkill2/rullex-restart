@@ -7,12 +7,12 @@ export const state = () => ({
 })
 
 export const mutations = {
-	setUser(state, userData) {
+	SET_USER(state, userData) {
 		state.auth = true;
 		state.token = userData.token;
 		state.role = userData.role;
 	},
-	logout (state) {
+	LOGOUT (state) {
 		state.auth = false;
 		state.token = null;
 		state.role = 'guest';
@@ -21,11 +21,11 @@ export const mutations = {
 
 export const actions = {
 	auth({ commit }, data) {
-		commit('setUser', data);
+		commit('SET_USER', data);
 		// cookieparser.set('Authorization', data.token);
 	},
 	logout({ commit }) {
-		commit('logout');
+		commit('LOGOUT');
 		// cookieparser.remove('Authorization');
 	}
 };

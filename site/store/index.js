@@ -3,9 +3,6 @@ export const state = () => ({
 })
 
 export const mutations = {
-	increment (state) {
-		state.counter++
-	}
 }
 export const actions = {
 	async nuxtServerInit({ commit, dispatch }, { req, res }) {

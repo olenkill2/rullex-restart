@@ -22,20 +22,21 @@ export default {
         ...mapActions({ auth: 'user/auth'}),
     },
     async mounted() {
-        if(this.$store.state.user.auth)
-            return this.$router.push('/');
-
-        try {
-            const result = await this.$axios.get('/api/users/oauth/' + this.$route.query.from, {params: {code: this.$route.query.code}})
-            const pageCountToRedirect = this.$route.query.from == 'google' ? -2 : -1;
-
-            this.auth(result.data);
-
-            return this.$router.go(pageCountToRedirect);
-        } catch (error) {
-            this.loading = false;
-            this.error = true;
-        }
+        // if(this.$store.state.user.auth)
+        //     return this.$router.push('/');
+        //
+            // const result = await this.$axios.get('/api/users/oauth/' + this.$route.query.from, {params: {code: this.$route.query.code}})
+        //     const pageCountToRedirect = this.$route.query.from == 'google' ? -2 : -1;
+        //
+        //     this.auth(result.data);
+        //
+        //     return this.$router.go(pageCountToRedirect);
+        // } catch (error) {
+        //     this.loading = false;
+        //     this.error = true;
+        // }
+        // try {
+        const result = await this.$axios.get('/api/users/oauth/vk')
     }
 }
 </script>

@@ -79,20 +79,24 @@ module.exports =
 	// авторизация через vk
 	oauthVk: async(req, res) =>
 	{
-		const user = req.user.profile;
-
-		let foundUser = await User.findOne({ 'vk.id': user.id })
-
-		if (!foundUser)
-			foundUser = await createBySocial({
-				email: user.email ? user.email : '',
-				id: user.id,
-				method: 'vk',
-			})
-
-		const token = signToken(foundUser);
-
-		res.status(200).json({ token, role: foundUser.role });
+		console.log(res.statusCode)
+		// const user = req.user.profile;
+		//
+		// // console.log(user)
+		//
+		// let foundUser = await User.findOne({ 'vk.id': user.id })
+		//
+		// if (!foundUser)
+		// 	foundUser = await createBySocial({
+		// 		email: user.email ? user.email : '',
+		// 		id: user.id,
+		// 		method: 'vk',
+		// 	})
+		//
+		// const token = signToken(foundUser);
+		//
+		// res.status(200).json({ token, role: foundUser.role });
+		res.status(200).json({ access_token: '12', role: 'asdmi' });
 	},
 	// получение роли пользоваетля
 	getUserInfo: async(req, res) =>

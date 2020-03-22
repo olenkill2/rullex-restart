@@ -7,6 +7,13 @@ const { ExtractJwt } = require('passport-jwt');
 const User = require('./models/userModel.js');
 const JWT_SECRET  = require('config').get('JWT_SECRET');
 
+// passport.serializeUser(function(user, done) {
+// 	done(null, user);
+// });
+// passport.deserializeUser(function(obj, done) {
+// 	done(null, obj);
+// });
+
 //JSON WEB TOKEN STRATEGY
 passport.use(new JwtStrategy({
 		jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -62,11 +69,12 @@ passport.use(new LocalStrategy({
 passport.use(new VKontakteStrategy({
 		clientID: '7101695', // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId'
 		clientSecret: 'jjvrUe9sPCInb7EW0Fos',
-		callbackURL: 'http://localhost:3334/oauth/?from=vk',
+		callbackURL: 'http://localhost:3334/',
 		scope: ['email' ],
 		profileFields: ['email', 'city', 'bdate']
 	},
 	function myVerifyCallbackFn(accessToken, refreshToken, params, profile, done) {
+		console.log(accessToken, refreshToken, params, profile, done)
 		done(null, { accessToken, refreshToken, profile});
 	}
 ));
@@ -75,5 +83,10 @@ module.exports = {
 	JWT_auth: passport.authenticate('jwt', {session: false}),
 	Local_auth: passport.authenticate('local', {session: false}),
 	Google_auth: passport.authenticate('google', { scope: ['profile'], session: false}),
-	Vk_auth: passport.authenticate('vkontakte', { scope: ['status', 'email', 'friends', 'notify'], profileFields: ['email', 'city', 'bdate'], session: false}),
+	VK_cb: passport.authenticate('vkontakte', { failureRedirect: '/', scope: ['status', 'email', 'friends', 'notify'], profileFields: ['email', 'city', 'bdate'], session: false}),
+	Vk_auth: function (req, res, next) {
+		// console.log(req)
+		// next()
+		passport.authenticate('vkontakte', { scope: ['status', 'email', 'friends', 'notify'], profileFields: ['email', 'city', 'bdate'], session: false})(req, res, next)
+	},
 }

@@ -3,7 +3,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-	setMenu(state, menu) {
+	SET_MENUITEMS(state, menu) {
 		state.items = menu;
 	},
 }
@@ -13,9 +13,9 @@ export const actions = {
 		try {
 			let res = await this.$axios.get('http://127.0.0.1:3002/api/v1/menu/public');
 
-			commit('setMenu', res.data.data);
+			commit('SET_MENUITEMS', res.data.data);
 		} catch (error) {
-			commit('setMenu', [])
+			commit('SET_MENUITEMS', [])
 		}
 	}
 };

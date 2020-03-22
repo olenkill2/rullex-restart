@@ -94,7 +94,7 @@ export default {
 	computed: {
 		vkUrl () {
 			const redirectTo = window.location.origin + '/oauth/?from=vk';
-			return `http://oauth.vk.com/authorize?client_id=7101695&display=page&redirect_uri=${redirectTo}&scope=email&response_type=code&v=5.52`;
+			return `http://oauth.vk.com/authorize?client_id=7101695&display=popup&redirect_uri=${redirectTo}&scope=email&response_type=code&v=5.52`;
 		},
 		goUrl () {
 			const redirectTo = window.location.origin + '/oauth/?from=google';
