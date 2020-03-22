@@ -15,14 +15,14 @@ function getRedirectUri(uri) {
 Vue.use(VueAxios, axios)
 Vue.use(VueAuthenticate, {
   tokenName: 'access_token',
-  baseUrl: 'http://localhost:3002/',
+  baseUrl: 'https://rullex.ru/',
   tokenPrefix: '',
   providers: {
     vk: {
         name: 'vk',
         url: '/api/v1/users/oauth/vk/cb',
-        authorizationEndpoint: 'http://localhost:3002/api/v1/users/oauth/vk/',
-        redirectUri: 'http://localhost:3334/',
+        authorizationEndpoint: 'https://rullex.ru/api/v1/users/oauth/vk/',
+        redirectUri: 'https://rullex.ru/',
         requiredUrlParams: ['scope', 'display'],
         scope: ['email'],
         display: 'popup',
