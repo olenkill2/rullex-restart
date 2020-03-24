@@ -8,7 +8,7 @@ const userSchema = new Schema(
 	method:
 	{
 		type: String,
-		enum: ['local', 'google', 'vk'],
+		enum: ['local', 'google', 'vk', 'yandex', 'facebook'],
 		required: true
 	},
 	local:
@@ -37,6 +37,28 @@ const userSchema = new Schema(
 	},
 	vk:
 	{
+		id:
+		{
+			type: String
+		},
+		email:
+		{
+			type: String,
+			lowercase: true
+		}
+	},
+	yandex: {
+		id:
+		{
+			type: String
+		},
+		email:
+		{
+			type: String,
+			lowercase: true
+		}
+	},
+	facebook: {
 		id:
 		{
 			type: String

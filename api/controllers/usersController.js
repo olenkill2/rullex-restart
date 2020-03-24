@@ -13,16 +13,18 @@ signToken = user => {
 }
 
 createBySocial = data => {
-	return User.create({
+	const newUser = {
 		method: data.method,
 		created_at: Date.now(),
-		vk:
-		{
-			email: data.email,
-			id: data.id
-		},
 		role: 'user'
-	});
+	}
+
+	newUser[data.method] = {
+		id: data.id,
+		email: data.email
+	}
+
+	return User.create(newUser);
 
 }
 
@@ -57,46 +59,77 @@ module.exports =
 	signIn: async(req, res) =>
 	{
 		const token = signToken(req.user);
-		res.status(200).json({ token, role: req.user.role });
+		res.status(200).json({ access_token: token, role: req.user.role });
 	},
 	// авторизация через гугл
 	oauthGoogle: async(req, res) =>
 	{
-		const user = req.user.profile;
+		const user = req.user;
 		let foundUser = await User.findOne({ 'google.id': user.id })
 
 		if(!foundUser)
 			foundUser = await createBySocial({
-				email: user.emails[0].value,
+				email: user.email,
 				id: user.id,
 				method: 'google',
 			})
 
 		const token = signToken(foundUser);
 
-		res.status(200).json({ token, role: foundUser.role });
+		res.status(200).json({ access_token: token, role: foundUser.role });
 	},
 	// авторизация через vk
 	oauthVk: async(req, res) =>
 	{
-		console.log(res.statusCode)
-		// const user = req.user.profile;
-		//
-		// // console.log(user)
-		//
-		// let foundUser = await User.findOne({ 'vk.id': user.id })
-		//
-		// if (!foundUser)
-		// 	foundUser = await createBySocial({
-		// 		email: user.email ? user.email : '',
-		// 		id: user.id,
-		// 		method: 'vk',
-		// 	})
-		//
-		// const token = signToken(foundUser);
-		//
-		// res.status(200).json({ token, role: foundUser.role });
-		res.status(200).json({ access_token: '12', role: 'asdmi' });
+		const user = req.user;
+
+		let foundUser = await User.findOne({ 'vk.id': user.id })
+
+		if (!foundUser)
+			foundUser = await createBySocial({
+				email: user.email ? user.email : '',
+				id: user.id,
+				method: 'vk',
+			})
+
+		console.log(user)
+		const token = signToken(foundUser);
+
+		res.status(200).json({ access_token: token, role: foundUser.role });
+	},
+
+	oauthYandex: async (req, res) => {
+		const user = req.user;
+
+		let foundUser = await User.findOne({ 'yandex.id': user.id })
+
+		if (!foundUser)
+			foundUser = await createBySocial({
+				email: user.default_email,
+				id: user.id,
+				method: 'yandex',
+			})
+
+		const token = signToken(foundUser);
+
+		res.status(200).json({ access_token: token, role: foundUser.role });
+	},
+
+	oauthFacebook: async (req, res) => {
+		const user = req.user;
+
+		let foundUser = await User.findOne({ 'facebook.id': user.id })
+
+		if (!foundUser)
+			foundUser = await createBySocial({
+				email: user.email ? user.email : '',
+				id: user.id,
+				method: 'facebook',
+			})
+
+		const token = signToken(foundUser);
+
+		res.status(200).json({ access_token: token, role: foundUser.role });
 	},
 	// получение роли пользоваетля
 	getUserInfo: async(req, res) =>

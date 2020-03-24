@@ -12,8 +12,8 @@ export const actions = {
 
 			const parsed = cookieparser.parse(req.headers.cookie);
 
-			if(parsed.Authorization) {
-				const token = parsed.Authorization;
+			if(parsed.access_token) {
+				const token = parsed.access_token;
 				this.$axios.setHeader('Authorization', 'Bearer ' + token);
 				try {
 					let res = await this.$axios.post('http://127.0.0.1:3002/api/v1/users/signin-token');

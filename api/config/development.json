@@ -1,4 +1,4 @@
 {
-	"dbUrl": "mongodb://rulex-dev:NGvXy5m%25%24Q@rullex.ru:27017/rullex-dev",
+	"dbUrl": "mongodb://rulex-dev:stasstas12021202@rullex.ru:27017/rullex-dev",
 	"JWT_SECRET": "LeshitSecretKey"
 }

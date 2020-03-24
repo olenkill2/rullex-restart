@@ -9,13 +9,6 @@ const logger = require('./startup/logger');
 require('./startup/db')();
 
 app.use(helmet());
-// // app.options('*', cors());
-// const corsOption = {
-// 	origin: true,
-// 	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-// 	credentials: true,
-// 	exposedHeaders: ['x-auth-token']
-// };
 app.use(cors());
 app.use(morgan('dev'));
 

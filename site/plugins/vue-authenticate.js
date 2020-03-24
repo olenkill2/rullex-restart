@@ -1,50 +1,71 @@
-import Vue from 'vue'
-import VueAxios from 'vue-axios'
+const popupOffset = (width, height) => {
+
+}
+
 import VueAuthenticate from 'vue-authenticate'
+import Vue from 'vue'
 import axios from 'axios';
 
-function getRedirectUri(uri) {
-  try {
-    return (!isUndefined(uri))
-      ? `${$window.location.origin}${uri}`
-      : $window.location.origin
-  } catch (e) {}
-
-  return uri || null;
-}
-Vue.use(VueAxios, axios)
-Vue.use(VueAuthenticate, {
-  tokenName: 'access_token',
-  baseUrl: 'https://rullex.ru/',
-  tokenPrefix: '',
-  providers: {
-    vk: {
-        name: 'vk',
-        url: '/api/v1/users/oauth/vk/cb',
-        authorizationEndpoint: 'https://rullex.ru/api/v1/users/oauth/vk/',
-        redirectUri: 'https://rullex.ru/',
-        requiredUrlParams: ['scope', 'display'],
-        scope: ['email'],
-        display: 'popup',
-        responseType: 'code',
-        oauthType: '2.0',
-        popupOptions: { width: 452, height: 633, top: '50%', left: '50%' },
-        clientId: '7101695',
-    },
-    google: {
-        name: 'google',
-          url: '/oauth/google',
-          authorizationEndpoint: 'http://localhost:3002/api/v1/users/oauth/vk/',
-          redirectUri: 'http://localhost:3334/',
-          optionalUrlParams: ['display'],
-          requiredUrlParams: ['scope'],
-          scope: ['profile', 'email'],
-          scopePrefix: 'openid',
-          responseType: 'code',
-          scopeDelimiter: ' ',
-          oauthType: '2.0',
-          popupOptions: { width: 452, height: 633 },
-          clientId: '48660716713-fo9d7bgkr98800vjicot1r5uofkb3qke.apps.googleusercontent.com'
-    },
-  }
+const vueAuth = VueAuthenticate.factory(axios, {
+    tokenName: 'access_token',
+    baseUrl: 'http://localhost:3002/api/v1/users/oauth/',
+    tokenPrefix: '',
+    storageType: 'cookieStorage',
+    providers: {
+        vk: {
+            name: 'vk',
+            url: '/vk/cb',
+            authorizationEndpoint: 'https://oauth.vk.com/authorize',
+            redirectUri: 'http://localhost:3334/',
+            requiredUrlParams: ['scope', 'display', 'userId'],
+            scope: ['email'],
+            display: 'popup',
+            responseType: 'code',
+            oauthType: '2.0',
+            popupOptions: { width: null, height: null },
+            clientId: '7101695',
+        },
+        google: {
+            name: 'google',
+            url: '/google/cb',
+            authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
+            redirectUri: 'http://localhost:3334/',
+            optionalUrlParams: ['display'],
+            requiredUrlParams: ['scope'],
+            scope: ['profile', 'email'],
+            responseType: 'code',
+            scopeDelimiter: ' ',
+            oauthType: '2.0',
+            popupOptions: { width: null, height: null },
+            clientId: '48660716713-fo9d7bgkr98800vjicot1r5uofkb3qke.apps.googleusercontent.com'
+        },
+        yandex: {
+            name: 'yandex',
+            url: '/yandex/cb',
+            authorizationEndpoint: 'https://oauth.yandex.ru/authorize',
+            redirectUri: 'http://localhost:3334/',
+            requiredUrlParams: ['scope'],
+            scope: ['login:email', 'login:avatar', 'login:info', 'audience:read'],
+            responseType: 'code',
+            scopeDelimiter: ' ',
+            oauthType: '2.0',
+            popupOptions: { width: null, height: null },
+            clientId: '6788702d603a44f88473b0fdc103546b'
+        },
+        facebook: {
+            name: 'facebook',
+            url: '/facebook/cb',
+            authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
+            redirectUri: 'http://localhost:3334/',
+            requiredUrlParams: ['display', 'scope'],
+            scope: ['email'],
+            responseType: 'code',
+            scopeDelimiter: ',',
+            oauthType: '2.0',
+            popupOptions: { width: null, height: null },
+            clientId: '208478517090320'
+        },
+    }
 })
+
+Vue.prototype.$auth = vueAuth
