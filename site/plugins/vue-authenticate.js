@@ -23,7 +23,7 @@ const vueAuth = VueAuthenticate.factory(axios, {
             responseType: 'code',
             oauthType: '2.0',
             popupOptions: { width: null, height: null },
-            clientId: '7101695',
+            clientId: '23',
         },
         google: {
             name: 'google',
@@ -37,7 +37,7 @@ const vueAuth = VueAuthenticate.factory(axios, {
             scopeDelimiter: ' ',
             oauthType: '2.0',
             popupOptions: { width: null, height: null },
-            clientId: '48660716713-fo9d7bgkr98800vjicot1r5uofkb3qke.apps.googleusercontent.com'
+            clientId: '23'
         },
         yandex: {
             name: 'yandex',
@@ -50,7 +50,7 @@ const vueAuth = VueAuthenticate.factory(axios, {
             scopeDelimiter: ' ',
             oauthType: '2.0',
             popupOptions: { width: null, height: null },
-            clientId: '6788702d603a44f88473b0fdc103546b'
+            clientId: '23'
         },
         facebook: {
             name: 'facebook',
@@ -63,7 +63,7 @@ const vueAuth = VueAuthenticate.factory(axios, {
             scopeDelimiter: ',',
             oauthType: '2.0',
             popupOptions: { width: null, height: null },
-            clientId: '208478517090320'
+            clientId: '23'
         },
     }
 })
