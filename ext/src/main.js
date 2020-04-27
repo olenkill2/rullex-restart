@@ -1,58 +1,31 @@
-import Vue from 'vue';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
-import VeeValidate from 'vee-validate';
-import { Validator } from 'vee-validate';
-import App from './App.vue';
-import store from './store';
+import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import App from './App.vue'
+import store from './store'
+import Field from './components/ui/Field'
+import DropDown from './components/ui/DropDown'
+import Checkbox from './components/ui/Checkbox'
+import { clickOutside } from './utils/directives'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'http://localhost:3002/api/v1/';
-axios.interceptors.response.use((response) => response, (error) => {
-	Sentry.captureException(error);
-	return Promise.reject(error);
-});
+axios.defaults.baseURL = 'http://localhost:3002/api/v1/'
+Vue.use(VueAxios, axios)
 
-Vue.use(VueAxios, axios);
+const components = {
+    Field,
+    DropDown,
+    Checkbox
+}
 
-const dictionary = {
-	en: {
-		messages:{
-			required: () => 'Поле не заполнено'
-		}
-	},
-};
+Object.entries(components).forEach(([name, component]) => {
+    Vue.component(name, component)
+})
 
-Validator.localize(dictionary);
-Vue.use(VeeValidate);
+Vue.directive('click-outside', clickOutside)
 
 new Vue({
 	store,
 	render: h => h(App)
-}).$mount('#app');
-
-Vue.directive('click-outside',{
-	bind: function (el, binding, vnode)
-	{
-		el.fisrtClick = true;
-		el.clickOutsideEvent = function(event)
-		{
-			if(el.fisrtClick === true)
-			{
-				el.fisrtClick = false;
-				return false;
-			}
-			if(!(el == event.target || el.contains(event.target)))
-			{
-				el.fisrtClick = false;
-				vnode.context[binding.expression](event);
-			}
-		};
-		document.body.addEventListener('click', el.clickOutsideEvent);
-	},
-	unbind:function(el)
-	{
-		document.body.removeEventListener('click', el.clickOutsideEvent);
-	},
-});
+}).$mount('#app')

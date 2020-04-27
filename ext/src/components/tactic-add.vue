@@ -1,55 +1,89 @@
-<template lang="pug">
-	.tactic-add-wr
-		.tactic-add-top-actions
-			.tactic-add-top-actions__left
-				field(v-model="newTactic[currentMode].name", label="Название", placeholder="Насос бабла")
-			.tactic-add-top-actions__right
-				dropdown(:list="rouletteModesList", v-model="currentMode", label="Режим")
-
-		.tactic-add-header
-			|Параметры этапа
-
-		form(@submit.prevent="addNewStage", @keyup.enter="addNewStage")
-			.etap-form-wr(v-if="!load", :class="{'etap-form-load': load}")
-				.etap-form__item(v-for="(field, index) in modeFields[currentModeId]")
-					field(v-if="field.component == 'field'",
-						v-model.trim="currentModeScheme[currentMode][field.model]",
-						:name="field.name" :label="field.name",
-						:placeholder="field.placeholder"
-						v-validate="'required'",
-						:error="errors.first(field.name)")
-
-					dropdown(v-if="field.component == 'dropdown'", :ref="field.model" :list="field.dropDownList", v-model="currentModeScheme[currentMode][field.model]", :label="field.name")
-
-		.etap-form-actions(v-if="!editingStage && !load")
-				button.btn.btn_red.etap-form-actions__clear(@click="clearForm", :disabled="!formNotClear")
-					|Очистить
-
-				button.btn.etap-form-actions__add(@click="addNewStage", :disabled="isFormInValid")
-					|Добавить этап
-
-		.etap-form-actions(v-else-if="editingStage")
-			button.btn.btn_skin.etap-form-actions__clear(@click="clearForm", :disabled="!formNotClear")
-				|Отменить
-
-			button.btn.etap-form-actions__add(@click="saveStage", :disabled="isFormInValid")
-				|Сохранить
-
-		transition(name="slide-up")
-			tactcViewer(v-if="currentTacticStagesLength", :tactic="newTactic[currentMode]", @remove="removeStage", @edit="editStage", :stagesLength="currentTacticStagesLength", @tacticSaved="tacticSaved")
-
+<template>
+	<div class="tactic-add-wr">
+<!--    <div class="tactic-add-top-actions">-->
+<!--      <div class="tactic-add-top-actions__left">-->
+<!--        <field-->
+<!--          v-model="newTactic[currentMode].name"-->
+<!--          label="Название"-->
+<!--          placeholder="Насос бабла"-->
+<!--        />-->
+<!--      </div>-->
+<!--      <div class="tactic-add-top-actions__right">-->
+<!--        <dropdown-->
+<!--          :list="rouletteModesList"-->
+<!--          v-model="currentMode"-->
+<!--          label="Режим"-->
+<!--        />-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="tactic-add-header">Параметры этапа</div>-->
+<!--    <form-->
+<!--      @submit.prevent="addNewStage"-->
+<!--      @keyup.enter="addNewStage"-->
+<!--    >-->
+<!--      <div-->
+<!--        v-if="!load"-->
+<!--        :class="{'etap-form-load': load}"-->
+<!--        class="etap-form-wr"-->
+<!--      >-->
+<!--        <div-->
+<!--          v-for="(field, index) in modeFields[currentModeId]"-->
+<!--          class="etap-form__item"-->
+<!--        >-->
+<!--          <field-->
+<!--            v-if="field.component == 'field'"-->
+<!--            v-model.trim="currentModeScheme[currentMode][field.model]" :-->
+<!--            name="field.name" :label="field.name"-->
+<!--            :placeholder="field.placeholder"-->
+<!--            v-validate="'required'"-->
+<!--            :error="errors.first(field.name)"-->
+<!--          />-->
+<!--          <dropdown-->
+<!--            v-if="field.component == 'dropdown'"-->
+<!--            :ref="field.model"-->
+<!--            :list="field.dropDownList"-->
+<!--            v-model="currentModeScheme[currentMode][field.model]"-->
+<!--            :label="field.name"-->
+<!--          />-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--    <div v-if="!editingStage && !load" class="etap-form-actions">-->
+<!--      <button-->
+<!--        @click="clearForm"-->
+<!--        :disabled="!formNotClear"-->
+<!--        class="btn btn_red etap-form-actions__clear"-->
+<!--      >Очистить</button>-->
+<!--      <button-->
+<!--        @click="addNewStage"-->
+<!--        :disabled="isFormInValid"-->
+<!--        class="btn etap-form-actions__add"-->
+<!--      >Добавить этап</button>-->
+<!--    </div>-->
+<!--    <div-->
+<!--      v-else-if="editingStage"-->
+<!--      class="etap-form-actions"-->
+<!--    >-->
+<!--      <button-->
+<!--        @click="clearForm"-->
+<!--        :disabled="!formNotClear"-->
+<!--        class="btn btn_skin etap-form-actions__clear"-->
+<!--      >Отменить</button>-->
+<!--      <button-->
+<!--        @click="saveStage"-->
+<!--        :disabled="isFormInValid"-->
+<!--        class="btn etap-form-actions__add"-->
+<!--      >Сохранить</button>-->
+<!--    </div>-->
+  </div>
 </template>
 <script>
-import field from '@/components/input.vue';
-import dropdown from '@/components/drop-down.vue';
-import tactcViewer from '@/components/tactic-viewer.vue';
+// import tactcViewer from '@/components/tactic-viewer.vue';
 
 export default {
 	name: 'tacticAdd',
 	components: {
-		field,
-		dropdown,
-		tactcViewer
+		// tactcViewer
 	},
 	data: () => ({
 		editingStage: false,

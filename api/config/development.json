@@ -1,4 +1,9 @@
 {
 	"dbUrl": "mongodb://rulex-dev:stasstas12021202@rullex.ru:27017/rullex-dev",
-	"JWT_SECRET": "LeshitSecretKey"
+  "tokens": {
+    "ACCESS_SECRET": "LeshitSecretKey",
+    "ACCESS_EXP": 30000,
+	  "REFRESH_SECRET": "LeshitSecretKey123123123",
+    "REFRESH_EXP": 99999
+  }
 }

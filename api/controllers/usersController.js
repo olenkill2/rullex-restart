@@ -1,15 +1,32 @@
 const JWT = require('jsonwebtoken');
-const JWT_SECRET = require('config').get('JWT_SECRET');
+const tokensConfig = require('config').get('tokens');
 const User = require('../models/userModel.js');
+const RefreshToken = require('../models/refresh.js');
 
-signToken = user => {
-	return JWT.sign(
-	{
-		iss: 'Leshiy',
-		sub: user.id,
-		iat: new Date().getTime(),
-		exp: new Date().setDate(new Date().getDate() + 1)
-	}, JWT_SECRET);
+const getTokens = async (data) => {
+	const tokens = {
+	  access_token: JWT.sign({
+      sub: data.id,
+    }, tokensConfig.ACCESS_SECRET, {
+	    expiresIn: tokensConfig.ACCESS_EXP
+    }),
+
+    refresh_token: JWT.sign({
+      sub: data.id
+    }, tokensConfig.REFRESH_SECRET, {
+      expiresIn: tokensConfig.REFRESH_EXP
+    }),
+  }
+
+  await RefreshToken.findOneAndUpdate({
+    userId: data.id,
+    token: data.refresh_token
+  }, {
+    userId: data.id,
+    token: tokens.refresh_token
+  }, { upsert: true, new: true, setDefaultsOnInsert: true })
+
+  return tokens
 }
 
 createBySocial = data => {
@@ -25,14 +42,12 @@ createBySocial = data => {
 	}
 
 	return User.create(newUser);
-
 }
 
 module.exports =
 {
 	// регистрация по мылу и паролю
-	signUp: async(req, res) =>
-	{
+	async signUp(req, res) {
 		const data = req.body;
 
 		const foundUser = await User.findOne({ 'local.email': data.email })
@@ -40,49 +55,69 @@ module.exports =
 		if(foundUser)
 			return res.status(400).json({error: 'Логин уже используется'});
 
-		const newUser = await User.create(
-		{
+		const newUser = await User.create({
 			method: 'local',
 			created_at: Date.now(),
-			local:
-			{
+			local: {
 				email: data.email,
 				password: data.password
 			},
 			role: 'user'
 		});
 
-		const token = signToken(newUser);
-		res.status(200).json({token});
+		const tokens = await getTokens(newUser)
+		res.status(200).json({ ...tokens, role: newUser.role });
 	},
+  async refreshTokens(req, res) {
+    const refresh_token = req.body.refresh_token
+
+    if(!refresh_token) return res.status(403).json({message: 'need auth'})
+
+    try {
+      const user = JWT.verify(refresh_token, tokensConfig.REFRESH_SECRET)
+      const finedToken = await RefreshToken.findOne({ userId: user.sub, token: refresh_token })
+
+      if(finedToken) {
+        const tokens = await getTokens({
+          id: user.sub,
+          refresh_token
+        })
+
+        RefreshToken.deleteOne({ token: refresh_token })
+
+        res.status(200).json({...tokens})
+      } else {
+        res.status(403).json({message: 'need auth'})
+      }
+    } catch(e) {
+      RefreshToken.deleteOne({ token: refresh_token })
+      res.status(403).json({message: 'need auth'})
+    }
+  },
 	// авторизация по мылу и паролю
-	signIn: async(req, res) =>
-	{
-		const token = signToken(req.user);
-		res.status(200).json({ access_token: token, role: req.user.role });
+	async signIn(req, res) {
+    const tokens = await getTokens(req.user)
+		res.status(200).json({ ...tokens, role: req.user.role });
 	},
 	// авторизация через гугл
-	oauthGoogle: async(req, res) =>
-	{
-		const user = req.user;
+	async oauthGoogle(req, res) {
+		const user = req.user.profile;
 		let foundUser = await User.findOne({ 'google.id': user.id })
 
-		if(!foundUser)
+		if(!foundUser) {
 			foundUser = await createBySocial({
-				email: user.email,
+				email: user.emails[0].value,
 				id: user.id,
 				method: 'google',
 			})
+    }
 
-		const token = signToken(foundUser);
-
-		res.status(200).json({ access_token: token, role: foundUser.role });
+    const tokens = await getTokens(foundUser)
+		res.status(200).json({ ...tokens, role: foundUser.role });
 	},
 	// авторизация через vk
-	oauthVk: async(req, res) =>
-	{
-		const user = req.user;
-
+	async oauthVk(req, res) {
+		const user = req.user.profile;
 		let foundUser = await User.findOne({ 'vk.id': user.id })
 
 		if (!foundUser)
@@ -92,51 +127,11 @@ module.exports =
 				method: 'vk',
 			})
 
-		console.log(user)
-		const token = signToken(foundUser);
-
-		res.status(200).json({ access_token: token, role: foundUser.role });
-	},
-
-	oauthYandex: async (req, res) => {
-		const user = req.user;
-
-		let foundUser = await User.findOne({ 'yandex.id': user.id })
-
-		if (!foundUser)
-			foundUser = await createBySocial({
-				email: user.default_email,
-				id: user.id,
-				method: 'yandex',
-			})
-
-		const token = signToken(foundUser);
-
-		res.status(200).json({ access_token: token, role: foundUser.role });
-	},
-
-	oauthFacebook: async (req, res) => {
-		const user = req.user;
-
-		let foundUser = await User.findOne({ 'facebook.id': user.id })
-
-		if (!foundUser)
-			foundUser = await createBySocial({
-				email: user.email ? user.email : '',
-				id: user.id,
-				method: 'facebook',
-			})
-
-		const token = signToken(foundUser);
-
-		res.status(200).json({ access_token: token, role: foundUser.role });
+		const tokens = await getTokens(foundUser)
+		res.status(200).json({ ...tokens, role: foundUser.role });
 	},
 	// получение роли пользоваетля
-	getUserInfo: async(req, res) =>
-	{
-		const token = signToken(req.user);
-
-		res.status(200).json({ token, role: req.user.role });
-		// res.status(200).json({'a':1})
+	async getUserInfo(req, res) {
+		res.status(200).json({ role: req.user.role })
 	},
 }

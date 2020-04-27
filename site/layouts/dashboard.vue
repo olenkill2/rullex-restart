@@ -1,30 +1,40 @@
-<template lang="pug">
-	div
-		headerTop
-		main.container.main
-			aside.sidebar-wr(v-if="$store.state.user.role == 'admin'")
-				.sidebar-nav
-					router-link.sidebar-nav-item(to="/dashboard") Админка
-					router-link.sidebar-nav-item(to="/dashboard/menu") Меню
-					router-link.sidebar-nav-item(to="/dashboard/posts") Статьи
-					router-link.sidebar-nav-item(to="/dashboard/seo") SEO
-					router-link.sidebar-nav-item(to="/dashboard/roulettes") Рулетки
-					router-link.sidebar-nav-item(to="/dashboard/modes") Режимы
-					router-link.sidebar-nav-item(to="/dashboard/freebie") Халява
-			.content-wr
-				.content(:class="{'content_popup': !$store.state.user.auth}")
-					nuxt
+<template>
+	<div>
+    <headerTop/>
 
-			aside.sidebar-wr(v-if="$store.state.user.role == 'admin'")
-				| всякие штуки
+    <main class="container main">
+      <aside
+        v-if="$store.state.user.user.role === 'admin'"
+        class="sidebar-wr"
+      >
+        <div class="sidebar-nav">
+          <router-link class="sidebar-nav-item" to="/dashboard">Админка</router-link>
+          <router-link class="sidebar-nav-item" to="/dashboard/menu">Меню</router-link>
+          <router-link class="sidebar-nav-item" to="/dashboard/posts">Статьи</router-link>
+          <router-link class="sidebar-nav-item" to="/dashboard/seo">SEO</router-link>
+          <router-link class="sidebar-nav-item" to="/dashboard/roulettes">Рулетки</router-link>
+          <router-link class="sidebar-nav-item" to="/dashboard/modes">Режимы</router-link>
+          <router-link class="sidebar-nav-item" to="/dashboard/freebie">Халява</router-link>
+        </div>
+      </aside>
+      <div class="content-wr">
+        <div class="content">
+          <nuxt></nuxt>
+        </div>
+      </div>
+      <aside class="sidebar-wr" v-if="$store.state.user.user.role === 'admin'">всякие штуки</aside>
+    </main>
+  </div>
 </template>
 
 <script>
-	import headerTop from '~/components/Header.vue';
+	import headerTop from '~/components/Header.vue'
+
 	export default {
 		components: {
 			headerTop
 		},
+    middleware: ['isAdmin'],
 		data() {
 			return {
 			}
@@ -33,37 +43,5 @@
 </script>
 
 <style lang="scss">
-	.dashboard-table
-	{
-		width: 100%;
-		display: block;
-		overflow-x: auto;
-		white-space: nowrap;
-		// table-layout: fixed;
-		padding-bottom: 20px;
-		min-width: 100%;
-		tbody
-		{
-			width: 100%;
-			display: table;
-		}
-		th
-		{
-			padding-bottom: 14px;
-			font-size: 16px;
-			width: auto;
-		}
-		td,th
-		{
-			padding-right: 25px;
-			white-space: nowrap;
-			font-size: 15px;
-			padding-top: 8px;
-			padding-bottom: 8px;
-			&:last-child
-			{
-				padding-right: 0;
-			}
-		}
-	}
+
 </style>

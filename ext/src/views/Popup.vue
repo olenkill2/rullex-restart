@@ -6,12 +6,10 @@
 			|{{item.name}}
 </template>
 <script>
-import Field from '@/components/input.vue'
 
 export default {
 	name: 'Dashboard',
 	components: {
-		Field
 	},
 	data: () => ({
 		roulette: [],

@@ -1,206 +1,337 @@
-<template lang="pug">
-	.page-content
-		.modes-wr(v-if="modes")
-			.pages-header
-				.pages-header__left
-					|Всего режимов - {{modes.length}}
-				.pages-header__right
-					button.btn.btn_small(v-if="!modeFormShow", @click="modeFormShow = !modeFormShow", :class="{'btn_skin': modeFormShow}")
-						|Добавить
-					button.btn.btn_small(v-else="", @click="cancelEdit", :class="{'btn_skin': modeFormShow}")
-						|Отменить
+<template>
+	<div class="page-content">
+    <div
+      v-if="modes"
+      class="modes-wr"
+    >
+      <page-header
+        :title="`Всего режимов - ${modes.length}`"
+        @close="modeFormShow = false"
+        @open="modeFormShow = true"
+      />
 
-			.mode-form-wr(v-show="modeFormShow")
-				.mode-form-groups
-					.mode-form-groups__item
-						.mode-form__item-label Новый режим
-						field(v-model="mode.name", label="Название режима", type="text")
-					.mode-form-groups__item
-						.mode-form__item-label Добавление полей
+      <div
+        v-if="modeFormShow"
+        class="mode-form-wr"
+      >
+        <div class="mode-form-groups">
+          <div class="mode-form-groups__item">
+            <div class="mode-form__item-label">Новый режим</div>
+            <field
+              v-model="mode.name" l
+              abel="Название режима"
+              type="text"
+            />
+          </div>
+          <div class="mode-form-groups__item">
+            <div class="mode-form__item-label">Добавление полей</div>
 
-						.mode-form-groups-field-wr
-							field(v-model="field.name", label="Название поля", type="text")
+            <div class="mode-form-groups-field-wr">
+              <field
+                v-model="field.name"
+                label="Название поля"
+                type="text"
+              />
+            </div>
+            <div class="mode-form-groups-field-wr">
+              <field
+                v-model="field.placeholder"
+                label="Плейсхолдер поля"
+                type="text"
+              />
+            </div>
+            <div class="mode-form-groups-field-wr">
+              <field
+                v-model="field.model"
+                label="Название модели"
+                type="text"
+              />
+            </div>
+            <div class="mode-form-groups-field-wr">
+              {{field.component}}
+              <dropdown
+                :options="componentsList"
+                v-model="field.component"
+                :value="field.component"
+                label="Тип компонента"
+              />
+            </div>
+            <div
+              v-if="field.component === 'dropdown'"
+              class="mode-form-groups-field-wr"
+            >
+              <div class="field-droplist-items-wr">
+                <field
+                  v-model="dropDownListItem.label"
+                  label="Название параметра"
+                  type="text"
+                />
+                <field
+                  v-model="dropDownListItem.value"
+                  label="Значение для параметра"
+                  type="text"
+                />
+                <button
+                  @click="addDropListItem"
+                  class="btn btn_skin btn_small"
+                >
+                  Добавить
+                </button>
 
-						.mode-form-groups-field-wr
-							field(v-model="field.placeholder", label="Плейсхолдер поля", type="text")
+                <div class="field-droplist-items-added">
+                  <div class="field-droplist-item" v-for="(dropItem, index) in field.dropDownList">
+                    {{ dropItem }}
+<!--                    {{ dropItem.label }} {{ dropItem.value }}-->
+                    <div class="field-droplist-item_remove" @click="removeDropListItem(index)"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mode-form-groups-field-wr">
+              <button class="btn btn_small btn_full" v-if="!editingField" @click="addField">Добавить</button>
+              <button class="btn btn_small btn_full" v-else="" @click="updateField">Изменить</button>
+            </div>
+          </div>
+          <div class="mode-form-groups__item">
+            <div class="mode-form__item-label">Список полей</div>
 
-						.mode-form-groups-field-wr
-							field(v-model="field.model", label="Название модели", type="text")
+            <div class="mode-fields">
+              <div
+                v-for="(modeField, index) in mode.fields"
+                class="mode-field-item"
+              >
+                <field
+                  v-if="modeField.component === 'field'"
+                  :label="modeField.name"
+                  :placeholder="modeField.placeholder"
+                />
+                <dropdown
+                  v-else
+                  :options="modeField.dropDownList"
+                  :label="modeField.name"
+                />
 
-						.mode-form-groups-field-wr
-							dropdown(:list="componentsList", v-model="field.component", label="Тип компонента")
+                <div class="remove-field" @click="removeField(index)"></div>
+                <div class="edit-field" @click="editField(index)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <FormControls
+          :isEdit="editingMode"
+          @add="addMode"
+          @delete="removeMode"
+          @update="updateMode"
+          @clear="clearForm"
+        />
 
-						.mode-form-groups-field-wr(v-if="field.component == 'dropdown'")
-							.field-droplist-items-wr
-								.field-droplist-items-top
-									field(v-model="dropDownListItem", label="Параметр", type="text")
-									button.btn.btn_skin.btn_small(@click="addDropListItem") Добавить
-								.field-droplist-items-added
-									.field-droplist-item(v-for="(dropItem, index) in field.dropDownList")
-										|{{dropItem}}
-										.field-droplist-item_remove(@click="removeDropListItem(index)")
+<!--        <div class="mode-form-actions" v-if="!editingMode">-->
+<!--          <div class="mode-form-actions__item">-->
+<!--            <button class="btn btn_small btn_red">Очистить</button>-->
+<!--          </div>-->
+<!--          <div class="mode-form-actions__item">-->
 
-						.mode-form-groups-field-wr
-							button.btn.btn_small.btn_full(v-if="!editingField", @click="addField") Добавить
-							button.btn.btn_small.btn_full(v-else="", @click="updateField") Изменить
-
-					.mode-form-groups__item
-						.mode-form__item-label Список полей
-						.mode-fields
-							.mode-field-item(v-for="(modeField, index) in mode.fields")
-								field(v-if="modeField.component == 'field'", :label="modeField.name", :placeholder="modeField.placeholder")
-								dropdown(v-else="modeField.component == 'dropdown'", :list="modeField.dropDownList", :label="modeField.name")
-								.remove-field(@click="removeField(index)")
-								.edit-field(@click="editField(index)")
-
-				.mode-form-actions(v-if="!editingMode")
-					.mode-form-actions__item
-						button.btn.btn_small.btn_red Очистить
-					.mode-form-actions__item
-						button.btn.btn_small.btn_accent(@click="addMode") Добавить
-
-				.mode-form-actions(v-else="")
-					.mode-form-actions__item
-						button.btn.btn_small.btn_red(@click="removeMode") Удалить
-					.mode-form-actions__item
-						button.btn.btn_small.btn_accent(@click="updateMode") Сохранить изменения
-
-
-			.pages-message(v-if="modes.length == 0")
-				|Режимов пока нет
-
-			table.dashboard-table(v-else="")
-				tbody
-					tr
-						th №
-						th Название
-						th Список полей
-						th Схема
-						th Редактирование
-					tr(v-for="(mode, index) in modes")
-						th {{index + 1}}
-						th {{mode.name}}
-						th
-							div(v-if="showModeFieldsList !== index", @click="showModeFieldsList = index") Показать
-							div(v-else="", @click="showModeFieldsList = false") Свернуть
-							pre(v-if="showModeFieldsList === index") {{mode.fields}}
-						th
-							div(v-for="(field, index) in mode.fields") {{field.name}}, {{field.model}}
-						th
-							.edit-field.edit-field_mode(@click="editMode(index)")
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="mode-form-actions" v-else="">-->
+<!--          <div class="mode-form-actions__item">-->
+<!--          </div>-->
+<!--          <div class="mode-form-actions__item">-->
+<!--          </div>-->
+<!--        </div>-->
+      </div>
+      <div
+        class="pages-message"
+        v-if="!modes.length"
+      >
+        Режимов пока нет
+      </div>
+      <DashboardTable
+        v-else
+        :headers="tableHeaders"
+      >
+        <template v-slot:body>
+          <tr v-for="(mode, index) in modes">
+            <th>{{index + 1}}</th>
+            <th>{{mode.name}}</th>
+            <th>
+              <div
+                v-if="showModeFieldsList !== index"
+                @click="showModeFieldsList = index"
+              >
+                Показать
+              </div>
+              <div
+                v-else
+                @click="showModeFieldsList = false"
+              >
+                Свернуть
+              </div>
+              <pre v-if="showModeFieldsList === index">{{mode.fields}}</pre>
+            </th>
+            <th>
+              <div v-for="(field, index) in mode.fields">{{field.name}}, {{field.model}}</div>
+            </th>
+            <th>
+              <div class="edit-field edit-field_mode" @click="editMode(index)"></div>
+            </th>
+          </tr>
+        </template>
+      </DashboardTable>
+    </div>
+  </div>
 </template>
 <script>
-export default {
-	layout (context) {
-		return 'dashboard'
-	},
-	async asyncData (req) {
-		try {
-			const modes = await req.$axios.get(process.env.baseUrl + '/modes');
-			return await { modes: modes.data.data};
-		} catch (err) {
-			return { modes: []};
-		}
-	},
-	middleware: ['authenticated'],
-	data: () => ({
-		// modes: [],
-		showModeEditForm: false,
-		modeFormShow: false,
-		mode: {
-			name: '',
-			fields: [],
-		},
-		field: {},
-		showModeFieldsList: false,
-		dropDownListItem: '',
-		componentsList: ['field', 'dropdown'],
-		editingMode: false,
-		editingField: false,
-		editFieldIndex: 0,
-	}),
-	methods: {
-		getFieldSchema () {
-			return {
-				name: '',
-				placeholder: '',
-				model: '',
-				component: this.field.component,
-				dropDownList: [],
-			}
-		},
-		removeDropListItem (index) {
-			this.field.dropDownList.splice(index, 1);
-		},
-		addField () {
-			this.mode.fields.push(this.field);
-			this.field = this.getFieldSchema();
-		},
-		editField (index) {
-			this.editingField = true;
-			this.editFieldIndex = index;
-			this.field = {...this.mode.fields[this.editFieldIndex]};
-		},
-		updateField () {
-			this.mode.fields[this.editFieldIndex] = this.field;
-			this.editingField = false;
-			this.field = this.getFieldSchema();
-		},
-		removeField (index) {
-			this.mode.fields.splice(index, 1);
-		},
-		addDropListItem () {
-			this.field.dropDownList.push(this.dropDownListItem);
-			this.dropDownListItem = '';
-		},
-		addMode () {
-			this.$axios.post('/api/modes/', this.mode).then((result, error) => {
-				this.cancelEdit();
-				this.getModes();
-			}).catch((error) => {
-				this.error = true;
-			})
-		},
-		editMode (index) {
-			this.editingMode = true;
-			this.modeFormShow = true;
-			this.mode = this.modes[index];
-		},
-		removeMode () {
-			this.$axios.delete('/api/modes/' + this.mode._id).then((result, error) => {
-				this.getModes();
-				this.cancelEdit();
-			}).catch((error) => {
-				this.error = true;
-			})
-		},
-		updateMode () {
-			this.$axios.put('/api/modes/' + this.mode._id, this.mode).then((result, error) => {
-				this.getModes();
-				this.cancelEdit();
-			}).catch((error) => {
-				this.error = true;
-			})
-		},
-		cancelEdit () {
-			this.editingMode = false;
-			this.modeFormShow = false;
-			this.field = this.getFieldSchema();
-			this.mode = {
-				name: '',
-				fields: [],
-			}
-		},
-		getModes () {
-			this.$axios.get('/api/modes').then((result) => {
-				this.modes = result.data.data;
-			})
-		}
-	},
-	mounted () {
-		this.field = this.getFieldSchema();
-	}
-}
+  import { mapGetters, mapActions } from 'vuex'
+  import PageHeader from '~/components/dashboard/PageHeader'
+  import DashboardTable from '~/components/dashboard/DashboardTable'
+  import FormControls from '~/components/dashboard/FormControls';
+  export default {
+    layout (context) {
+      return 'dashboard'
+    },
+    components: {
+      PageHeader,
+      DashboardTable,
+      FormControls
+    },
+    data() {
+      return {
+        showModeEditForm: false,
+        modeFormShow: false,
+        tableHeaders: ['№', 'Название', 'Список полей', 'Схема', 'Редактирование'],
+        mode: {
+          name: '',
+          fields: [],
+        },
+        field: {},
+        showModeFieldsList: [],
+        dropDownListItem: {
+          label: '',
+          value: ''
+        },
+        componentsList: [
+          {
+            label: 'field',
+            value: 'field'
+          },
+          {
+            label: 'dropdown',
+            value: 'dropdown'
+          }
+        ],
+        editingMode: null,
+        editingField: null,
+        editFieldIndex: 0
+      }
+    },
+    async fetch({ store }) {
+      await store.dispatch('dashboard/fetchModes')
+    },
+    computed: {
+      ...mapGetters({
+        modes: 'dashboard/getModes'
+      })
+    },
+    methods: {
+      ...mapActions({
+        getModes: 'dashboard/fetchModes'
+      }),
+
+      getFieldSchema () {
+        return {
+          name: '',
+          placeholder: '',
+          model: '',
+          component: this.componentsList[0].value,
+          dropDownList: [],
+        }
+      },
+
+      addField () {
+        this.mode.fields.push(this.field);
+        this.field = this.getFieldSchema();
+      },
+
+      editField (index) {
+        this.editingField = true;
+        this.editFieldIndex = index;
+        this.field = JSON.parse(JSON.stringify(this.mode.fields[this.editFieldIndex]));
+      },
+
+      updateField () {
+        this.mode.fields[this.editFieldIndex] = this.field;
+        this.editingField = null;
+        this.field = this.getFieldSchema();
+      },
+
+      removeField (index) {
+        this.mode.fields.splice(index, 1);
+      },
+
+      addDropListItem () {
+        this.field.dropDownList.push(this.dropDownListItem);
+        this.dropDownListItem = {
+          label: '',
+          value: ''
+        };
+      },
+
+      removeDropListItem (index) {
+        this.field.dropDownList.splice(index, 1);
+      },
+
+      addMode () {
+        this.$axios.post('/api/modes/', this.mode).then((result, error) => {
+          this.cancelEdit();
+          this.getModes();
+        }).catch((error) => {
+          this.error = true;
+        })
+      },
+
+      editMode (index) {
+        this.editingMode = true;
+        this.modeFormShow = true;
+        this.mode = this.modes[index];
+      },
+
+      removeMode () {
+        this.$axios.delete('/api/modes/' + this.mode._id).then((result, error) => {
+          this.getModes();
+          this.cancelEdit();
+        }).catch((error) => {
+          this.error = true;
+        })
+      },
+
+      updateMode () {
+        this.$axios.put('/api/modes/' + this.mode._id, this.mode).then((result, error) => {
+          this.getModes();
+          this.cancelEdit();
+        }).catch((error) => {
+          this.error = true;
+        })
+      },
+
+      clearForm() {
+        this.field = this.getFieldSchema();
+        this.mode = {
+          name: '',
+          fields: [],
+        }
+      },
+
+      cancelEdit () {
+        this.editingMode = null;
+        this.modeFormShow = false;
+        this.clearForm()
+      },
+    },
+    mounted () {
+      this.field = this.getFieldSchema();
+    }
+  }
 </script>
 <style lang="scss">
 	.modes-list

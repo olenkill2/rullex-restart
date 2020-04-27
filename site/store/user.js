@@ -1,31 +1,69 @@
-const cookieparser = require('js-cookie');
-
 export const state = () => ({
 	auth: false,
-	role: 'guest',
-	token: null,
+	user: {
+	  role: 'guest'
+  },
+	access_token: null,
+  refresh_token: null
 })
 
 export const mutations = {
-	SET_USER(state, userData) {
-		state.auth = true;
-		state.token = userData.token;
-		state.role = userData.role;
+	setAuth(state, userData) {
+		state.auth = true
+		state.user = userData
 	},
-	LOGOUT (state) {
-		state.auth = false;
-		state.token = null;
-		state.role = 'guest';
-	}
+	logout (state) {
+		state.auth = false
+    state.user = {
+      role: 'guest'
+    }
+	},
+  updateTokens(state, { access_token, refresh_token }) {
+	  state.access_token = access_token || null
+	  state.refresh_token = refresh_token || null
+  },
 }
 
 export const actions = {
-	auth({ commit }, data) {
-		commit('SET_USER', data);
-		// cookieparser.set('Authorization', data.token);
+  async getUser({ commit, dispatch }) {
+	  await this.$axios.post('http://localhost:3002/api/v1/users/user')
+      .then(({ data }, err) => {
+        commit('setAuth', data)
+      }).catch((err) => {
+        console.log(err)
+        dispatch('logout')
+      })
 	},
+  updateTokens({ commit }, tokens) {
+	  commit('updateTokens', tokens)
+    this.$cookies.set('access_token', tokens.access_token, {
+      path: '/',
+      maxAge: 60 * 60 * 1000
+    });
+		this.$cookies.set('refresh_token', tokens.refresh_token, {
+		  path: '/',
+		  maxAge: 60 * 60 * 1000
+    });
+  },
 	logout({ commit }) {
-		commit('LOGOUT');
-		// cookieparser.remove('Authorization');
+		commit('logout')
+		commit('updateTokens', {})
+		this.$cookies.remove('access_token')
+		this.$cookies.remove('refresh_token')
 	}
 };
+
+export const getters = {
+  tokens: (state) => {
+    return {
+      access_token: state.access_token,
+      refresh_token: state.refresh_token
+    }
+  },
+  getUser: (state) => {
+    return state.user
+  },
+  isAuth: (state) => {
+    return state.auth
+  }
+}

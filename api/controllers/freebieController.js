@@ -31,24 +31,23 @@ module.exports =
 		res.status(200).json({data: result});
 	},
 
-	update: async(req, res) => {
+	async update(req, res) {
 		let freebie = await Freebie.findById(req.params.id);
-
-		if(!freebie) return res.status(404).json({error: 'Not found'});
-		console.log(req.body);
+    // console.log(freebie)
+		if(!freebie) return res.status(404).json({ error: 'Not found' });
 
 		freebie = await Freebie.findOneAndUpdate(req.params.id, req.body);
-
-		res.status(200).json({data: freebie});
+    console.log(req.body)
+		res.status(200).json({ data: freebie });
 	},
 
 	delete: async(req, res) => {
 		const freebie = await Freebie.findById(req.params.id);
 
-		if(!freebie) return res.status(404).json({error: 'Not found'});
+		if(!freebie) return res.status(404).json({ error: 'Not found' });
 
 		freebie.remove();
 
-		res.status(200).json({data: freebie});
+		res.status(200).json({ data: freebie });
 	},
 }

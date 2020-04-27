@@ -1,30 +1,28 @@
-<template lang="pug">
-	ValidationProvider.input-wr(tag="label",
-		:vid="vid",
-		:name="name || label",
-		:rules="rules",
-		v-slot="{ errors, required, ariaInput, ariaMsg }")
-		input.input(:value="name",
-			@focus="focused = true; $emit('focus')",
-			@blur="focused = false; $emit('blur')",
-			:type="type",
-			:placeholder="placeholder",
-			:name="name",
-			ref="input",
-			v-model="innerValue",
-			:class="{'input_focused': focused || innerValue !== '' || placeholder, 'input_error': errors[0]}")
-		.input-label
-			|{{label}}
-		span.input-error(v-if="errors[0]")
-			|{{ errors[0] }}
+<template>
+	<ValidationProvider
+    class="input-wr"
+    tag="label"
+    :vid="vid"
+    :name="name || label"
+    :rules="rules"
+    v-slot="{ errors, required, ariaInput, ariaMsg }"
+  >
+    <input
+      :class="{'input_focused': focused || innerValue !== '' || placeholder, 'input_error': errors[0]}"
+      :name="name"
+      :placeholder="placeholder"
+      :type="type"
+      :value="name"
+      @blur="focused = false; $emit('blur')"
+      @focus="focused = true; $emit('focus')"
+      class="input"
+      ref="input"
+      v-model="innerValue"
+    />
+    <div class="input-label">{{label}}</div><span class="input-error" v-if="errors[0]">{{ errors[0] }}</span>
+  </ValidationProvider>
 </template>
 <script>
-// import { extend } from 'vee-validate';
-// import { required, email } from 'vee-validate/dist/rules';
-// extend('required', {
-// 	...required,
-// 	message: 'Поле не заполнено'
-// });
 import { ValidationProvider } from "vee-validate";
 
 export default {
@@ -72,10 +70,12 @@ export default {
 			default: ""
 		}
 	},
-	data: () => ({
-		focused: false,
-		innerValue: '',
-	}),
+	data() {
+	  return {
+      focused: false,
+      innerValue: '',
+    }
+  },
 	computed: {
 		hasValue() {
 			return !!this.innerValue;
@@ -86,7 +86,7 @@ export default {
 			this.$emit('input', value);
 		},
 		value(val) {
-			if(this.innerValue != val)
+			if(this.innerValue !== val)
 				this.innerValue = val;
 		},
 	},
@@ -97,7 +97,6 @@ export default {
 }
 </script>
 <style lang="scss">
-	@import '~/assets/style/variables.scss';
 	.input-wr
 	{
 		position: relative;
@@ -152,7 +151,6 @@ export default {
 		width: 100%;
 		top: 16px;
 		left: 0;
-		// z-index: -1;
 		transition: 0.2s;
 		color: rgba($main, 0.5);
 	}

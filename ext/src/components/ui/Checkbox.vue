@@ -23,7 +23,6 @@ export default {
 }
 </script>
 <style lang="scss">
-	@import '~/assets/style/variables.scss';
 	.checkbox-wr
 	{
 		position: relative;
@@ -46,7 +45,7 @@ export default {
 		background-color: #fff;
 		cursor: pointer;
 		transition: 0.2s;
-		background-image: url('../assets/icons/check.svg');
+		background-image: url('../../assets/icons/check.svg');
 		background-position: center;
 		background-size: 0;
 		background-repeat: no-repeat;

@@ -5,24 +5,21 @@ export const state = () => ({
 export const mutations = {
 }
 export const actions = {
-	async nuxtServerInit({ commit, dispatch }, { req, res }) {
-		await dispatch('menu/getMenu');
+  async nuxtServerInit({ commit, dispatch }, { req, app }) {
+	  await dispatch('menu/getMenu');
 
-		if (req.headers.cookie) {
+    const tokens = {
+      access_token: app.$cookies.get('access_token') || null,
+      refresh_token: app.$cookies.get('refresh_token') || null
+    }
 
-			const parsed = cookieparser.parse(req.headers.cookie);
-
-			if(parsed.access_token) {
-				const token = parsed.access_token;
-				this.$axios.setHeader('Authorization', 'Bearer ' + token);
-				try {
-					let res = await this.$axios.post('http://127.0.0.1:3002/api/v1/users/signin-token');
-					dispatch('user/auth', res.data);
-				} catch (error) {
-					// res.setHeader('Set-Cookie', [`Authorization=false; expires=Thu, 01 Jan 1970 00:00:00 GMT`])
-					dispatch('user/logout', res.data)
-				}
-			}
+    if(tokens.access_token && tokens.refresh_token) {
+      await dispatch('user/updateTokens', tokens)
+      try {
+        await dispatch('user/getUser')
+      } catch (e) {
+        console.log(e)
+      }
 		}
 	}
 };

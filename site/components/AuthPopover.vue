@@ -1,74 +1,147 @@
-<template lang="pug">
-	div.main-auth
-		button.btn-login-activator(@click="open")
-			.btn-login-activator__text
-				|Войти в личный кабинет
-			.btn-login-activator__icon
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 612 612" fill="#292F44"><path d="M331.685 425.378c-7.478 7.479-7.478 19.584 0 27.043 7.479 7.478 19.584 7.478 27.043 0l131.943-131.962c3.979-3.979 5.681-9.276 5.412-14.479.269-5.221-1.434-10.499-5.412-14.477L358.728 159.56c-7.459-7.478-19.584-7.478-27.043 0-7.478 7.478-7.478 19.584 0 27.042l100.272 100.272H19.125C8.568 286.875 0 295.443 0 306s8.568 19.125 19.125 19.125h412.832L331.685 425.378zM535.5 38.25H153c-42.247 0-76.5 34.253-76.5 76.5v76.5h38.25v-76.5c0-21.114 17.117-38.25 38.25-38.25h382.5c21.133 0 38.25 17.136 38.25 38.25v382.5c0 21.114-17.117 38.25-38.25 38.25H153c-21.133 0-38.25-17.117-38.25-38.25v-76.5H76.5v76.5c0 42.247 34.253 76.5 76.5 76.5h382.5c42.247 0 76.5-34.253 76.5-76.5v-382.5c0-42.247-34.253-76.5-76.5-76.5z"/></svg>
+<template >
+	<div class="main-auth">
+    <button
+      @click="open"
+      class="btn-login-activator"
+    >
+      <div class="btn-login-activator__text">Войти в личный кабинет</div>
+      <div class="btn-login-activator__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 612 612" fill="#292F44"><path d="M331.685 425.378c-7.478 7.479-7.478 19.584 0 27.043 7.479 7.478 19.584 7.478 27.043 0l131.943-131.962c3.979-3.979 5.681-9.276 5.412-14.479.269-5.221-1.434-10.499-5.412-14.477L358.728 159.56c-7.459-7.478-19.584-7.478-27.043 0-7.478 7.478-7.478 19.584 0 27.042l100.272 100.272H19.125C8.568 286.875 0 295.443 0 306s8.568 19.125 19.125 19.125h412.832L331.685 425.378zM535.5 38.25H153c-42.247 0-76.5 34.253-76.5 76.5v76.5h38.25v-76.5c0-21.114 17.117-38.25 38.25-38.25h382.5c21.133 0 38.25 17.136 38.25 38.25v382.5c0 21.114-17.117 38.25-38.25 38.25H153c-21.133 0-38.25-17.117-38.25-38.25v-76.5H76.5v76.5c0 42.247 34.253 76.5 76.5 76.5h382.5c42.247 0 76.5-34.253 76.5-76.5v-382.5c0-42.247-34.253-76.5-76.5-76.5z" /></svg>
+      </div>
+    </button>
 
-		.auth-popover-wr(:class="{'auth-popover-wr_opened': opened}" v-if="opened" v-click-outside="close")
-			.auth-popover-tab(v-if="activeTab == 'signIn'")
-				form(@submit.prevent="signin")
-					.auth-popover-header
-						|Авторизация
-					.auth-popover-fields
-						field.auth-popover-field(v-model="signinData.email", label="Email")
-						field.auth-popover-field(v-model="signinData.password", name="password", type="password", label="Пароль")
+    <div
+      :class="{'auth-popover-wr_opened': opened}"
+      v-if="opened"
+      v-click-outside="close"
+      class="auth-popover-wr"
+    >
+      <div
+        v-if="activeTab == 'signIn'"
+        class="auth-popover-tab"
+      >
+        <form @submit.prevent="signin">
+          <div class="auth-popover-header">Авторизация</div>
 
-					checkbox.auth-save(v-model="signinData.save", label="запомнить")
+          <div class="auth-popover-fields">
+            <field
+              v-model="signinData.email"
+              class="auth-popover-field"
+              label="Email"
+            />
 
-					button.btn.btn_accent.btn-auth
-						|Войти
+            <field
+              v-model="signinData.password"
+              name="password"
+              type="password"
+              label="Пароль"
+              class="auth-popover-field"
+            />
+          </div>
 
-				.auth-popover-deliter
-					|или
-				.auth-popover-social
-					.auth-popover-social__item(@click="oauth('vk')")
-						<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="a" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25"><rect width="25" height="25" rx="4" fill="#fff"/></mask><g mask="url(#a)"><path d="M0 0v25h25V0H0zm14.5739 13.5517c-.4275 2.8084-2.5213 4.4184-5.232 4.4184-3.0463 0-5.516-2.4697-5.516-5.516 0-3.0455 2.4697-5.5152 5.516-5.5152 1.4735 0 2.7647.5258 3.7045 1.4386l-1.583 1.583c-.5362-.54-1.2698-.828-2.1216-.828-1.7931 0-3.247 1.5291-3.247 3.3215 0 1.794 1.4539 3.2787 3.247 3.2787 1.5029 0 2.6411-.7264 2.9694-2.181H9.3418v-2.2151h5.2186c.0627.3569.0944.7304.0944 1.1174a7.2858 7.2858 0 0 1-.0809 1.0977zm6.6239-.6868H19.265v1.932h-1.3728v-1.932h-1.9328v-1.3737h1.9328V9.5585h1.3728v1.9327h1.9328v1.3737z" fill="#DD4B39"/></g></svg>
+          <checkbox
+            v-model="signinData.save"
+            label="запомнить"
+            class="auth-save" />
+          <button class="btn btn_accent btn-auth">Войти</button>
+        </form>
 
-					.auth-popover-social__item(@click="oauth('google')")
-						<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 0H4C1.7909 0 0 1.7909 0 4v17c0 2.2091 1.7909 4 4 4h17c2.2091 0 4-1.7909 4-4V4c0-2.2091-1.7909-4-4-4z" fill="#44678D"/><path d="M6.4764 7.6081c.5992 1.4796 1.3585 2.8746 2.3586 4.127.1327.1666.2999.3148.476.4354.2573.1767.5.1146.6046-.1797.1107-.3088.2122-.9348.2183-1.2591.0165-.8474-.0025-1.4028-.048-2.2492-.0295-.542-.2223-1.018-1.0197-1.1617-.2462-.0446-.269-.2473-.1109-.4495.3294-.421.7882-.488 1.2858-.5146.8064-.0435 1.6157-.008 2.4231 0 .3289.003.6597.0295.9836.1001.4224.0921.6487.3885.7183.8009.036.2127.0546.4314.0495.6467-.021.925-.0655 1.8495-.0761 2.774-.0045.3629.022.7348.0997 1.0882.1086.4925.4439.6162.7868.2603.4355-.452.8194-.9605 1.1798-1.4771.6547-.9395 1.1437-1.9706 1.5647-3.0337.2177-.5486.3844-.6677.9745-.6692a610.0795 610.0795 0 0 1 3.3276 0c.1967.001.4024.0195.5881.0786.3014.096.421.3418.3504.6537-.1647.7308-.5596 1.352-.9825 1.9491-.6788.9581-1.3901 1.8931-2.0848 2.8401-.0886.1206-.1666.2493-.2393.3799-.2598.4695-.2417.7328.1372 1.1237.6031.6222 1.2489 1.2042 1.833 1.8434.4245.4651.8173.9696 1.1537 1.5006.4255.6718.1627 1.3044-.6321 1.417-.5001.0707-2.9426.0006-3.0688 0-.6567-.0029-1.2324-.2307-1.6959-.6767-.5155-.4965-.9841-1.0411-1.4791-1.5592-.1492-.1561-.3084-.3058-.48-.4365-.405-.3088-.8024-.2402-.9916.2353-.1617.4085-.3013 1.4811-.3078 1.5727-.0341.479-.3389.7844-.8755.8139-1.5492.0841-3.0503-.0886-4.4488-.8379-1.1853-.6347-2.1318-1.5322-2.9517-2.5788-1.3024-1.6624-2.3311-3.4897-3.2703-5.3707-.048-.0962-.9993-2.1204-1.0249-2.216-.085-.3201-.0057-.626.2648-.7312.1686-.0656 3.305-.0003 3.3572.0025.5005.0271.8417.2383 1.0526.7577z" fill="#fff"/></svg>
+        <div class="auth-popover-deliter">или</div>
 
-				.auth-popover-actions
-					.auth-popover-actions__right
-						span.auth-popover-actions-sign-up(@click="setActiveTab('signUp')")
-							|Регистрация
+        <div class="auth-popover-social">
+          <div
+            @click="oauth('vk')"
+            class="auth-popover-social__item"
+          >
+            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="a" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25"><rect width="25" height="25" rx="4" fill="#fff" /></mask><g mask="url(#a)"><path d="M0 0v25h25V0H0zm14.5739 13.5517c-.4275 2.8084-2.5213 4.4184-5.232 4.4184-3.0463 0-5.516-2.4697-5.516-5.516 0-3.0455 2.4697-5.5152 5.516-5.5152 1.4735 0 2.7647.5258 3.7045 1.4386l-1.583 1.583c-.5362-.54-1.2698-.828-2.1216-.828-1.7931 0-3.247 1.5291-3.247 3.3215 0 1.794 1.4539 3.2787 3.247 3.2787 1.5029 0 2.6411-.7264 2.9694-2.181H9.3418v-2.2151h5.2186c.0627.3569.0944.7304.0944 1.1174a7.2858 7.2858 0 0 1-.0809 1.0977zm6.6239-.6868H19.265v1.932h-1.3728v-1.932h-1.9328v-1.3737h1.9328V9.5585h1.3728v1.9327h1.9328v1.3737z" fill="#DD4B39" /></g></svg>
+          </div>
 
-			.auth-popover-tab(v-if="activeTab == 'signUp'")
-				form(@submit.prevent="signUp")
-					.auth-popover-header
-						|Регистрация
-					.auth-popover-fields
-						field.auth-popover-field(v-model="signupData.email", label="Email")
-						field.auth-popover-field(v-model="signupData.password", name="password", type="password", label="Пароль")
-						field.auth-popover-field(v-model="signupData.againPassword", name="passwordAgain", type="password", label="Еще раз пароль")
+          <div
+            @click="oauth('google')"
+            class="auth-popover-social__item"
+          >
+            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 0H4C1.7909 0 0 1.7909 0 4v17c0 2.2091 1.7909 4 4 4h17c2.2091 0 4-1.7909 4-4V4c0-2.2091-1.7909-4-4-4z" fill="#44678D" /><path d="M6.4764 7.6081c.5992 1.4796 1.3585 2.8746 2.3586 4.127.1327.1666.2999.3148.476.4354.2573.1767.5.1146.6046-.1797.1107-.3088.2122-.9348.2183-1.2591.0165-.8474-.0025-1.4028-.048-2.2492-.0295-.542-.2223-1.018-1.0197-1.1617-.2462-.0446-.269-.2473-.1109-.4495.3294-.421.7882-.488 1.2858-.5146.8064-.0435 1.6157-.008 2.4231 0 .3289.003.6597.0295.9836.1001.4224.0921.6487.3885.7183.8009.036.2127.0546.4314.0495.6467-.021.925-.0655 1.8495-.0761 2.774-.0045.3629.022.7348.0997 1.0882.1086.4925.4439.6162.7868.2603.4355-.452.8194-.9605 1.1798-1.4771.6547-.9395 1.1437-1.9706 1.5647-3.0337.2177-.5486.3844-.6677.9745-.6692a610.0795 610.0795 0 0 1 3.3276 0c.1967.001.4024.0195.5881.0786.3014.096.421.3418.3504.6537-.1647.7308-.5596 1.352-.9825 1.9491-.6788.9581-1.3901 1.8931-2.0848 2.8401-.0886.1206-.1666.2493-.2393.3799-.2598.4695-.2417.7328.1372 1.1237.6031.6222 1.2489 1.2042 1.833 1.8434.4245.4651.8173.9696 1.1537 1.5006.4255.6718.1627 1.3044-.6321 1.417-.5001.0707-2.9426.0006-3.0688 0-.6567-.0029-1.2324-.2307-1.6959-.6767-.5155-.4965-.9841-1.0411-1.4791-1.5592-.1492-.1561-.3084-.3058-.48-.4365-.405-.3088-.8024-.2402-.9916.2353-.1617.4085-.3013 1.4811-.3078 1.5727-.0341.479-.3389.7844-.8755.8139-1.5492.0841-3.0503-.0886-4.4488-.8379-1.1853-.6347-2.1318-1.5322-2.9517-2.5788-1.3024-1.6624-2.3311-3.4897-3.2703-5.3707-.048-.0962-.9993-2.1204-1.0249-2.216-.085-.3201-.0057-.626.2648-.7312.1686-.0656 3.305-.0003 3.3572.0025.5005.0271.8417.2383 1.0526.7577z" fill="#fff" /></svg>
+          </div>
+        </div>
 
-					button.btn.btn_accent.btn-auth
-						|Зарегистрироваться
+        <div class="auth-popover-actions">
+          <div class="auth-popover-actions__right">
+            <span
+              @click="setActiveTab('signUp')"
+              class="auth-popover-actions-sign-up"
+            >Регистрация</span>
+          </div>
+        </div>
+      </div>
 
-				.auth-popover-deliter
-					|или
-				.auth-popover-social
-					.auth-popover-social__item(@click="oauth('vk')")
-						<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="a" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25"><rect width="25" height="25" rx="4" fill="#fff"/></mask><g mask="url(#a)"><path d="M0 0v25h25V0H0zm14.5739 13.5517c-.4275 2.8084-2.5213 4.4184-5.232 4.4184-3.0463 0-5.516-2.4697-5.516-5.516 0-3.0455 2.4697-5.5152 5.516-5.5152 1.4735 0 2.7647.5258 3.7045 1.4386l-1.583 1.583c-.5362-.54-1.2698-.828-2.1216-.828-1.7931 0-3.247 1.5291-3.247 3.3215 0 1.794 1.4539 3.2787 3.247 3.2787 1.5029 0 2.6411-.7264 2.9694-2.181H9.3418v-2.2151h5.2186c.0627.3569.0944.7304.0944 1.1174a7.2858 7.2858 0 0 1-.0809 1.0977zm6.6239-.6868H19.265v1.932h-1.3728v-1.932h-1.9328v-1.3737h1.9328V9.5585h1.3728v1.9327h1.9328v1.3737z" fill="#DD4B39"/></g></svg>
-					.auth-popover-social__item(@click="oauth('google')")
-						<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 0H4C1.7909 0 0 1.7909 0 4v17c0 2.2091 1.7909 4 4 4h17c2.2091 0 4-1.7909 4-4V4c0-2.2091-1.7909-4-4-4z" fill="#44678D"/><path d="M6.4764 7.6081c.5992 1.4796 1.3585 2.8746 2.3586 4.127.1327.1666.2999.3148.476.4354.2573.1767.5.1146.6046-.1797.1107-.3088.2122-.9348.2183-1.2591.0165-.8474-.0025-1.4028-.048-2.2492-.0295-.542-.2223-1.018-1.0197-1.1617-.2462-.0446-.269-.2473-.1109-.4495.3294-.421.7882-.488 1.2858-.5146.8064-.0435 1.6157-.008 2.4231 0 .3289.003.6597.0295.9836.1001.4224.0921.6487.3885.7183.8009.036.2127.0546.4314.0495.6467-.021.925-.0655 1.8495-.0761 2.774-.0045.3629.022.7348.0997 1.0882.1086.4925.4439.6162.7868.2603.4355-.452.8194-.9605 1.1798-1.4771.6547-.9395 1.1437-1.9706 1.5647-3.0337.2177-.5486.3844-.6677.9745-.6692a610.0795 610.0795 0 0 1 3.3276 0c.1967.001.4024.0195.5881.0786.3014.096.421.3418.3504.6537-.1647.7308-.5596 1.352-.9825 1.9491-.6788.9581-1.3901 1.8931-2.0848 2.8401-.0886.1206-.1666.2493-.2393.3799-.2598.4695-.2417.7328.1372 1.1237.6031.6222 1.2489 1.2042 1.833 1.8434.4245.4651.8173.9696 1.1537 1.5006.4255.6718.1627 1.3044-.6321 1.417-.5001.0707-2.9426.0006-3.0688 0-.6567-.0029-1.2324-.2307-1.6959-.6767-.5155-.4965-.9841-1.0411-1.4791-1.5592-.1492-.1561-.3084-.3058-.48-.4365-.405-.3088-.8024-.2402-.9916.2353-.1617.4085-.3013 1.4811-.3078 1.5727-.0341.479-.3389.7844-.8755.8139-1.5492.0841-3.0503-.0886-4.4488-.8379-1.1853-.6347-2.1318-1.5322-2.9517-2.5788-1.3024-1.6624-2.3311-3.4897-3.2703-5.3707-.048-.0962-.9993-2.1204-1.0249-2.216-.085-.3201-.0057-.626.2648-.7312.1686-.0656 3.305-.0003 3.3572.0025.5005.0271.8417.2383 1.0526.7577z" fill="#fff"/></svg>
+      <div
+        v-if="activeTab == 'signUp'"
+        class="auth-popover-tab"
+      >
+        <form @submit.prevent="signUp">
+          <div class="auth-popover-header">Регистрация</div>
 
-				.auth-popover-actions
-					.auth-popover-actions__right
-						span.auth-popover-actions-sign-up(@click="setActiveTab('signIn')")
-							|Авторизация
+          <div class="auth-popover-fields">
+            <field
+              v-model="signupData.email"
+              label="Email"
+              class="auth-popover-field"
+            />
+
+            <field
+              v-model="signupData.password"
+              name="password"
+              type="password"
+              label="Пароль"
+              class="auth-popover-field"
+            />
+
+            <field
+              v-model="signupData.againPassword"
+              name="passwordAgain"
+              type="password"
+              label="Еще раз пароль"
+              class="auth-popover-field"
+            />
+          </div>
+
+          <button class="btn btn_accent btn-auth">Зарегистрироваться</button>
+        </form>
+
+        <div class="auth-popover-deliter">или</div>
+
+        <div class="auth-popover-social">
+          <div
+            @click="oauth('vk')"
+            class="auth-popover-social__item"
+          >
+            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="a" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25"><rect width="25" height="25" rx="4" fill="#fff" /></mask><g mask="url(#a)"><path d="M0 0v25h25V0H0zm14.5739 13.5517c-.4275 2.8084-2.5213 4.4184-5.232 4.4184-3.0463 0-5.516-2.4697-5.516-5.516 0-3.0455 2.4697-5.5152 5.516-5.5152 1.4735 0 2.7647.5258 3.7045 1.4386l-1.583 1.583c-.5362-.54-1.2698-.828-2.1216-.828-1.7931 0-3.247 1.5291-3.247 3.3215 0 1.794 1.4539 3.2787 3.247 3.2787 1.5029 0 2.6411-.7264 2.9694-2.181H9.3418v-2.2151h5.2186c.0627.3569.0944.7304.0944 1.1174a7.2858 7.2858 0 0 1-.0809 1.0977zm6.6239-.6868H19.265v1.932h-1.3728v-1.932h-1.9328v-1.3737h1.9328V9.5585h1.3728v1.9327h1.9328v1.3737z" fill="#DD4B39" /></g></svg>
+          </div>
+          <div
+            @click="oauth('google')"
+            class="auth-popover-social__item"
+          >
+            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 0H4C1.7909 0 0 1.7909 0 4v17c0 2.2091 1.7909 4 4 4h17c2.2091 0 4-1.7909 4-4V4c0-2.2091-1.7909-4-4-4z" fill="#44678D" /><path d="M6.4764 7.6081c.5992 1.4796 1.3585 2.8746 2.3586 4.127.1327.1666.2999.3148.476.4354.2573.1767.5.1146.6046-.1797.1107-.3088.2122-.9348.2183-1.2591.0165-.8474-.0025-1.4028-.048-2.2492-.0295-.542-.2223-1.018-1.0197-1.1617-.2462-.0446-.269-.2473-.1109-.4495.3294-.421.7882-.488 1.2858-.5146.8064-.0435 1.6157-.008 2.4231 0 .3289.003.6597.0295.9836.1001.4224.0921.6487.3885.7183.8009.036.2127.0546.4314.0495.6467-.021.925-.0655 1.8495-.0761 2.774-.0045.3629.022.7348.0997 1.0882.1086.4925.4439.6162.7868.2603.4355-.452.8194-.9605 1.1798-1.4771.6547-.9395 1.1437-1.9706 1.5647-3.0337.2177-.5486.3844-.6677.9745-.6692a610.0795 610.0795 0 0 1 3.3276 0c.1967.001.4024.0195.5881.0786.3014.096.421.3418.3504.6537-.1647.7308-.5596 1.352-.9825 1.9491-.6788.9581-1.3901 1.8931-2.0848 2.8401-.0886.1206-.1666.2493-.2393.3799-.2598.4695-.2417.7328.1372 1.1237.6031.6222 1.2489 1.2042 1.833 1.8434.4245.4651.8173.9696 1.1537 1.5006.4255.6718.1627 1.3044-.6321 1.417-.5001.0707-2.9426.0006-3.0688 0-.6567-.0029-1.2324-.2307-1.6959-.6767-.5155-.4965-.9841-1.0411-1.4791-1.5592-.1492-.1561-.3084-.3058-.48-.4365-.405-.3088-.8024-.2402-.9916.2353-.1617.4085-.3013 1.4811-.3078 1.5727-.0341.479-.3389.7844-.8755.8139-1.5492.0841-3.0503-.0886-4.4488-.8379-1.1853-.6347-2.1318-1.5322-2.9517-2.5788-1.3024-1.6624-2.3311-3.4897-3.2703-5.3707-.048-.0962-.9993-2.1204-1.0249-2.216-.085-.3201-.0057-.626.2648-.7312.1686-.0656 3.305-.0003 3.3572.0025.5005.0271.8417.2383 1.0526.7577z" fill="#fff" /></svg>
+          </div>
+        </div>
+        <div class="auth-popover-actions">
+          <div class="auth-popover-actions__right">
+            <span
+              class="auth-popover-actions-sign-up"
+              @click="setActiveTab('signIn')"
+            >
+              Авторизация
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
-import field from '~/components/input';
-import checkbox from '~/components/checkbox';
 import { mapActions } from 'vuex';
 export default {
 	props: [],
-	components: {
-		field,
-		checkbox
-	},
 	data: () => ({
 		opened: false,
 		activeTab: 'signIn',
@@ -87,7 +160,10 @@ export default {
 	computed: {
 	},
 	methods: {
-		...mapActions({ auth: 'user/auth' }),
+		...mapActions({
+      setTokens: 'user/updateTokens',
+      getUser: 'user/getUser',
+		}),
 		setActiveTab(tabName) {
 			this.activeTab = tabName;
 		},
@@ -100,45 +176,45 @@ export default {
 		signUp() {
 			this.error = false;
 
-            this.$auth.register(this.signupData, {
-                url: '/api/users/signup'
-            }).then((res, err) => {
-                this.auth(res.data);
-                this.close();
-            }).catch((err) => {
-                this.error = true;
-            })
+      this.$axios.post('/api/users/signup', this.signupData)
+        .then(async ({ data: tokens }) => {
+          await this.setTokens(tokens)
+          await this.getUser()
+          this.close()
+        })
+        .catch((err) => {
+          this.error = true
+        })
 		},
 		signin() {
-            this.error = false;
+      this.error = false;
 
-		    this.$auth.login(this.signinData, {
-                url: '/api/users/signin'
-            }).then((res, err) => {
-                this.auth(res.data);
-                this.close();
-            }).catch((err) => {
-                this.error = true;
-            })
+      this.$axios.post('/api/users/signin', this.signinData)
+        .then(async ({ data: tokens }) => {
+          await this.setTokens(tokens)
+          await this.getUser()
+          this.close()
+        })
+        .catch((err) => {
+          this.error = true
+        })
 		},
 		oauth(provider) {
-            this.error = false;
+      this.error = false;
 
-		    this.$auth.authenticate(provider).then((res, err) => {
-                this.auth(res.data);
-                this.close();
-            }).catch((err) => {
-                this.error = true;
-            })
-		},
-		mounted() {
-
+      this.$auth.authenticate(provider)
+        .then(async ({ data: tokens }) => {
+          await this.setTokens(tokens)
+          await this.getUser()
+          this.close();
+        }).catch((err) => {
+          this.error = true;
+        })
 		}
 	}
 }
 </script>
 <style lang="scss">
-	@import '~/assets/style/variables.scss';
 	.main-auth
 	{
 		position: relative;
@@ -222,7 +298,6 @@ export default {
 		&:hover
 		{
 			opacity: 0.7;
-			// transform: scale(1.05);
 		}
 	}
 	.auth-popover-actions
@@ -232,16 +307,6 @@ export default {
 		width: 100%;
 		align-items: center;
 		margin-top: 25px;
-	}
-	.auth-popover-actions__left
-	{
-		// flex-basis: 50%;
-		// text-align: right;
-	}
-	.auth-popover-actions__right
-	{
-		// flex-basis: 50%;
-		// text-align: left;
 	}
 	.auth-popover-actions-reset
 	{

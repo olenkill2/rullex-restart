@@ -1,8 +1,8 @@
 import Vue from 'vue';
-import field from '~/components/input'
-import dropdown from '~/components/drop-down';
-import checkbox from '~/components/checkbox';
-import textField from '~/components/textarea';
+import field from '~/components/UI/Field'
+import dropdown from '~/components/UI/DropDown';
+import checkbox from '~/components/UI/Checkbox';
+import textField from '~/components/UI/FieldTextarea';
 
 const components = {
     field,

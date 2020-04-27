@@ -1,71 +1,81 @@
-<template lang="pug">
-	.page-content
-		.pages-wr
-			.pages-header
-				.pages-header__left
-					|Всего в меню - {{menuItems.length}} пунктов
-				.pages-header__right
-					button.btn.btn_small(v-if="!menuFormShow", @click="menuFormShow = !menuFormShow", :class="{'btn_skin': menuFormShow}")
-						|Добавить
-					button.btn.btn_small(v-else="", @click="cancelEdit", :class="{'btn_skin': menuFormShow}")
-						|Отменить
-
-			.pages-form-wr(v-if="menuFormShow")
-				.pages-form-groups
-					.pages-form-groups__item
-						.pages-form-groups-field-wr
-							field(v-model="menu.url", label="Url", type="text", rules="required")
-
-						.pages-form-groups-field-wr
-							field(v-model="menu.label", label="Заголовок", type="text", rules="required")
-
-						.pages-form-groups-field-wr
-							checkbox(v-model="menu.private", label="Приватная", name="private")
-
-					.pages-form-groups__item
-						.pages-form-groups-field-wr
-							field(v-model="menu.order", label="Порядковый номер", type="text", rules="required")
-
-						.pages-form-groups-field-wr
-							field(v-model="menu.category", label="Категория", type="text")
-
-				.pages-form-actions(v-if="!edit")
-					.pages-form-actions__item
-						button.btn.btn_small.btn_red(@click="clearForm") Очистить
-					.pages-form-actions__item
-						button.btn.btn_small.btn_accent(@click="addMenu") Добавить
-
-				.pages-form-actions(v-else="")
-					.pages-form-actions__item
-						button.btn.btn_small.btn_red(@click="deleteMenu") Удалить рулетку
-					.pages-form-actions__item
-						button.btn.btn_small.btn_accent(@click="updateMenu") Сохранить
-
-			.page-data-container
-				.pages-message(v-if="!menuItems.length")
-					|Меню пустое
-
-				table.dashboard-table(v-else="")
-					tbody
-						tr
-							th №
-							th URL
-							th Заголовок
-							th Категория
-							th Порядковый номер
-							th Приватная
-							th Редактирование
-						tr(v-for="(menuItem, index) in menuItems")
-							td {{index + 1}}
-							td {{menuItem.url}}
-							td {{menuItem.label}}
-							td {{menuItem.category}}
-							td {{menuItem.order}}
-							td
-								span(v-if="menuItem.private") Да
-								span(v-else="") Нет
-							td
-								.edit-field.edit-field_roulette(@click="setMenuForEdit(index)")
+<template>
+	<div class="page-content">
+    <div class="pages-wr">
+      <div class="pages-header">
+        <div class="pages-header__left">Всего в меню - {{menuItems.length}} пунктов</div>
+        <div class="pages-header__right">
+          <button class="btn btn_small" v-if="!menuFormShow" @click="menuFormShow = !menuFormShow" :class="{'btn_skin': menuFormShow}">Добавить</button>
+          <button class="btn btn_small" v-else="" @click="cancelEdit" :class="{'btn_skin': menuFormShow}">Отменить</button>
+        </div>
+      </div>
+      <div class="pages-form-wr" v-if="menuFormShow">
+        <div class="pages-form-groups">
+          <div class="pages-form-groups__item">
+            <div class="pages-form-groups-field-wr">
+              <field v-model="menu.url" label="Url" type="text" rules="required"></field>
+            </div>
+            <div class="pages-form-groups-field-wr">
+              <field v-model="menu.label" label="Заголовок" type="text" rules="required"></field>
+            </div>
+            <div class="pages-form-groups-field-wr">
+              <checkbox v-model="menu.private" label="Приватная" name="private"></checkbox>
+            </div>
+          </div>
+          <div class="pages-form-groups__item">
+            <div class="pages-form-groups-field-wr">
+              <field v-model="menu.order" label="Порядковый номер" type="text" rules="required"></field>
+            </div>
+            <div class="pages-form-groups-field-wr">
+              <field v-model="menu.category" label="Категория" type="text"></field>
+            </div>
+          </div>
+        </div>
+        <div class="pages-form-actions" v-if="!edit">
+          <div class="pages-form-actions__item">
+            <button class="btn btn_small btn_red" @click="clearForm">Очистить</button>
+          </div>
+          <div class="pages-form-actions__item">
+            <button class="btn btn_small btn_accent" @click="addMenu">Добавить</button>
+          </div>
+        </div>
+        <div class="pages-form-actions" v-else="">
+          <div class="pages-form-actions__item">
+            <button class="btn btn_small btn_red" @click="deleteMenu">Удалить рулетку</button>
+          </div>
+          <div class="pages-form-actions__item">
+            <button class="btn btn_small btn_accent" @click="updateMenu">Сохранить</button>
+          </div>
+        </div>
+      </div>
+      <div class="page-data-container">
+        <div class="pages-message" v-if="!menuItems.length">Меню пустое</div>
+        <table class="dashboard-table" v-else="">
+          <tbody>
+            <tr>
+              <th>№</th>
+              <th>URL</th>
+              <th>Заголовок</th>
+              <th>Категория</th>
+              <th>Порядковый номер</th>
+              <th>Приватная</th>
+              <th>Редактирование</th>
+            </tr>
+            <tr v-for="(menuItem, index) in menuItems">
+              <td>{{index + 1}}</td>
+              <td>{{menuItem.url}}</td>
+              <td>{{menuItem.label}}</td>
+              <td>{{menuItem.category}}</td>
+              <td>{{menuItem.order}}</td>
+              <td><span v-if="menuItem.private">Да</span><span v-else="">Нет</span></td>
+              <td>
+                <div class="edit-field edit-field_roulette" @click="setMenuForEdit(index)"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

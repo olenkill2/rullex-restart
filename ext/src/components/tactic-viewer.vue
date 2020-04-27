@@ -35,7 +35,6 @@
 										|  {{item}};
 
 						.tv-stages-actions
-							//- добавить confirm
 							button.btn-str.btn-str_remove(@click="$emit('remove', key)")
 								|Удалить
 							button.btn-str(@click="$emit('edit', key); expand = false")

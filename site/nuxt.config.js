@@ -34,13 +34,13 @@ module.exports = {
 		scrollBehavior: function (to, from, savedPosition) {
 			return { x: 0, y: 0 }
 		},
-		extendRoutes (routes, resolve) {
-		  routes.push({
-		    name: 'custom',
-		    path: '*',
-		    component: resolve(__dirname, 'pages/post.vue')
-		  })
-		}
+		// extendRoutes (routes, resolve) {
+		//   routes.push({
+		//     name: 'custom',
+		//     path: '*',
+		//     component: resolve(__dirname, 'pages/post.vue')
+		//   })
+		// }
 	},
 
 	/*
@@ -66,18 +66,17 @@ module.exports = {
 		'~/plugins/vee-validate',
 		'~/plugins/customGlobalComponents',
 		{src: '~/plugins/editor', mode: 'client'},
-        {src: '~/plugins/vue-authenticate', mode: 'client'}
+    {src: '~/plugins/vue-authenticate', mode: 'client'}
 	],
 
 	/*
 	** Nuxt.js modules
 	*/
 	modules: [
-	// Doc: https://github.com/nuxt-community/axios-module#usage
 		'@nuxtjs/proxy',
 		'@nuxtjs/axios',
 		'@nuxtjs/style-resources',
-        // '@nuxtjs/auth'
+		'cookie-universal-nuxt'
 	],
 	/*
 	** Axios module configuration
@@ -95,7 +94,6 @@ module.exports = {
 		},
 		'/uploads/': {
 			target: 'http://127.0.0.1:3002',
-			// pathRewrite: {'^/uploads/': '/'},
 			logLevel: 'debug'
 		}
 	},
@@ -103,46 +101,6 @@ module.exports = {
 	env: {
 		baseUrl: process.env.BASE_URL || 'http://localhost:3002/api/v1'
 	},
-
-    // auth: {
-    //     redirect: {
-    //         callback: '/oauth/',
-    //         logout: '/signed-out'
-    //     },
-	//     strategies: {
-    //         google: {
-    //             redirect_uri: '/oauth/?from=google',
-    //             response_type: 'code',
-    //             // mode: 'popup',
-    //             client_id:
-    //                 '48660716713-fo9d7bgkr98800vjicot1r5uofkb3qke.apps.googleusercontent.com'
-    //         },
-    //         vk: {
-    //             _scheme: 'oauth2',
-    //             authorization_endpoint: 'http://oauth.vk.com/authorize',
-    //             // userinfo_endpoint: 'https://www.googleapis.com/oauth2/v3/userinfo',
-    //             // scope: ['openid', 'profile', 'email'],
-    //             access_type: 'offline',
-    //             access_token_endpoint: 'http://localhost:3002/api/v1/users/oauth/vk',
-    //             response_type: 'code',
-    //             token_type: 'Bearer',
-    //             mode: 'popup',
-    //             redirect_uri: 'http://localhost:3334/oauth/?from=vk',
-    //             client_id: '7101695',
-    //             // token_key: 'access_token',
-    //             // state: 'UNIQUE_AND_NON_GUESSABLE'
-    //             // endpoints: {
-    //             //     authorization: 'http://oauth.vk.com/authorize',
-    //             //     token: 'http://localhost:3002/api/v1/users/oauth/'
-    //             //     // userInfo: '/oauth2mockserver/userinfo'
-    //             // },
-    //             // responseType: 'code',
-    //             // // grantType: 'authorization_code',
-    //             // clientId: '7101695'
-    //         }
-    //     }
-    // },
-
 
 	/*
 	** Build configuration

@@ -8,34 +8,35 @@
 
 <script>
 	export default {
-		async asyncData ({$axios, redirect, res, route}) {
+		async asyncData({ $axios, store }) {
 			try
 			{
-                var seo = await $axios.get('http://127.0.0.1:3002/api/v1/seo/public/', {params: {url: '/'}})
+        const seo = await $axios.get('http://127.0.0.1:3002/api/v1/seo/public/', {params: {url: '/'}})
 
 				return {seoData: seo.data.data};
 			} catch(err) {
+        console.log(err)
 				return {
 					title: 'Rullex',
 					description: 'Бот для рулеток'
 				};
 			}
 		},
-		head () {
-			return {
-				title: this.seoData.title,
-				meta: [
-					{ hid: 'description', name: 'description', content: this.seoData.description },
-					{ hid: 'og:title', name: 'og:title', content: this.seoData.ogTitle },
-					{ hid: 'og:descriptio ', name: 'og:descriptio ', content: this.seoData.ogDescription },
-				]
-			}
+		head() {
+			// return {
+			// 	title: this.seoData.title,
+			// 	meta: [
+			// 		{ hid: 'description', name: 'description', content: this.seoData.description },
+			// 		{ hid: 'og:title', name: 'og:title', content: this.seoData.ogTitle },
+			// 		{ hid: 'og:description', name: 'og:description', content: this.seoData.ogDescription },
+			// 	]
+			// }
 		},
-		data: () => ({
-			// title: 'Rullex',
-			// description: 'Бот для рулеток',
-			// content: 'Расширение для рулеток'
-		}),
+		data() {
+		  return {
+
+      }
+    }
 	}
 </script>
 

@@ -90,86 +90,6 @@ p
 	color: $accent;
 }
 
-.header-content,
-.header-ext-link-wr
-{
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-.header-content
-{
-	padding-top: 20px;
-	padding-bottom: 20px;
-	align-items: flex-end;
-}
-.header__left
-{
-	display: flex;
-	align-items: flex-end;
-}
-.header__right
-{
-	display: flex;
-	flex: 1;
-	align-items: center;
-	// justify-content: space-between;
-}
-.header-wr
-{
-	box-shadow: 0px 1px 10px rgba(205, 205, 205, 0.25);
-	background-color: #fff;
-	position: sticky;
-	top: 0;
-}
-.header-logo
-{
-	line-height: 0;
-	margin-right: 25px;
-}
-.header-ext-link-wr
-{
-	display: inline-flex;
-	text-decoration: none;
-	color: $accent;
-	justify-content: flex-end;
-	height: 38px;
-	// margin-right: 50px;
-}
-.header-ext-link__text
-{
-	font-size: 14px;
-	line-height: 14px;
-	color: #fff;
-	margin-right: 10px;
-}
-.header-ext-link__icon
-{
-	line-height: 0;
-	svg
-	{
-		max-width: 22px;
-		path
-		{
-			fill: #fff;
-		}
-	}
-}
-
-
-
-.pages-header
-{
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding-bottom: 40px;
-}
-.pages-header
-{
-	font-size: 28px;
-	color: $accent;
-}
 .pages-message
 {
 	text-align: center;
@@ -222,20 +142,6 @@ p
 	.btn
 	{
 		margin-left: 15px;
-	}
-}
-.pages-form-actions
-{
-	display: flex;
-	justify-content: flex-end;
-	padding-top: 40px;
-}
-.pages-form-actions__item
-{
-	margin-left: 20px;
-	&:first-child
-	{
-		margin-left: 0;
 	}
 }
 
@@ -357,19 +263,6 @@ p
 
 @media (max-width: $tablet)
 {
-	.header-logo
-	{
-		svg
-		{
-			height: 50px;
-			width: auto;
-		}
-	}
-	.header-ext-link-wr
-	{
-		height: 34px;
-	}
-
 	.main
 	{
 		position: relative;
@@ -513,36 +406,11 @@ p
 
 @media (max-width: $mobile)
 {
-	.header-logo
-	{
-		margin-right: 20px;
-		svg
-		{
-			height: 28px;
-		}
-	}
-	.sidebar-wr
+  .sidebar-wr
 	{
 	}
 	.page-content
 	{
 		padding: 14px;
-	}
-	.header-ext-link-wr
-	{
-		padding: 5px;
-		justify-content: center;
-		height: 28px;
-	}
-	.header-ext-link__text
-	{
-		font-size: 12px;
-	}
-	.header-ext-link__icon
-	{
-		img
-		{
-			width: 16px;
-		}
 	}
 }

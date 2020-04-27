@@ -1,40 +1,72 @@
-<template lang="pug">
-	div
-		headerTop
-		.container.main
-			aside.sidebar-wr.sidebar-wr_main(:class="{'move-sidebar': openedSidebar}")
-				.sidebar-content
-					.sidebar-nav-mob-actions
-						.sidebar-nav-mob-action.sidebar-nav-mob-action__burger(@click="openSidebar('menu')", :class="{'active': openSidebarName == 'menu'}")
-							.sidebar-nav-mob-action__chart
-							.sidebar-nav-mob-action__chart
-							.sidebar-nav-mob-action__chart
-						.sidebar-nav-mob-action.sidebar-nav-mob-action__more(@click="openSidebar('sub-sidebar')", :class="{'active': openSidebarName == 'sub-sidebar'}")
-							.sidebar-nav-mob-action__chart
-							.sidebar-nav-mob-action__chart
-							.sidebar-nav-mob-action__chart
+<template>
+	<div>
+    <headerTop></headerTop>
 
-					.sidebar-nav(:class="{'showed': openedSidebar && openSidebarName == 'menu'}")
-						.sidebar-nav__item-wr(v-for="(group, index) in menu")
-							.single-item(v-if="group.items.length == 1 || group._id == ''", v-for="navItem in group.items")
-								router-link.sidebar-nav-item(:to="navItem.url")
-									span(v-if="group.items.length == 1 && group._id != ''") {{group._id}} –
-									span  {{navItem.label}}
+    <div class="container main">
+      <aside class="sidebar-wr sidebar-wr_main" :class="{'move-sidebar': openedSidebar}">
+        <div class="sidebar-content">
+          <div class="sidebar-nav-mob-actions">
+            <div
+              @click="openSidebar('menu')" :class="{'active': openSidebarName == 'menu'}"
+              class="sidebar-nav-mob-action sidebar-nav-mob-action__burger"
+            >
+              <div class="sidebar-nav-mob-action__chart"></div>
+              <div class="sidebar-nav-mob-action__chart"></div>
+              <div class="sidebar-nav-mob-action__chart"></div>
+            </div>
+            <div
+              @click="openSidebar('sub-sidebar')" :class="{'active': openSidebarName == 'sub-sidebar'}"
+              class="sidebar-nav-mob-action sidebar-nav-mob-action__more"
+            >
+              <div class="sidebar-nav-mob-action__chart"></div>
+              <div class="sidebar-nav-mob-action__chart"></div>
+              <div class="sidebar-nav-mob-action__chart"></div>
+            </div>
+          </div>
+          <div
+            class="sidebar-nav"
+            :class="{'showed': openedSidebar && openSidebarName == 'menu'}"
+          >
+            <div
+              v-for="(group, index) in menu"
+              class="sidebar-nav__item-wr"
+            >
+              <div
+                 v-if="group.items.length == 1 || group._id == ''"
+                 v-for="navItem in group.items"
+                class="single-item"
+              >
+                <router-link class="sidebar-nav-item" :to="navItem.url">
+                  <span v-if="group.items.length == 1 && group._id != ''">{{group._id}} –</span>
+                  <span> {{navItem.label}}</span>
+                </router-link>
+              </div>
+              <sidebar-group
+                v-if="group._id != '' && group.items.length > 1"
+                :label="group._id"
+                :items="group.items"
+              />
+            </div>
+          </div>
+        </div>
+      </aside>
 
-							sidebar-group(
-								v-if="group._id != '' && group.items.length > 1",
-								:label="group._id",
-								:items="group.items"
-							)
+      <main class="content-wr">
+        <div class="content" :class="{'move-content': openedSidebar}">
+          <nuxt></nuxt>
+        </div>
+      </main>
 
-			main.content-wr
-				.content(:class="{'move-content': openedSidebar}")
-					nuxt
-
-			aside.sidebar-wr.sidebar-wr_secondary(:class="{'move-sidebar': openedSidebar, 'showed': openedSidebar && openSidebarName == 'sub-sidebar'}")
-				.sidebar-content
-					.sidebar-content-element
-						| всякие штуки
+      <aside
+        class="sidebar-wr sidebar-wr_secondary"
+        :class="{'move-sidebar': openedSidebar, 'showed': openedSidebar && openSidebarName == 'sub-sidebar'}"
+      >
+        <div class="sidebar-content">
+          <div class="sidebar-content-element">всякие штуки</div>
+        </div>
+      </aside>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -81,7 +113,6 @@
 	.sidebar-nav-group_open ~ .sidebar-nav-group__list
 	{
 		max-height: 399px;
-		// overflow-y: auto;
 	}
 	.sidebar-nav-group__list
 	{

@@ -25,12 +25,10 @@
 		tactcViewer(v-if="tacticToEdit", :tactic="tacticToEdit", @remove="removeStage", @edit="editStage", :stagesLength="tacticToEdit.stages.length", @tacticSaved="tacticSaved")
 </template>
 <script>
-import field from '@/components/input.vue';
 import tactcViewer from '@/components/tactic-viewer.vue';
 export default {
 	name: 'tacticSaved',
 	components: {
-		field,
 		tactcViewer
 	},
 	data: () => ({

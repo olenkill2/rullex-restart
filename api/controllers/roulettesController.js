@@ -16,7 +16,6 @@ module.exports =
 
 	getAll: async(req, res) => {
 		const roulette = await Roulette.find().populate('modes gameFunctionForMode.mode');
-		console.log(roulette);
 		res.status(200).json({data: roulette});
 	},
 
@@ -33,13 +32,12 @@ module.exports =
 
 		if(!roulette) return res.status(404).json({error: 'not found'});
 
-		res.status(200).json({data: roulette});
+		res.status(200).json(roulette);
 	},
 
 	update: async(req, res) => {
 		let roulette = await Roulette.findById(req.params.id);
 
-		console.log(req.body);
 		if(!roulette) return res.status(404).json({error: 'Not found'});
 
 		roulette = await Roulette.findOneAndUpdate(req.params.id, req.body);

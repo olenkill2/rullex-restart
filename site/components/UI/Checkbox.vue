@@ -1,10 +1,21 @@
-<template lang="pug">
-	label.checkbox-wr(:class="[ $options._componentTag, { checked: checked, disabled: $attrs.disabled == true }]")
-		input.checkbox-input(type="checkbox", v-bind="$attrs", :checked="checked", :value="value", @change="update")
-		.checkbox-box
-		.checkbox-label
-			slot
-				|{{label}}
+<template>
+	<label
+    class="checkbox-wr"
+    :class="[ $options._componentTag, { checked: checked, disabled: $attrs.disabled }]"
+  >
+    <input
+      class="checkbox-input"
+      type="checkbox"
+      v-bind="$attrs"
+      :checked="checked"
+      :value="value"
+      @change="update"
+    />
+    <div class="checkbox-box"></div>
+    <div class="checkbox-label">
+      <slot>{{label}}</slot>
+    </div>
+  </label>
 </template>
 <script>
 export default {
@@ -57,7 +68,7 @@ export default {
 		&:checked ~ .checkbox-box
 		{
 			border-color: $main;
-			background-image: url('../assets/icons/check.svg');
+			background-image: url('../../assets/icons/check.svg');
 		}
 	}
 	.checkbox-box

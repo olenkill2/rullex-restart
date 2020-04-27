@@ -1,22 +1,21 @@
-<template lang="pug">
-	.page-content
-		.dashboard-header-wr
-			.dashboard-header__left
-				|Основная панель
-
-		.dashboard-main-panel
-			router-link.dashboard-main-panel__item(to="/dashboard/menu") Меню
-			router-link.dashboard-main-panel__item(to="/dashboard/pages") Страницы
-			router-link.dashboard-main-panel__item(to="/dashboard/roulets") Рулетки
-			router-link.dashboard-main-panel__item(to="/dashboard/freebie") Халява
-			//- router-link.dashboard-main-panel__item(to="/dashboard/menu") Меню
+<template>
+	<div class="page-content">
+    <div class="dashboard-header-wr">
+      <div class="dashboard-header__left">Основная панель</div>
+    </div>
+    <div class="dashboard-main-panel">
+      <router-link class="dashboard-main-panel__item" to="/dashboard/menu">Меню</router-link>
+      <router-link class="dashboard-main-panel__item" to="/dashboard/pages">Страницы</router-link>
+      <router-link class="dashboard-main-panel__item" to="/dashboard/roulets">Рулетки</router-link>
+      <router-link class="dashboard-main-panel__item" to="/dashboard/freebie">Халява</router-link>
+    </div>
+  </div>
 </template>
 <script>
 export default {
 	layout (context) {
 		return 'dashboard'
 	},
-	middleware: ['authenticated'],
 	data: () => ({
 
 	}),

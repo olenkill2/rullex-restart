@@ -1,12 +1,16 @@
-<template lang="pug">
-	label.textarea-wr
-		textarea.textarea(:value="name",
-			@input="updateSelf($event.target.value)",
-			@focus="focused = true; $emit('focus')",
-			@blur="focused = false; $emit('blur')",
-			:class="{'textarea_focused': focused || name !== ''}")
-		.textarea-label
-			|{{label}}
+<template>
+  <label class="textarea-wr">
+    <textarea
+      :class="{'textarea_focused': focused || name !== ''}"
+      :value="name"
+      @blur="focused = false; $emit('blur')"
+      @focus="focused = true; $emit('focus')"
+      @input="updateSelf($event.target.value)"
+      class="textarea"
+    >
+    </textarea>
+    <div class="textarea-label">{{label}}</div>
+  </label>
 </template>
 <script>
 export default {
@@ -25,7 +29,6 @@ export default {
 }
 </script>
 <style lang="scss">
-	@import '~/assets/style/variables.scss';
 	.textarea-wr
 	{
 		position: relative;
@@ -37,10 +40,8 @@ export default {
 		box-shadow: none;
 		border: none;
 		background-color: transparent;
-		font-size: 16px;
 		border-bottom: 1px solid $accent;
 		left: 0;
-		min-height: 32px;
 		position: relative;
 		padding-bottom: 3px;
 		padding-top: 5px;

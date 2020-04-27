@@ -1,5 +1,5 @@
-export default function ({ store, redirect, $axios }) {
-	if(!store.state.isAdmin) {
-		return redirect('error')
+export default function ({ store, redirect }) {
+	if(store.state.user.user.role !== 'admin') {
+		return redirect('/error')
 	}
 }

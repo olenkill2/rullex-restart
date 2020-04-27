@@ -36,7 +36,7 @@ export default {
         //     this.error = true;
         // }
         // try {
-        const result = await this.$axios.get('/api/users/oauth/vk')
+        // const result = await this.$axios.get('/api/users/oauth/vk')
     }
 }
 </script>
