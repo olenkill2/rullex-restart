@@ -11,7 +11,7 @@ const {
 
 router.route('/signup').post(validateBody('newUser'), user.signUp);
 router.route('/signin').post(Local_auth, user.signIn);
-router.route('/refresh').post(user.refreshTokens);
+router.route('/refresh').get(user.refreshTokens);
 router.route('/user').post(JWT_auth, user.getUserInfo);
 router.route('/update-token').post(user.signIn);
 router.route('/oauth/google/cb').get(Google_auth, user.oauthGoogle);

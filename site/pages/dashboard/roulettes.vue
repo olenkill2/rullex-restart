@@ -101,25 +101,24 @@
               </div>
             </div>
           </div>
+
           <div
             v-else
             class="pages-form-groups-field-wr"
           >
             Доступных режимов нет
-            <button @click="$emit('changeTab', 1)" class="btn btn_small">Создать</button>
+            <button class="btn btn_small">Создать</button>
           </div>
-          <div class="pages-form-groups-field-wr">
-            <div class="pages-form-modes">
-<!--              <div class="pages-form-mode" v-for=""></div>-->
-            </div>
-          </div>
+
           <div class="pages-form-groups-field-wr">
             <dropdown
               :options="refTypesList"
               v-model="roulette.referal.refType"
+              :value="roulette.referal.refType"
               label="Тип рефералки"
             />
           </div>
+
           <div
             v-if="roulette.referal.refType === 'url'"
             class="pages-form-groups-field-wr"
@@ -130,6 +129,7 @@
               type="text"
             />
           </div>
+
           <div
             v-else
             class="pages-form-groups-field-wr"
@@ -180,8 +180,6 @@
           </div>
         </div>
       </div>
-
-      <div v-if="addRouletteErrors">{{addRouletteErrors}}</div>
 
       <FormControls
           :isEdit="edit"
@@ -270,7 +268,6 @@
           value: 'code'
         }
       ],
-      componentsList: ['field', 'dropdown'],
       edit: false,
       rouletteFormShow: false,
       addRouletteErrors: false
@@ -297,6 +294,7 @@
       ...mapActions({
         getRoulettes: 'dashboard/fetchRoulettes'
       }),
+
       modeSupported (mode) {
         const index = this.roulette.gameFunctionForMode.findIndex(supportedMode => supportedMode.mode._id == mode._id);
         return this.roulette.gameFunctionForMode[index] ? true : false;
@@ -363,21 +361,27 @@
       },
 
       deleteRoulette () {
-        this.$axios.delete('/api/roulettes/' + this.roulette._id).then((response, error) => {
-          this.getRoulettes();
-          this.cancelEdit();
-        }).catch((error, res) => {
-          this.error = true;
+        this.$axios
+          .delete('/api/roulettes/' + this.roulette._id)
+          .then((response, error) => {
+            this.getRoulettes();
+            this.cancelEdit();
+          })
+          .catch((error, res) => {
+            this.error = true;
         })
       },
 
       updateRoulette () {
-        this.$axios.put('/api/roulettes/' + this.roulette._id, this.roulette).then((response, error) => {
-          this.getRoulettes();
-          this.cancelEdit();
-        }).catch((error) => {
-          this.error = true;
-        });
+        this.$axios
+          .put('/api/roulettes/' + this.roulette._id, this.roulette)
+          .then((response, error) => {
+            this.getRoulettes();
+            this.cancelEdit();
+          })
+          .catch((error) => {
+            this.error = true;
+          });
       }
     },
     created () {

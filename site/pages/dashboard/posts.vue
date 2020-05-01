@@ -134,8 +134,7 @@ export default {
 			},
 			quote: {
 				inlineToolbar: true
-			},
-
+			}
 		},
 		customTools: {}
 	}),

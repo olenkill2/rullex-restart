@@ -1,7 +1,8 @@
 export const state = () => ({
   roulettes: [],
   freebies: [],
-  modes: []
+  modes: [],
+  seoItems: []
 })
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
   },
   setModes(state, modes) {
     state.modes = modes
+  },
+  setSeoItems(state, seoItems) {
+    state.seoItems = seoItems
   }
 }
 export const actions = {
@@ -28,7 +32,7 @@ export const actions = {
   async fetchFreebies({ commit }) {
     await this.$axios.$get('/api/freebies')
       .then(({ data }) => {
-        commit('setFreebies', data)
+        commit('setSeoItems', data)
       })
       .catch((e) => {
         console.log(e)
@@ -39,6 +43,16 @@ export const actions = {
     await this.$axios.$get('/api/modes')
       .then(({ data }) => {
         commit('setModes', data)
+      })
+      .catch((e) => {
+        console.log(e)
+        throw e
+      })
+  },
+  async fetchSeoItems({ commit }) {
+    await this.$axios.$get('/api/seo')
+      .then(({ data }) => {
+        commit('setSeoItems', data)
       })
       .catch((e) => {
         console.log(e)
@@ -56,5 +70,8 @@ export const getters = {
   },
   getModes: (state) => {
     return state.modes
+  },
+  getSeoItems: (state) => {
+    return state.seoItems
   }
 }

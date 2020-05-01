@@ -13,8 +13,7 @@ const rouletteSchema = new Schema(
 	},
 	host: {
 		type: String,
-		required: true,
-		unique: true
+		required: true
 	},
 	private: {
 		type: Boolean,

@@ -4,11 +4,11 @@ const User = require('../models/userModel.js');
 const RefreshToken = require('../models/refresh.js');
 
 const getTokens = async (data) => {
-	const tokens = {
-	  access_token: JWT.sign({
+  const tokens = {
+    access_token: JWT.sign({
       sub: data.id,
     }, tokensConfig.ACCESS_SECRET, {
-	    expiresIn: tokensConfig.ACCESS_EXP
+      expiresIn: tokensConfig.ACCESS_EXP
     }),
 
     refresh_token: JWT.sign({
@@ -30,46 +30,46 @@ const getTokens = async (data) => {
 }
 
 createBySocial = data => {
-	const newUser = {
-		method: data.method,
-		created_at: Date.now(),
-		role: 'user'
-	}
+  const newUser = {
+    method: data.method,
+    created_at: Date.now(),
+    role: 'user'
+  }
 
-	newUser[data.method] = {
-		id: data.id,
-		email: data.email
-	}
+  newUser[data.method] = {
+    id: data.id,
+    email: data.email
+  }
 
-	return User.create(newUser);
+  return User.create(newUser);
 }
 
 module.exports =
 {
-	// регистрация по мылу и паролю
-	async signUp(req, res) {
-		const data = req.body;
+  // регистрация по мылу и паролю
+  async signUp(req, res) {
+    const data = req.body;
 
-		const foundUser = await User.findOne({ 'local.email': data.email })
+    const foundUser = await User.findOne({ 'local.email': data.email })
 
-		if(foundUser)
-			return res.status(400).json({error: 'Логин уже используется'});
+    if(foundUser)
+      return res.status(400).json({error: 'Логин уже используется'});
 
-		const newUser = await User.create({
-			method: 'local',
-			created_at: Date.now(),
-			local: {
-				email: data.email,
-				password: data.password
-			},
-			role: 'user'
-		});
+    const newUser = await User.create({
+      method: 'local',
+      created_at: Date.now(),
+      local: {
+        email: data.email,
+        password: data.password
+      },
+      role: 'user'
+    });
 
-		const tokens = await getTokens(newUser)
-		res.status(200).json({ ...tokens, role: newUser.role });
-	},
+    const tokens = await getTokens(newUser)
+    res.status(200).json({ ...tokens, role: newUser.role });
+  },
   async refreshTokens(req, res) {
-    const refresh_token = req.body.refresh_token
+    const refresh_token = req.query.refresh_token
 
     if(!refresh_token) return res.status(403).json({message: 'need auth'})
 
@@ -94,44 +94,44 @@ module.exports =
       res.status(403).json({message: 'need auth'})
     }
   },
-	// авторизация по мылу и паролю
-	async signIn(req, res) {
+  // авторизация по мылу и паролю
+  async signIn(req, res) {
     const tokens = await getTokens(req.user)
-		res.status(200).json({ ...tokens, role: req.user.role });
-	},
-	// авторизация через гугл
-	async oauthGoogle(req, res) {
-		const user = req.user.profile;
-		let foundUser = await User.findOne({ 'google.id': user.id })
+    res.status(200).json({ ...tokens, role: req.user.role });
+  },
+  // авторизация через гугл
+  async oauthGoogle(req, res) {
+    const user = req.user.profile;
+    let foundUser = await User.findOne({ 'google.id': user.id })
 
-		if(!foundUser) {
-			foundUser = await createBySocial({
-				email: user.emails[0].value,
-				id: user.id,
-				method: 'google',
-			})
+    if(!foundUser) {
+      foundUser = await createBySocial({
+        email: user.emails[0].value,
+        id: user.id,
+        method: 'google',
+      })
     }
 
     const tokens = await getTokens(foundUser)
-		res.status(200).json({ ...tokens, role: foundUser.role });
-	},
-	// авторизация через vk
-	async oauthVk(req, res) {
-		const user = req.user.profile;
-		let foundUser = await User.findOne({ 'vk.id': user.id })
+    res.status(200).json({ ...tokens, role: foundUser.role });
+  },
+  // авторизация через vk
+  async oauthVk(req, res) {
+    const user = req.user.profile;
+    let foundUser = await User.findOne({ 'vk.id': user.id })
 
-		if (!foundUser)
-			foundUser = await createBySocial({
-				email: user.email ? user.email : '',
-				id: user.id,
-				method: 'vk',
-			})
+    if (!foundUser)
+      foundUser = await createBySocial({
+        email: user.email ? user.email : '',
+        id: user.id,
+        method: 'vk',
+      })
 
-		const tokens = await getTokens(foundUser)
-		res.status(200).json({ ...tokens, role: foundUser.role });
-	},
-	// получение роли пользоваетля
-	async getUserInfo(req, res) {
-		res.status(200).json({ role: req.user.role })
-	},
+    const tokens = await getTokens(foundUser)
+    res.status(200).json({ ...tokens, role: foundUser.role });
+  },
+  // получение роли пользоваетля
+  async getUserInfo(req, res) {
+    res.status(200).json({ role: req.user.role })
+  },
 }

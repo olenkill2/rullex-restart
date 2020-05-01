@@ -29,13 +29,15 @@ module.exports = {
     },
 
     update: async(req, res) => {
-        let seoData = await Seo.findById(req.params.id);
+        let seoData = await Seo.findById(req.params.id)
 
-        if (!seoData) return res.status(404).json({ error: 'Not found' });
+        if (!seoData) return res.status(404).json({ error: 'Not found' })
 
-        seoData = await Seo.findOneAndUpdate(req.params.id, req.body);
+        delete req.body._id
+        console.log(req.body)
+        seoData = await Seo.findOneAndUpdate(req.params.id, req.body, { upsert: true })
 
-        res.status(200).json({ data: seoData });
+        res.status(200).json({ data: seoData })
     },
 
     delete: async(req, res) => {

@@ -33,14 +33,7 @@ module.exports = {
 		linkActiveClass: 'active-link',
 		scrollBehavior: function (to, from, savedPosition) {
 			return { x: 0, y: 0 }
-		},
-		// extendRoutes (routes, resolve) {
-		//   routes.push({
-		//     name: 'custom',
-		//     path: '*',
-		//     component: resolve(__dirname, 'pages/post.vue')
-		//   })
-		// }
+		}
 	},
 
 	/*
@@ -66,7 +59,7 @@ module.exports = {
 		'~/plugins/vee-validate',
 		'~/plugins/customGlobalComponents',
 		{src: '~/plugins/editor', mode: 'client'},
-    {src: '~/plugins/vue-authenticate', mode: 'client'}
+    	{src: '~/plugins/vue-authenticate', mode: 'client'}
 	],
 
 	/*

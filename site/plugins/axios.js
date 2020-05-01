@@ -1,5 +1,4 @@
 export default function ({ $axios, req, store }) {
-  const tokens = store.getters['user/tokens']
   let isRefreshing = false
   let failedQueue = []
 
@@ -9,15 +8,16 @@ export default function ({ $axios, req, store }) {
   }
 
   $axios.interceptors.request.use((request) => {
-    if (store.state.user.access_token) {
-      request.headers.common.Authorization = `Bearer ${store.state.user.access_token}`
+    const { access_token } = store.getters['user/tokens']
+    if (access_token) {
+      request.headers.common.Authorization = `Bearer ${access_token}`
     }
     return request
   })
 
   $axios.onError((error) => {
     const originalRequest = error.config
-    const tokens = store.getters['user/tokens']
+    const { refresh_token } = store.getters['user/tokens']
 
     if (error.response.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
@@ -37,25 +37,28 @@ export default function ({ $axios, req, store }) {
 
       return new Promise(function (resolve, reject) {
         $axios
-          .post('http://localhost:3002/api/v1/users/refresh', { refresh_token: tokens.refresh_token })
-            .then(async ({ data: tokens }) => {
-              await store.dispatch('user/updateTokens', tokens)
+        .get('http://localhost:3002/api/v1/users/refresh', {
+          params: { refresh_token: refresh_token }
+        })
+        .then(async ({ data: tokens }) => {
+          await store.dispatch('user/updateTokens', tokens)
 
-              $axios.defaults.headers.common.Authorization = `Bearer ${tokens.access_token}`
-              originalRequest.headers.Authorization = `Bearer ${tokens.access_token}`
+          $axios.defaults.headers.common.Authorization = `Bearer ${tokens.access_token}`
+          originalRequest.headers.Authorization = `Bearer ${tokens.access_token}`
 
-              processQueue(null, tokens.access_token)
+          processQueue(null, tokens.access_token)
 
-              resolve($axios(originalRequest))
-            })
-            .catch((err) => {
-              processQueue(err, null)
+          resolve($axios(originalRequest))
+        })
+        .catch((err) => {
+          console.log(err);
+          processQueue(err, null)
 
-              store.dispatch('user/logout')
+          store.dispatch('user/logout')
 
-              reject(error)
-            })
-            .finally(() => { isRefreshing = false })
+          reject(error)
+        })
+        .finally(() => { isRefreshing = false })
       })
     }
     return error

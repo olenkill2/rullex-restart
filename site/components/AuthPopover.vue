@@ -1,5 +1,5 @@
 <template >
-	<div class="main-auth">
+  <div class="main-auth">
     <button
       @click="open"
       class="btn-login-activator"
@@ -141,40 +141,40 @@
 <script>
 import { mapActions } from 'vuex';
 export default {
-	props: [],
-	data: () => ({
-		opened: false,
-		activeTab: 'signIn',
-		signinData: {
-			email: '',
-			password: '',
-			save: false,
-		},
-		signupData: {
-			email: '',
-			password: '',
-			againPassword: '',
-		},
-		error: false,
-	}),
-	computed: {
-	},
-	methods: {
-		...mapActions({
+  props: [],
+  data: () => ({
+    opened: false,
+    activeTab: 'signIn',
+    signinData: {
+      email: '',
+      password: '',
+      save: false,
+    },
+    signupData: {
+      email: '',
+      password: '',
+      againPassword: '',
+    },
+    error: false,
+  }),
+  computed: {
+  },
+  methods: {
+    ...mapActions({
       setTokens: 'user/updateTokens',
       getUser: 'user/getUser',
-		}),
-		setActiveTab(tabName) {
-			this.activeTab = tabName;
-		},
-		close() {
-			this.opened = false;
-		},
-		open() {
-			this.opened = !this.opened;
-		},
-		signUp() {
-			this.error = false;
+    }),
+    setActiveTab(tabName) {
+      this.activeTab = tabName;
+    },
+    close() {
+      this.opened = false;
+    },
+    open() {
+      this.opened = !this.opened;
+    },
+    signUp() {
+      this.error = false;
 
       this.$axios.post('/api/users/signup', this.signupData)
         .then(async ({ data: tokens }) => {
@@ -185,8 +185,8 @@ export default {
         .catch((err) => {
           this.error = true
         })
-		},
-		signin() {
+    },
+    signin() {
       this.error = false;
 
       this.$axios.post('/api/users/signin', this.signinData)
@@ -198,8 +198,8 @@ export default {
         .catch((err) => {
           this.error = true
         })
-		},
-		oauth(provider) {
+    },
+    oauth(provider) {
       this.error = false;
 
       this.$auth.authenticate(provider)
@@ -210,151 +210,151 @@ export default {
         }).catch((err) => {
           this.error = true;
         })
-		}
-	}
+    }
+  }
 }
 </script>
 <style lang="scss">
-	.main-auth
-	{
-		position: relative;
-		flex-basis: 19%;;
-		display: flex;
-		justify-content: flex-end;
-	}
-	.auth-popover-wr
-	{
-		position: absolute;
-		background-color: #fff;
-		right: 0;
-		top: 200%;
-		padding-top: 20px;
-		padding-left: 20px;
-		padding-right: 20px;
-		padding-bottom: 34px;
-		min-width: 288px;
-		border-radius: 4px;
-		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-		transform: tranlateX(40px);
-		transition: 0.2s;
-		opacity: 0;
-	}
-	.auth-popover-wr_opened
-	{
-		opacity: 1;
-		transform: tranlateX(0);
-	}
-	.auth-popover-header
-	{
-		padding-bottom: 10px;
-		font-size: 18px;
-		color: $accent;
-		font-weight: $medium;
-	}
-	.auth-popover-fields
-	{
-		margin-bottom: 25px;
-	}
-	.auth-popover-field
-	{
-		margin-bottom: 15px;
-		&:last-child
-		{
-			margin-bottom: 0;
-		}
-	}
-	.auth-save
-	{
-		padding-top: 7px;
-		margin-bottom: 30px;
-	}
-	.btn-auth
-	{
-		width: 100%;
-		font-size: 14px;
-		height: 35px;
-	}
-	.auth-popover-deliter
-	{
-		margin-top: 10px;
-		margin-bottom: 10px;
-		text-align: center;
-		font-size: 10px;
-		color: $main;
-	}
-	.auth-popover-social
-	{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.auth-popover-social__item
-	{
-		margin-left: 8px;
-		margin-right: 8px;
-		line-height: 0;
-		cursor: pointer;
-		transition: 0.2s;
-		&:hover
-		{
-			opacity: 0.7;
-		}
-	}
-	.auth-popover-actions
-	{
-		display: flex;
-		justify-content: center;
-		width: 100%;
-		align-items: center;
-		margin-top: 25px;
-	}
-	.auth-popover-actions-reset
-	{
-		font-size: 12px;
-		line-height: 12px;
-		cursor: pointer;
-		padding-right: 8px;
-		border-right: 1px solid $main;
-	}
-	.auth-popover-actions-sign-up
-	{
-		padding-left: 8px;
-		font-size: 12px;
-		line-height: 12px;
-		color: $blue;
-		cursor: pointer;
-	}
-	.btn-login-activator
-	{
-		color: $blue;
-		border: none;
-		box-shadow: none;
-		background: none;
-		cursor: pointer;
-		font-size: 16px;
-		font-weight: $medium;
-		white-space: nowrap;
-		padding-right: 0;
-	}
-	.btn-login-activator__icon
-	{
-		display: none;
-	}
+  .main-auth
+  {
+    position: relative;
+    flex-basis: 19%;;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .auth-popover-wr
+  {
+    position: absolute;
+    background-color: #fff;
+    right: 0;
+    top: 200%;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 34px;
+    min-width: 288px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transform: tranlateX(40px);
+    transition: 0.2s;
+    opacity: 0;
+  }
+  .auth-popover-wr_opened
+  {
+    opacity: 1;
+    transform: tranlateX(0);
+  }
+  .auth-popover-header
+  {
+    padding-bottom: 10px;
+    font-size: 18px;
+    color: $accent;
+    font-weight: $medium;
+  }
+  .auth-popover-fields
+  {
+    margin-bottom: 25px;
+  }
+  .auth-popover-field
+  {
+    margin-bottom: 15px;
+    &:last-child
+    {
+      margin-bottom: 0;
+    }
+  }
+  .auth-save
+  {
+    padding-top: 7px;
+    margin-bottom: 30px;
+  }
+  .btn-auth
+  {
+    width: 100%;
+    font-size: 14px;
+    height: 35px;
+  }
+  .auth-popover-deliter
+  {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 10px;
+    color: $main;
+  }
+  .auth-popover-social
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .auth-popover-social__item
+  {
+    margin-left: 8px;
+    margin-right: 8px;
+    line-height: 0;
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover
+    {
+      opacity: 0.7;
+    }
+  }
+  .auth-popover-actions
+  {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    margin-top: 25px;
+  }
+  .auth-popover-actions-reset
+  {
+    font-size: 12px;
+    line-height: 12px;
+    cursor: pointer;
+    padding-right: 8px;
+    border-right: 1px solid $main;
+  }
+  .auth-popover-actions-sign-up
+  {
+    padding-left: 8px;
+    font-size: 12px;
+    line-height: 12px;
+    color: $blue;
+    cursor: pointer;
+  }
+  .btn-login-activator
+  {
+    color: $blue;
+    border: none;
+    box-shadow: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: $medium;
+    white-space: nowrap;
+    padding-right: 0;
+  }
+  .btn-login-activator__icon
+  {
+    display: none;
+  }
 
-	@media (max-width: $mobile)
-	{
-		.main-auth
-		{
-			flex: 1;
-		}
-		.btn-login-activator__text
-		{
-			display: none;
-		}
-		.btn-login-activator__icon
-		{
-			line-height: 0;
-			display: block;
-		}
-	}
+  @media (max-width: $mobile)
+  {
+    .main-auth
+    {
+      flex: 1;
+    }
+    .btn-login-activator__text
+    {
+      display: none;
+    }
+    .btn-login-activator__icon
+    {
+      line-height: 0;
+      display: block;
+    }
+  }
 </style>

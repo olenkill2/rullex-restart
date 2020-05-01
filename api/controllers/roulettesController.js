@@ -39,8 +39,9 @@ module.exports =
 		let roulette = await Roulette.findById(req.params.id);
 
 		if(!roulette) return res.status(404).json({error: 'Not found'});
-
-		roulette = await Roulette.findOneAndUpdate(req.params.id, req.body);
+		console.log(req.body);
+		delete req.body._id
+		roulette = await Roulette.findOneAndUpdate(req.params.id, req.body, { upsert: true });
 
 		res.status(200).json({data: roulette});
 	},
