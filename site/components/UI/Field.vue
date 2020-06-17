@@ -13,22 +13,21 @@
       :placeholder="placeholder"
       :type="type"
       :value="name"
-      @blur="focused = false; $emit('blur')"
-      @focus="focused = true; $emit('focus')"
+      @blur="focused = false"
+      @focus="focused = true"
       class="input"
       ref="input"
       v-model="innerValue"
     />
-    <div class="input-label">{{label}}</div><span class="input-error" v-if="errors[0]">{{ errors[0] }}</span>
+    <div class="input-label">
+      {{label}}
+    </div>
+    <span class="input-error" v-if="errors[0]">{{ errors[0] }}</span>
   </ValidationProvider>
 </template>
 <script>
-import { ValidationProvider } from "vee-validate";
 
 export default {
-	components: {
-		ValidationProvider
-	},
 	props: {
 		name: {
 			type: String,
@@ -100,9 +99,8 @@ export default {
 	.input-wr
 	{
 		position: relative;
-		padding-top: 10px;
+		padding-top: 12px;
 		display: block;
-		padding-bottom: 18px;
 	}
 	.input
 	{
@@ -131,7 +129,7 @@ export default {
 		font-size: 12px;
 		position: absolute;
 		left: 0;
-		bottom: 0;
+		bottom: -16px;
 		color: $red;
 		opacity: 0;
 		transition: 0.2s;

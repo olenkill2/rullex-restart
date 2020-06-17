@@ -12,7 +12,7 @@
         </div>
 
         <div class="header__right">
-          <a class="header-ext-link-wr btn" href="google.ru" target="_blank">
+          <a class="btn" href="google.ru" target="_blank">
             <span class="header-ext-link__text">Расширения для</span>
             <span class="header-ext-link__icon">
               <img :src="browserIcon" />
@@ -22,7 +22,7 @@
           <button
             v-if="isAuth"
             @click="logout"
-            class="header-ext-link-wr btn"
+            class="btn"
           >
             Выйти
           </button>
@@ -77,45 +77,41 @@
 </script>
 
 <style lang="scss">
-  .header-content,
-  .header-ext-link-wr
-  {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .header-content {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    align-items: flex-end;
-  }
-  .header__left {
-    display: flex;
-    align-items: flex-end;
-  }
-  .header__right {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    // justify-content: space-between;
-  }
   .header-wr {
     box-shadow: 0px 1px 10px rgba(205, 205, 205, 0.25);
     background-color: #fff;
     position: sticky;
     top: 0;
   }
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 15px;
+    padding-bottom: 20px;
+  }
+
+  .header__left {
+    display: flex;
+    align-items: flex-end;
+  }
   .header-logo {
     line-height: 0;
-    margin-right: 25px;
+    position: relative;
+    top: -5px;
+  }
+  .header__right {
+    display: flex;
+    align-items: center;
+    // justify-content: space-between;
   }
   .header-ext-link-wr {
-    display: inline-flex;
-    text-decoration: none;
-    color: $accent;
-    justify-content: flex-end;
+    text-align: center;
     height: 38px;
-    // margin-right: 50px;
+
+    &:not(:last-child) {
+      margin-right: 50px;
+    }
   }
   .header-ext-link__text {
     font-size: 14px;

@@ -48,6 +48,17 @@
               rules="required"
             />
           </div>
+
+          <div class="pages-form-groups-field-wr">
+            <field
+              v-model="roulette.minBet"
+              label="Минимальная ставка"
+              placeholder="0.01"
+              type="text"
+              rules="required"
+            />
+          </div>
+
           <div class="pages-form-groups-field-wr">
             <field
               v-model="roulette.currency.name"
@@ -69,36 +80,35 @@
             class="pages-form-group"
           >
             <div class="pages-form-group-label">Поддерживаемые режимы</div>
-
-            <div
-              v-for="(mode, key) in modes"
-              :key="key"
-              class="pages-form-group-item pages-form-groups-field-wr_select-mode"
-            >
-              <checkbox
-                v-model="roulette.modes"
-                :value="mode"
+              <div
+                v-for="(mode, key) in modes"
                 :key="key"
-                type="checkbox"
-                name="modes"
-                :label="mode.name"
-              />
-              <div class="pages-form-group-add-function-wr">
-                <div
-                  v-if="!modeSupported(mode)"
-                  @click="addMode(mode)"
-                  class="pages-form-group-add-function"
-                >
-                  Добавить функцию
+                class="pages-form-group-item pages-form-groups-field-wr_select-mode"
+              >
+                <checkbox
+                  v-model="roulette.modes"
+                  :value="mode"
+                  :key="key"
+                  type="checkbox"
+                  name="modes"
+                  :label="mode.name"
+                />
+                <div class="pages-form-group-add-function-wr">
+                  <div
+                    v-if="!modeSupported(mode)"
+                    @click="addMode(mode)"
+                    class="pages-form-group-add-function"
+                  >
+                    Добавить функцию
+                  </div>
+                  <div
+                    v-else
+                    @click="removeMode(mode)"
+                    class="pages-form-group-add-function"
+                  >
+                    Удалить функцию
+                  </div>
                 </div>
-                <div
-                  v-else
-                  @click="removeMode(mode)"
-                  class="pages-form-group-add-function"
-                >
-                  Удалить функцию
-                </div>
-              </div>
             </div>
           </div>
 
@@ -182,19 +192,19 @@
       </div>
 
       <FormControls
-          :isEdit="edit"
-          @add="addRoulette"
-          @delete="deleteRoulette"
-          @update="updateRoulette"
-          @clear="clearForm"
-        />
+        :isEdit="edit"
+        @add="addRoulette"
+        @delete="deleteRoulette"
+        @update="updateRoulette"
+        @clear="clearForm"
+      />
     </div>
 
     <div class="page-data-container">
       <div class="pages-message" v-if="!roulettes.length">Рулеток пока нет</div>
       <DashboardTable
-          v-else
-          :headers="tableHeaders"
+        v-else
+        :headers="tableHeaders"
       >
         <template v-slot:body>
           <tr v-for="(roulette, index) in roulettes">
@@ -207,12 +217,17 @@
               </template>
               <template v-else>Не задана</template>
             </td>
-            <td v-if="roulette.modes">
-              <span
-                v-for="(mode, index) in roulette.modes"
-                :key="index">
-                  {{ mode.name }};
-              </span>
+            <td> {{ roulette.minBet }} </td>
+            <td>
+              <template
+                v-if="roulette.modes.length"
+              >
+                <span
+                  v-for="(mode, index) in roulette.modes"
+                  :key="index">
+                    {{ mode.name }};
+                </span>
+              </template>
             </td>
             <td v-if="roulette.gameFunctionForMode">
               <span
@@ -223,7 +238,6 @@
               </span>
             </td>
             <td>
-              {{roulette.private}}
               {{ roulette.private ? 'Да' : 'Нет' }}
             <td>
               <button class="edit-field edit-field_roulette" @click="setRouletteForEdit(index)"></button>
@@ -253,7 +267,7 @@
     name: 'roulettes',
     data: () => ({
       roulette: {},
-      tableHeaders: ['№', 'Название', 'Host', 'Ref', 'Режимы', 'Доступные режимы', 'Приватная', 'Редактирование' ],
+      tableHeaders: ['№', 'Название', 'Host', 'Ref', 'Минимальная ставка', 'Режимы', 'Доступные режимы', 'Приватная', 'Редактирование' ],
       modesForDropDown: [],
       dropDownListItem: '',
       currentMode: '',
@@ -278,12 +292,12 @@
         modes: 'dashboard/getModes'
       }),
       roulettesList() {
-        return this.roulettes.map((roulette) => {
+        return this.roulettes ? this.roulettes.map((roulette) => {
           return {
             label: roulette.name,
             value: roulette._id,
           }
-        })
+        }) : []
       }
     },
     async fetch({ store }) {
@@ -307,6 +321,7 @@
           description: '',
           private: true,
           color: '#333333',
+          minBet: 0.01,
           modes: [],
           currency: {
             symbol: '',

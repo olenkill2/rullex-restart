@@ -117,6 +117,7 @@
             </div>
           </div>
         </div>
+
         <FormControls
           :isEdit="editingMode"
           @add="addMode"
@@ -124,21 +125,6 @@
           @update="updateMode"
           @clear="clearForm"
         />
-
-<!--        <div class="mode-form-actions" v-if="!editingMode">-->
-<!--          <div class="mode-form-actions__item">-->
-<!--            <button class="btn btn_small btn_red">Очистить</button>-->
-<!--          </div>-->
-<!--          <div class="mode-form-actions__item">-->
-
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="mode-form-actions" v-else="">-->
-<!--          <div class="mode-form-actions__item">-->
-<!--          </div>-->
-<!--          <div class="mode-form-actions__item">-->
-<!--          </div>-->
-<!--        </div>-->
       </div>
       <div
         class="pages-message"
@@ -152,9 +138,9 @@
       >
         <template v-slot:body>
           <tr v-for="(mode, index) in modes">
-            <th>{{index + 1}}</th>
-            <th>{{mode.name}}</th>
-            <th>
+            <td>{{index + 1}}</td>
+            <td>{{mode.name}}</td>
+            <td>
               <div
                 v-if="showModeFieldsList !== index"
                 @click="showModeFieldsList = index"
@@ -168,13 +154,13 @@
                 Свернуть
               </div>
               <pre v-if="showModeFieldsList === index">{{mode.fields}}</pre>
-            </th>
-            <th>
+            </td>
+            <td>
               <div v-for="(field, index) in mode.fields">{{field.name}}, {{field.model}}</div>
-            </th>
-            <th>
+            </td>
+            <td>
               <div class="edit-field edit-field_mode" @click="editMode(index)"></div>
-            </th>
+            </td>
           </tr>
         </template>
       </DashboardTable>
@@ -185,7 +171,7 @@
   import { mapGetters, mapActions } from 'vuex'
   import PageHeader from '~/components/dashboard/PageHeader'
   import DashboardTable from '~/components/dashboard/DashboardTable'
-  import FormControls from '~/components/dashboard/FormControls';
+  import FormControls from '~/components/dashboard/FormControls'
   export default {
     layout (context) {
       return 'dashboard'

@@ -20,7 +20,7 @@ const vueAuth = VueAuthenticate.factory(axios, {
   tokenName: 'access_token',
   baseUrl: 'http://localhost:3002/api/v1/users/oauth/',
   tokenPrefix: '',
-  storageType: 'cookieStorage',
+  storageType: 'memory',
   bindRequestInterceptor() {
     this.$http.interceptors.request.use((config) => {
     config.method = 'get'

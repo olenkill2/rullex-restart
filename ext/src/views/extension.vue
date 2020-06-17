@@ -1,76 +1,91 @@
 <template>
-	<div class="dashboard" :class="{'dashboard_opened': $store.state.expand}" v-if="$store.state.loaded">
-    <AppHeader />
+	<div
+    :class="{'dashboard_opened': expand}"
+    class="dashboard"
+  >
+    <template>
+      <AppHeader
+        @expand="expand = $event"
+        :is-expand="expand"
+        :status="status"
+        :balance="balance"
+      />
 
-    <div class="main">
-      <keep-alive>
-        <transition name="list" mode="out-in">
-          <component :is="$store.state.router.current"></component>
-        </transition>
-      </keep-alive>
-    </div>
-  </div>
-  <div class="dashboard" v-else="">
-    <div class="load-message">{{$store.state.loadStatus}}</div>
+      <div class="main">
+        <keep-alive>
+          <transition name="list" mode="out-in">
+            <component :is="$store.state.router.current" />
+          </transition>
+        </keep-alive>
+      </div>
+    </template>
   </div>
 </template>
 <script>
-// @ is an alias to /src
-import AppHeader from '@/components/header.vue'
-import FirstScreen from '@/components/first-screen.vue'
-import Tactics from '@/components/tactics.vue'
+  import { mapActions, mapMutations, mapState } from 'vuex'
+  import AppHeader from '@/components/header.vue'
+  import FirstScreen from '@/components/FirstScreen.vue'
+  import Tactics from '@/components/Tactics.vue'
 
-export default {
-	name: 'Dashboard',
-	components: {
-		AppHeader,
-		FirstScreen,
-		Tactics
-	},
-	data: () => ({
-		authCheckFunction: '',
-		getBalanceFunction: '',
-	}),
-	mounted () {
-	},
-	async created () {
-		try {
-			const res = await this.axios.get('/roulettes/public/' + window.location.host)
-      console.log(res)
-			// const roulette = res.data.data;
-			// this.authCheckFunction = eval(roulette.functions.authValidationRuleFunction).call(this);
-			// this.getBalanceFunction = eval(roulette.functions.balanceParseFunction).call(this);
-			// this.$store.commit('updateLoadState', true);
-			this.$store.commit('setRoulette', res.data);
-		} catch (error) {
-			return false;
-		}
-		// const userAuth = this.authCheckFunction();
-		// const userBalance = this.getBalanceFunction();
-		// if(!userAuth) {
-		// 	// this.$store.commit('updateAuth', false);
-		// 	// this.$store.commit('updateStateName', 'need-auth');
-		// 	// this.$store.commit('updateStateHeader', 'Требуется авторизация');
-		// 	// this.$store.commit('updateStateMessage', 'Пожалуйста, войдите');
-		// 	return false;
-		// }
-		// // this.$store.commit('updateAuth', true);
-		// // this.$store.commit('updateBalance', userBalance);
-		// if(userBalance < this.$store.state.minBet) {
-		// 	// this.$store.commit('updateStateName', 'need-balance');
-		// 	// this.$store.commit('updateBalanceMinus', true);
-		// 	// this.$store.commit('updateStateMessage', 'Не хватит даже на оду ставку');
-		// } else {
-		// 	// this.$store.commit('updateStateName', 'ready');
-		// 	// this.$store.commit('updateBalanceMinus', false);
-		// 	// this.$store.commit('updateStateMessage', 'Готов к работе');
-		// }
-		// // this.$store.dispatch('getUserSavedTactics');
-	},
-	methods: {
+  export default {
+    name: 'Dashboard',
+    components: {
+      AppHeader,
+      FirstScreen,
+      Tactics
+    },
+    data() {
+      return {
+        expand: true
+      }
+    },
+    mounted () {
+    },
+    async created () {
+      this.setStatus('load')
 
-	}
-}
+      try {
+        const roulette = await this.$axios.get('/roulettes/public/one', { params: { host: window.location.origin } })
+        await this.setRoulette(roulette.data)
+
+        if (!this.baseFunctions.authCheck()) {
+          return this.setStatus('noAuth')
+        } else {
+          const userBalance = this.baseFunctions.parseBalance()
+
+          // TODO проаверка на минимальный баланс для рулетки.
+          // т.к. разные рулетки и разные валюты
+          if (!userBalance || userBalance < roulette.data.minBet) {
+            return this.setStatus('noBalance')
+          } else {
+            this.setBalance(userBalance)
+            this.setStatus('ready')
+            this.fetchTactics()
+          }
+        }
+      } catch (e) {
+        this.setStatus('error')
+        console.log(e)
+      }
+    },
+    computed: {
+      ...mapState({
+        baseFunctions: 'functions',
+        status: 'globalStatus',
+        balance: 'balance'
+      })
+    },
+    methods: {
+      ...mapActions({
+        setRoulette: 'setRoulette',
+        fetchTactics: 'fetchTactics'
+      }),
+      ...mapMutations({
+        setStatus: 'setGlobalStatus',
+        setBalance: 'setBalance'
+      })
+    }
+  }
 </script>
 
 <style lang="scss">

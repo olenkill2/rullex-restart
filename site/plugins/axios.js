@@ -37,7 +37,7 @@ export default function ({ $axios, req, store }) {
 
       return new Promise(function (resolve, reject) {
         $axios
-        .get('http://localhost:3002/api/v1/users/refresh', {
+        .get('/api/users/refresh', {
           params: { refresh_token: refresh_token }
         })
         .then(async ({ data: tokens }) => {
@@ -51,7 +51,6 @@ export default function ({ $axios, req, store }) {
           resolve($axios(originalRequest))
         })
         .catch((err) => {
-          console.log(err);
           processQueue(err, null)
 
           store.dispatch('user/logout')

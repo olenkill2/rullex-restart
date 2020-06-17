@@ -15,7 +15,7 @@ router
 	.get(roulette.getAllPublicRoulettes);
 
 router
-	.route('/public/:host')
+	.route('/public/one')
 	.get(roulette.getOnePublicRoulette);
 
 router

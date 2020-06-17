@@ -84,10 +84,6 @@ module.exports = {
 			target: 'http://127.0.0.1:3002/api/v1/',
 			pathRewrite: {'^/api/': '/'},
 			logLevel: 'debug'
-		},
-		'/uploads/': {
-			target: 'http://127.0.0.1:3002',
-			logLevel: 'debug'
 		}
 	},
 

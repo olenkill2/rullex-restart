@@ -7,6 +7,7 @@
         @close="freebieFormShow = false"
         @open="freebieFormShow = true"
       />
+
       <div class="pages-form-wr" v-if="freebieFormShow">
         <div class="pages-form-groups">
           <div class="pages-form-groups__item">
@@ -203,12 +204,13 @@
       },
 
       addFreebie () {
-        this.$axios.post('/api/freebies', this.freebie).then((response, error) => {
-          this.getFreebies();
-          this.cancelEdit();
-        }).catch((error, res) => {
-          // this.addfreebieErrors = error;
-        })
+        this.$axios.post('/api/freebies', this.freebie)
+          .then((response, error) => {
+            this.getFreebies()
+            this.cancelEdit()
+          }).catch((error, res) => {
+            // this.addfreebieErrors = error;
+          })
       },
 
       deleteFreebie () {

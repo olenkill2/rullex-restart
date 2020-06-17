@@ -20,17 +20,21 @@ module.exports =
 	},
 
 	getAllPublicRoulettes: async(req, res) => {
-		const roulettes = await Roulette.find({private: false}).select('-private -__v -created_at');;
+		const roulettes = await Roulette.find({private: false})
+      .populate('modes')
+      .select('-private -__v -created_at')
 
-		if(!roulettes || !roulettes.length) return res.status(404).json({error: 'no roullets'});
+		if(!roulettes || !roulettes.length) return res.status(404).json({error: 'Not found'})
 
-		res.status(200).json({data: roulettes});
+		res.status(200).json({data: roulettes})
 	},
 
 	getOnePublicRoulette: async(req, res) => {
-		const roulette = await Roulette.findOne({host: req.params.host}).select('-private -__v -created_at');
+		const roulette = await Roulette.findOne({ host: req.query.host })
+      .populate('modes gameFunctionForMode.mode')
+      .select('-private -__v -created_at')
 
-		if(!roulette) return res.status(404).json({error: 'not found'});
+		if(!roulette) return res.status(404).json({error: 'Not found'});
 
 		res.status(200).json(roulette);
 	},
@@ -39,8 +43,9 @@ module.exports =
 		let roulette = await Roulette.findById(req.params.id);
 
 		if(!roulette) return res.status(404).json({error: 'Not found'});
-		console.log(req.body);
+
 		delete req.body._id
+
 		roulette = await Roulette.findOneAndUpdate(req.params.id, req.body, { upsert: true });
 
 		res.status(200).json({data: roulette});

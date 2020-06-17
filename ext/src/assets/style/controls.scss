@@ -3,23 +3,20 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: none;
 	box-shadow: none;
 	border: none;
 	outline: none;
 	text-decoration: none;
-	height: 30px;
-	min-width: 150px;
 	background-color: $blue;
 	color: #fff;
 	transition: 0.2s;
-	font-size: 16px;
 	border-radius: 4px;
 	height: 38px;
 	cursor: pointer;
 	padding-left: 20px;
 	padding-right: 20px;
 	font-size: 14px;
+
 	&:hover
 	{
 		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -40,6 +37,7 @@
 	background-color: transparent;
 	color: $red;
 	border: 1px solid $red;
+
 	&:disabled
 	{
 		background-color: #fff;
@@ -48,6 +46,7 @@
 		border-color: rgba($red, 0.5);
 	}
 }
+
 .btn_skin
 {
 	background-color: #fff;

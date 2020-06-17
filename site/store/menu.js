@@ -1,21 +1,28 @@
 export const state = () => ({
-	items: [],
+	menu: [],
 })
 
 export const mutations = {
-	SET_MENUITEMS(state, menu) {
-		state.items = menu;
+	setMenu(state, menu) {
+		state.menu = menu;
 	},
 }
 
 export const actions = {
-	async getMenu({ commit }) {
-		try {
-			let res = await this.$axios.get('http://127.0.0.1:3002/api/v1/menu/public');
+  async fetchMenu({ commit }) {
+    await this.$axios.$get('/api/menu/public')
+      .then(({ data }) => {
+        commit('setMenu', data)
+      })
+      .catch((e) => {
+        console.log(e)
+        throw e
+      })
+  }
+}
 
-			commit('SET_MENUITEMS', res.data.data);
-		} catch (error) {
-			commit('SET_MENUITEMS', [])
-		}
-	}
-};
+export const getters = {
+  getMenu: (state) => {
+    return state.menu
+  }
+}

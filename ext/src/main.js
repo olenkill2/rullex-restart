@@ -1,22 +1,45 @@
 import Vue from 'vue'
 import axios from 'axios'
-import VueAxios from 'vue-axios'
-import App from './App.vue'
-import store from './store'
-import Field from './components/ui/Field'
-import DropDown from './components/ui/DropDown'
-import Checkbox from './components/ui/Checkbox'
-import { clickOutside } from './utils/directives'
+import App from '@/App.vue'
+import store from '@/store/index'
+import Field from '~UI/components/UI/Field'
+import DropDown from '~UI/components/UI/DropDown'
+import Checkbox from '~UI/components/UI/Checkbox'
+import { clickOutside } from '@/utils/directives'
+import { extend, ValidationProvider } from 'vee-validate'
+import { required, alpha } from 'vee-validate/dist/rules'
+
+
+extend('required', {
+	...required,
+	message: 'Обязательное поле'
+});
+
+extend('alpha', {
+	...alpha,
+	message: 'Поле должно содержать только буквы'
+});
 
 Vue.config.productionTip = false
 
 axios.defaults.baseURL = 'http://localhost:3002/api/v1/'
-Vue.use(VueAxios, axios)
+Vue.prototype.$axios = axios
+
+const CustomRouter = {
+  install: function (Vue, options) {
+    Vue.prototype.routeTo = function (route, params) {
+      this.$store.commit('setRoute', { route, params })
+    }
+    Vue.routeBack = function () {
+    }
+  }
+}
 
 const components = {
-    Field,
-    DropDown,
-    Checkbox
+  Field,
+  DropDown,
+  Checkbox,
+  ValidationProvider
 }
 
 Object.entries(components).forEach(([name, component]) => {
@@ -24,6 +47,7 @@ Object.entries(components).forEach(([name, component]) => {
 })
 
 Vue.directive('click-outside', clickOutside)
+Vue.use(CustomRouter)
 
 new Vue({
 	store,

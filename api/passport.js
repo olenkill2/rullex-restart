@@ -53,8 +53,10 @@ passport.use(new LocalStrategy({
 passport.use(new VKontakteStrategy({
 		clientID: '7101695', // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId'
 		clientSecret: 'jjvrUe9sPCInb7EW0Fos',
-		callbackURL: 'http://localhost:8000',
+		// callbackURL: 'http://localhost:3334',
+		callbackURL: 'http://localhost:8002/',
 		scope: ['email' ],
+		apiVersion: '5.21',
 		profileFields: ['email', 'city', 'bdate']
 	},
 	function myVerifyCallbackFn(accessToken, refreshToken, params, profile, done) {

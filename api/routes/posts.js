@@ -7,7 +7,7 @@ const {JWT_auth} = require('../passport');
 router
 	.route('/')
 	.post(JWT_auth, isAdmin, validateBody('post'), post.add)
-	.get(post.getAll);
+	.get(JWT_auth, isAdmin, post.getAll);
 
 router
 	.route('/:id')
@@ -15,10 +15,7 @@ router
 	.delete(JWT_auth, isAdmin, post.delete);
 
 router
-	.route('/public/')
+	.route('/public/:slug')
 	.get(post.getPost);
-
-// app.put('/posts/:id',;
-// app.delete('/posts/:id', );
 
 module.exports = router;

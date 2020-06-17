@@ -31,6 +31,9 @@ export default {
 	computed: {
 		checked() {
 			if(this.model instanceof Array) {
+				// return this.model.filter((item) => {
+				// 	JSON.stringify(item) == JSON.stringify(this.value)
+				// })
 				for(let mode of this.model) {
 					if(JSON.stringify(mode) == JSON.stringify(this.value)) return mode;
 				}
@@ -55,7 +58,6 @@ export default {
 };
 </script>
 <style lang="scss">
-	@import '~/assets/style/variables.scss';
 	.checkbox-wr
 	{
 		position: relative;

@@ -1,32 +1,105 @@
-<template lang="pug">
-	.header-wr
-		.header__left
-			.header-stat-top(v-if="$store.state.stateName == 'need-auth'")
-				|{{$store.state.stateHeader}}
-			.header-stat-top(v-else="")
-				|{{$store.state.userBalance}} <span class="header-currency" :class="{'header-currency_minus': $store.state.balanceMinus}">₽</span>
-			.header-stat-bottom
-				|{{$store.state.stateMessage}}
-		.header__right
-			transition-group(name="list", tag="div", mode="out-in")
-				.header-expand-icon(@click.prevent="changeExpand", key="nav-item-1")
-					<svg v-if="$store.state.expand" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)" fill="#62677D"><path d="M11 2H2v9l1-1V3h7l1-1zM5 14h9V5l-1 1v7H6l-1 1z"/><path d="M16 0h-5l1.8 1.8-4.5 4.5 1.4 1.4 4.5-4.5L16 5V0zM7.7 9.7L6.3 8.3l-4.5 4.5L0 11v5h5l-1.8-1.8 4.5-4.5z"/></g><defs><clipPath id="clip0"><path fill="#fff" d="M0 0h16v16H0z"/></clipPath></defs></svg>
-					<svg v-else="" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 0H0v12l1-1V1h10l1-1zM4 16h12V4l-1 1v10H5l-1 1z" fill="#62677D"/><path d="M7 9H2l1.8 1.8L0 14.6 1.4 16l3.8-3.8L7 14V9zM16 1.4L14.6 0l-3.8 3.8L9 2v5h5l-1.8-1.8L16 1.4z" fill="#62677D"/></svg>
-				.header-back(v-if="$store.state.router.history.length > 0", @click="$store.dispatch('routerBack')", key="nav-item-2")
-					<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.1005 5.7452l.025.0055H4.419l3.3657-3.3731c.1648-.1647.2552-.3878.2552-.622a.8738.8738 0 0 0-.2552-.6207L7.261.6109A.8683.8683 0 0 0 6.643.3552a.8681.8681 0 0 0-.6184.255L.255 6.3793a.867.867 0 0 0-.2551.6199.867.867 0 0 0 .255.621l5.7696 5.7695a.8682.8682 0 0 0 .6184.2551.869.869 0 0 0 .6181-.2551l.5237-.524a.8666.8666 0 0 0 .2552-.6181c0-.234-.0904-.442-.2552-.6066L4.381 8.2489h10.7315c.4822 0 .8874-.4156.8874-.8975v-.7411c0-.482-.4172-.865-.8994-.865z" fill="#62677D"/></svg>
+<template>
+	<div class="header-wr">
+    <div class="header__left">
+      <div
+        v-if="status !== 'ready'"
+        class="header-stat-top">
+        {{ errorMessage }}
+      </div>
+
+      <div
+        v-if="status === 'ready'"
+        class="header-stat-top"
+      >
+        {{ balance }}
+        <span
+          class="header-currency"
+          :class="{'header-currency_minus': $store.state.balanceMinus}"
+        >{{ currency.symbol }}</span>
+      </div>
+    </div>
+    <div class="header__right">
+      <transition-group
+        name="list"
+        tag="div"
+        mode="out-in"
+      >
+        <div
+          @click="changeExpand"
+          key="nav-item-1"
+          class="header-expand-icon"
+        >
+          <svg v-if="expand" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)" fill="#62677D"><path d="M11 2H2v9l1-1V3h7l1-1zM5 14h9V5l-1 1v7H6l-1 1z" /><path d="M16 0h-5l1.8 1.8-4.5 4.5 1.4 1.4 4.5-4.5L16 5V0zM7.7 9.7L6.3 8.3l-4.5 4.5L0 11v5h5l-1.8-1.8 4.5-4.5z" /></g><defs><clipPath id="clip0"><path fill="#fff" d="M0 0h16v16H0z" /></clipPath></defs></svg>
+          <svg v-else fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M12 0H0v12l1-1V1h10l1-1zM4 16h12V4l-1 1v10H5l-1 1z" fill="#62677D" /><path d="M7 9H2l1.8 1.8L0 14.6 1.4 16l3.8-3.8L7 14V9zM16 1.4L14.6 0l-3.8 3.8L9 2v5h5l-1.8-1.8L16 1.4z" fill="#62677D" /></svg>
+        </div>
+        <div
+          v-if="$store.state.router.history.length"
+          @click="$store.dispatch('routerBack')"
+          key="nav-item-2"
+          class="header-back"
+        >
+          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.1005 5.7452l.025.0055H4.419l3.3657-3.3731c.1648-.1647.2552-.3878.2552-.622a.8738.8738 0 0 0-.2552-.6207L7.261.6109A.8683.8683 0 0 0 6.643.3552a.8681.8681 0 0 0-.6184.255L.255 6.3793a.867.867 0 0 0-.2551.6199.867.867 0 0 0 .255.621l5.7696 5.7695a.8682.8682 0 0 0 .6184.2551.869.869 0 0 0 .6181-.2551l.5237-.524a.8666.8666 0 0 0 .2552-.6181c0-.234-.0904-.442-.2552-.6066L4.381 8.2489h10.7315c.4822 0 .8874-.4156.8874-.8975v-.7411c0-.482-.4172-.865-.8994-.865z" fill="#62677D" /></svg>
+        </div>
+      </transition-group>
+    </div>
+  </div>
 </template>
 <script>
-export default {
-	data: () => ({
-	}),
-	methods: {
-		changeExpand (event) {
-			event.preventDefault()
-
-			this.$store.commit('updateExpand', !this.$store.state.expand);
-		},
-	}
-}
+  import { mapGetters } from 'vuex'
+  export default {
+    props: {
+      status: {
+        type: String,
+        default: 'load'
+      },
+      balance: {
+        type: [String, Number],
+        default: '0'
+      },
+      isExpand: {
+        type: Boolean,
+        required: true
+      }
+    },
+    data() {
+      return {
+        expand: true
+      }
+    },
+    computed: {
+      ...mapGetters({
+        currency: 'getCurrency'
+      }),
+      errorMessage() {
+        console.log(this.status)
+        switch (this.status) {
+          case 'noAuth':
+            return 'Требуется авторизация'
+            break
+          case 'load':
+            return 'Загрузочка'
+            break
+          case 'noBalance':
+            return '"Но вы держитесь"'
+            break
+          case 'error':
+            return 'Что-то сломалось( А что хз'
+            break
+          default:
+            return 'Что-то грузится, возможно и не загрузится'
+        }
+      }
+    },
+    created() {
+      this.expand = this.isExpand
+    },
+    methods: {
+      changeExpand () {
+        this.expand = !this.expand
+        this.$emit('expand', this.expand)
+      },
+    }
+  }
 </script>
 <style lang="scss">
 	.header-wr

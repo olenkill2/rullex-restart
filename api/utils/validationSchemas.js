@@ -11,7 +11,7 @@ module.exports = {
     }).options({ allowUnknown: true }),
 
     post: Joi.object().keys({
-        url: Joi.string().required().min(1).max(512),
+        slug: Joi.string().required().min(1).max(512),
         title: Joi.string().required().min(3).max(512),
         content: Joi.object().required(),
         private: Joi.boolean().required(),

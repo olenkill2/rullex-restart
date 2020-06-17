@@ -1,6 +1,6 @@
 <template>
 	<div>
-    <headerTop></headerTop>
+    <headerTop/>
 
     <div class="container main">
       <aside class="sidebar-wr sidebar-wr_main" :class="{'move-sidebar': openedSidebar}">
@@ -79,14 +79,13 @@
 		},
 		data() {
 			return {
-				navItems: [],
 				openSidebarName: '',
 				openedSidebar: false,
 			}
 		},
 		methods: {
 			openSidebar(sidebarName) {
-				if(this.openSidebarName == sidebarName) {
+				if(this.openSidebarName === sidebarName) {
 					this.openSidebarName = '';
 					this.openedSidebar = false;
 				} else {
@@ -95,14 +94,13 @@
 				}
 			},
 			itsActiveGroup(group, index) {
-				return group.items.some(item => item.url == this.$route.path);
+				return group.items.some(item => item.url === this.$route.path);
 			},
 		},
 		computed: {
 			menu() {
-				return this.$store.state.menu.items;
+				return this.$store.state.menu.menu
 			},
-
 		},
 		mounted() {
 		}

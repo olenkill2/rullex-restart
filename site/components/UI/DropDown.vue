@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown-wr">
+  <div class="dropdown-wr" tabindex="1">
     <div
       @click="open = !open"
       class="dropdown-selected"
@@ -23,6 +23,7 @@
     >
       <div
         v-for="(item, index) in options"
+        :key="index"
         @click="select(item.value)"
         class="dropdown-list__item"
       >
@@ -38,6 +39,7 @@
 <script>
 export default {
   props: ['options', 'value', 'label', 'labelSubText'],
+  name: 'DropDown',
   model: { prop: 'model', event: 'input' },
   data() {
     return {
@@ -46,7 +48,11 @@ export default {
     }
   },
   mounted() {
-    this.select(this.value)
+    if (this.value) {
+      this.select(this.value)
+    } else {
+      this.select(this.options[0].value)
+    }
   },
   watch: {
     value(newValue) {
@@ -58,8 +64,9 @@ export default {
       const option = this.options.find((option) => {
         return value === option.value
       })
-      this.selected = option || null
-      this.$emit('input', option ? option.value : '')
+
+      this.selected = option || this.options[0]
+      this.$emit('input', this.selected)
       this.close()
     },
     close() {

@@ -24,7 +24,7 @@ module.exports =
 
 	getAll: async(req, res, next) => {
 		const result = await Post.find().populate('category', '-created_at').select('-__v');
-		res.status(200).json(result);
+		res.status(200).json({ data: result });
 	},
 
 	update: async(req, res) => {
@@ -49,23 +49,12 @@ module.exports =
 	},
 
 	getPost: async(req, res, next) => {
-		console.log(req.query);
+		if (!req.params.slug) return res.status(400).json({error: 'чего-то не хватает'});
 
-		if (!req.query.url) return res.status(400).json({error: 'чего-то не хватает'});
-
-		const result = await Post.findOne({'url': req.query.url, private: false});
+		const result = await Post.findOne({'slug': req.params.slug, private: false});
 
 		if(!result) return res.status(404).json('error');
-		console.log(result);
 
 		res.status(200).json({ data: result});
-	},
-
-	getSeo: async(req, res) => {
-		const result = await Post.findOne({'url': req.query.link});
-
-		if(!result || result.private) return res.status(404).json('error');
-
-		res.status(200).json({title: result.title, description: result.description});
 	}
 }

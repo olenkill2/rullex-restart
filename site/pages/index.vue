@@ -8,20 +8,20 @@
 
 <script>
   export default {
-    async asyncData({ $axios, store }) {
-      try
-      {
-        const seo = await $axios.get('http://127.0.0.1:3002/api/v1/seo/public/', {params: {url: '/'}})
-
-        return {seoData: seo.data.data};
-      } catch(err) {
-        console.log(err)
-        return {
-          title: 'Rullex',
-          description: 'Бот для рулеток'
-        };
-      }
-    },
+    // async asyncData({ $axios, store }) {
+    //   try
+    //   {
+    //     const seo = await $axios.get('http://127.0.0.1:3002/api/v1/seo/public/', {params: {url: '/'}})
+    //
+    //     return {seoData: seo.data.data};
+    //   } catch(err) {
+    //     console.log(err)
+    //     return {
+    //       title: 'Rullex',
+    //       description: 'Бот для рулеток'
+    //     };
+    //   }
+    // },
     head() {
       // return {
       //  title: this.seoData.title,

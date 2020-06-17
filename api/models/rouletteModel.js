@@ -35,6 +35,11 @@ const rouletteSchema = new Schema(
 		required: true,
 		default: '#0492F2'
 	},
+	minBet: {
+		type: Number,
+		required: true,
+		default: 0.01
+	},
 	modes: [{type: Schema.Types.ObjectId, ref: 'Mode'}],
 	gameFunctionForMode: [
 		{

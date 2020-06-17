@@ -1,12 +1,14 @@
-const cookieparser = process.server ? require('cookieparser') : undefined
 export const state = () => ({
+
 })
 
 export const mutations = {
+
 }
+
 export const actions = {
   async nuxtServerInit({ commit, dispatch }, { req, app }) {
-	  await dispatch('menu/getMenu');
+	  await dispatch('menu/fetchMenu');
 
     const tokens = {
       access_token: app.$cookies.get('access_token') || null,
@@ -15,6 +17,7 @@ export const actions = {
 
     if(tokens.access_token && tokens.refresh_token) {
       await dispatch('user/updateTokens', tokens)
+
       try {
         await dispatch('user/getUser')
       } catch (e) {

@@ -2,7 +2,9 @@ export const state = () => ({
   roulettes: [],
   freebies: [],
   modes: [],
-  seoItems: []
+  seoItems: [],
+  menu: [],
+  posts: []
 })
 
 export const mutations = {
@@ -17,8 +19,15 @@ export const mutations = {
   },
   setSeoItems(state, seoItems) {
     state.seoItems = seoItems
+  },
+  setMenu(state, menu) {
+    state.menu = menu
+  },
+  setPosts(state, posts) {
+    state.posts = posts
   }
 }
+
 export const actions = {
   async fetchRoulettes({ commit }) {
     await this.$axios.$get('/api/roulettes')
@@ -32,7 +41,7 @@ export const actions = {
   async fetchFreebies({ commit }) {
     await this.$axios.$get('/api/freebies')
       .then(({ data }) => {
-        commit('setSeoItems', data)
+        commit('setFreebies', data)
       })
       .catch((e) => {
         console.log(e)
@@ -58,8 +67,28 @@ export const actions = {
         console.log(e)
         throw e
       })
+  },
+  async fetchFullMenu({ commit }) {
+    await this.$axios.$get('/api/menu')
+      .then(({ data }) => {
+        commit('setMenu', data)
+      })
+      .catch((e) => {
+        console.log(e)
+        throw e
+      })
+  },
+  async fetchPosts({ commit }) {
+    await this.$axios.$get('/api/post')
+      .then(({ data }) => {
+        commit('setPosts', data)
+      })
+      .catch((e) => {
+        console.log(e)
+        throw e
+      })
   }
-};
+}
 
 export const getters = {
   getRoulettes: (state) => {
@@ -73,5 +102,11 @@ export const getters = {
   },
   getSeoItems: (state) => {
     return state.seoItems
+  },
+  getMenu: (state) => {
+    return state.menu
+  },
+  getPosts: (state) => {
+    return state.posts
   }
 }

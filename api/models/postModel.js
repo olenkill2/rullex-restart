@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 // модель страниц
 const postSchema = new Schema({
-	url: {
+	slug: {
 		type: String,
-		required: true,
+		required: true
 	},
 	title: {
 		type: String,
@@ -13,16 +13,16 @@ const postSchema = new Schema({
 	},
 	content: {
 		type: Object,
-		required: true,
+		required: true
 	},
 	created_at: {
 		type: Date,
 		required: true,
-		default: Date.now,
+		default: Date.now
 	},
 	private: {
 		type: Boolean,
-		default: true,
+		default: true
 	}
 });
 

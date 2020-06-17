@@ -31,36 +31,39 @@
 </script>
 
 <style lang="scss">
-  .dashboard-table
-	{
-		width: 100%;
-		display: block;
-		overflow-x: auto;
-		white-space: nowrap;
-		padding-bottom: 20px;
-		min-width: 100%;
-		tbody
-		{
-			width: 100%;
-			display: table;
-		}
-		th
-		{
-			padding-bottom: 14px;
-			font-size: 16px;
-			width: auto;
-		}
-		td,th
-		{
-			padding-right: 25px;
-			white-space: nowrap;
-			font-size: 15px;
-			padding-top: 8px;
-			padding-bottom: 8px;
-			&:last-child
-			{
-				padding-right: 0;
-			}
-		}
-	}
+  .dashboard-table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 20px;
+    min-width: 100%;
+
+    tbody {
+      width: 100%;
+      display: table;
+    }
+
+    th {
+      padding-bottom: 14px;
+      font-size: 16px;
+      width: auto;
+    }
+
+    td, th {
+      padding-right: 25px;
+      white-space: nowrap;
+      font-size: 15px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    tr {
+      vertical-align: top;
+    }
+  }
 </style>
