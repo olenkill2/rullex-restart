@@ -13,9 +13,10 @@
 	border-radius: 4px;
 	height: 38px;
 	cursor: pointer;
-	padding-left: 20px;
-	padding-right: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
 	font-size: 14px;
+  white-space: nowrap;
 
 	&:hover
 	{
@@ -60,6 +61,26 @@
 		color: rgba($blue, 0.2);
 	}
 }
+
+.btn-row {
+  display: flex;
+	justify-content: center;
+	align-items: center;
+	box-shadow: none;
+	border: none;
+	outline: none;
+	text-decoration: none;
+  padding: 5px 0;
+  color: $blue;
+	border-bottom: 1px solid $blue;
+  cursor: pointer;
+}
+
+.btn-row--black {
+  color: $main;
+  border-color: $main;
+}
+
 .checkbox-label-wr
 {
 	display: flex;

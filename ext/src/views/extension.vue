@@ -26,13 +26,17 @@
   import AppHeader from '@/components/header.vue'
   import FirstScreen from '@/components/FirstScreen.vue'
   import Tactics from '@/components/Tactics.vue'
+  import AutoStop from '@/components/AutoStop.vue'
+  import Game from '@/components/Game.vue'
 
   export default {
     name: 'Dashboard',
     components: {
       AppHeader,
       FirstScreen,
-      Tactics
+      Tactics,
+      AutoStop,
+      Game
     },
     data() {
       return {
@@ -53,8 +57,6 @@
         } else {
           const userBalance = this.baseFunctions.parseBalance()
 
-          // TODO проаверка на минимальный баланс для рулетки.
-          // т.к. разные рулетки и разные валюты
           if (!userBalance || userBalance < roulette.data.minBet) {
             return this.setStatus('noBalance')
           } else {

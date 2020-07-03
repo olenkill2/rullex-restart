@@ -15,7 +15,10 @@ module.exports =
 	},
 
 	getAll: async(req, res) => {
-		const roulette = await Roulette.find().populate('modes gameFunctionForMode.mode');
+		const roulette = await Roulette.find()
+      .populate('modes gameFunctionForMode.mode')
+      .cache({ expire: 20 })
+
 		res.status(200).json({data: roulette});
 	},
 
@@ -23,6 +26,7 @@ module.exports =
 		const roulettes = await Roulette.find({private: false})
       .populate('modes')
       .select('-private -__v -created_at')
+      .cache({ expire: 20 })
 
 		if(!roulettes || !roulettes.length) return res.status(404).json({error: 'Not found'})
 
@@ -33,6 +37,7 @@ module.exports =
 		const roulette = await Roulette.findOne({ host: req.query.host })
       .populate('modes gameFunctionForMode.mode')
       .select('-private -__v -created_at')
+      .cache({ expire: 20 })
 
 		if(!roulette) return res.status(404).json({error: 'Not found'});
 

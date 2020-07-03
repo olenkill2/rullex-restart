@@ -24,7 +24,7 @@
       <div
         v-for="(item, index) in options"
         :key="index"
-        @click="select(item.value)"
+        @click="select(item)"
         class="dropdown-list__item"
       >
         {{ item.label }}
@@ -62,7 +62,7 @@ export default {
   methods: {
     select(value) {
       const option = this.options.find((option) => {
-        return value === option.value
+        return value.value === option.value
       })
 
       this.selected = option || this.options[0]

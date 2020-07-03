@@ -28,7 +28,7 @@
           @click="$emit('accept')"
           class="btn btn_accent tv-save"
         >
-          Сохранить
+          {{ label }}
         </button>
       </div>
     </div>
@@ -40,7 +40,7 @@
           :number="index + 1"
           :key="index"
           :data="stage"
-          :edit="true"
+          :edit="isEditing"
           @remove="remove({ index })"
           @edit="edit({ index, stage })"
           class="tv-stages-item"
@@ -53,60 +53,70 @@
 <script>
   import { mapGetters } from 'vuex'
   import Stage from '@/components/Tactic/Stage';
-export default {
-	props: {
-	  tactic: {
-	    type: Object,
-      required: true
+  export default {
+    props: {
+      tactic: {
+        type: Object,
+        required: true
+      },
+      label: {
+        type: String,
+        required: true
+      },
+      isEditing: {
+        type: Boolean,
+        default: false
+      },
+      isExpand: {
+        type: Boolean,
+        default: false
+      }
     },
-    label: {
-	    type: String,
-      required: true
+    components: {
+      Stage,
     },
-    isExpand: {
-	    type: Boolean,
-      default: false
-    }
-  },
-  components: {
-    Stage,
-  },
-	data: () => ({
-		expand: false
-	}),
-	computed: {
-	  ...mapGetters({
-      getMode: 'getModeById'
-    }),
-		stagesCount () {
-			return this.declOfNum(this.tactic.stages.length, ['этап', 'этапа', 'этапов']);
-		}
-	},
-  watch: {
-    isExpand() {
+    data() {
+      return {
+        expand: false
+      }
+    },
+    computed: {
+      ...mapGetters({
+        getMode: 'getModeById'
+      }),
+      stagesCount () {
+        return this.declOfNum(this.tactic.stages.length, ['этап', 'этапа', 'этапов']);
+      }
+    },
+    watch: {
+      tactic() {
+        console.log(this.expand)
+        this.expand = this.isExpand
+        console.log(this.expand)
+      },
+      isExpand() {
+        this.expand = this.isExpand
+      }
+    },
+    mounted() {
       this.expand = this.isExpand
-    }
-  },
-  mounted() {
-    console.log(this.isExpand)
-	  this.expand = this.isExpand
-  },
-  methods: {
-		declOfNum(n, titles) {
-			return n + ' ' + titles[(n % 10 === 1 && n % 100 !== 11) ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2]
-		},
-    remove(data) {
-		  this.$emit('remove', data)
     },
-    edit(data) {
-		  this.$emit('edit', data)
-      this.expand = false
-    },
-    close() {
-		  this.expand = false
+    methods: {
+      declOfNum(n, titles) {
+        return n + ' ' + titles[(n % 10 === 1 && n % 100 !== 11) ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2]
+      },
+      remove(data) {
+        this.$emit('remove', data)
+      },
+      edit(data) {
+        this.$emit('edit', data)
+        this.expand = false
+      },
+      close() {
+        this.expand = false
+      }
     }
-	}
-}
+  }
 </script>
 <style lang="scss">
 	.list-enter-active, .list-leave-active {

@@ -27,17 +27,20 @@
     </div>
 
     <div class="tabs-container">
-      <div
+      <template
         v-for="(tab, index) in tabs"
-        v-show="currentTab === tab.component"
-        :key="index"
-        class="tab"
       >
-        <component
-          :is="tab.component"
-          @open-tab="setTab($event)"
-        />
-      </div>
+        <div
+          v-if="currentTab === tab.component"
+          :key="index"
+          class="tab"
+        >
+          <component
+            :is="tab.component"
+            @open-tab="setTab($event)"
+          />
+        </div>
+      </template>
     </div>
   </div>
 </template>

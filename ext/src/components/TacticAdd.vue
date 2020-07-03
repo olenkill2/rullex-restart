@@ -65,7 +65,7 @@
         </div>
         <div class="stage-actions">
           <template
-            v-if="!editing"
+            v-if="!editingStage"
           >
             <button
               @click="clearForm"
@@ -87,7 +87,7 @@
             v-else
           >
             <button
-              @click="cancelEdit"
+              @click="cancelEditStage"
               class="btn btn_skin stage-form-actions__clear"
             >
               Отменить
@@ -100,6 +100,14 @@
               Сохранить
             </button>
           </template>
+
+          <button
+            v-if="editedTactic"
+            @click="cancelEditTactic"
+            class="btn btn_red stage-form-actions__edit-tactic"
+          >
+            ОТМЕНА
+          </button>
         </div>
       </form>
     </ValidationObserver>
@@ -107,6 +115,7 @@
     <TacticViewer
       v-if="newTactic.stages.length"
       :tactic="newTactic"
+      :is-editing="true"
       label="Сохранить"
       @edit="editStage"
       @remove="removeStage"
@@ -116,7 +125,7 @@
 </template>
 <script>
   import { ValidationObserver } from 'vee-validate'
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters, mapActions, mapMutations } from 'vuex'
   import TacticViewer from "./TacticViewer"
 
   export default {
@@ -131,14 +140,15 @@
         tacticFields: null,
         clearSchema: {},
         stageData: {},
-        editing: false
+        editingStage: false
       }
     },
     computed: {
       ...mapGetters({
         modes: 'getModesList',
         roulette: 'getRoulette',
-        getMode: 'getModeById'
+        getMode: 'getModeById',
+        editedTactic: 'getEditTactic'
       }),
       modeName() {
         return this.getMode(this.newTactic.mode).name
@@ -165,18 +175,26 @@
         })
 
         this.stageData = JSON.parse(JSON.stringify(this.clearSchema))
+      },
+      editedTactic() {
+        this.newTactic = this.getTacticScheme()
       }
     },
     created() {
       this.newTactic = this.getTacticScheme()
     },
+    destroyed() {
+      this.cancelEdit()
+    },
     methods: {
       ...mapActions({
         setTab: 'setTab',
-        addTactic: 'addTactic'
+        addTactic: 'addTactic',
+        updateTactic: 'updateTactic',
+        cancelEdit: 'cancelEditTactic'
       }),
       getTacticScheme() {
-        return {
+        return this.editedTactic ? JSON.parse(JSON.stringify(this.editedTactic)) : {
           name: '',
           mode: this.modesList[0],
           roulette: {
@@ -195,13 +213,13 @@
         this.newTactic.stages.splice(index, 1)
       },
       editStage(editStage) {
-        this.editing = editStage
+        this.editingStage = editStage
 
         this.stageData = JSON.parse(JSON.stringify(editStage.stage))
       },
       saveStage() {
-        this.newTactic.stages[this.editing.index] = JSON.parse(JSON.stringify(this.stageData))
-        this.editing = null
+        this.newTactic.stages[this.editingStage.index] = JSON.parse(JSON.stringify(this.stageData))
+        this.editingStage = null
 
         this.clearForm()
       },
@@ -210,27 +228,31 @@
         this.$refs.formReset.reset()
         this.$refs.form.reset()
       },
-      cancelEdit() {
+      cancelEditStage() {
         this.clearForm()
-        this.editing = null
+        this.editingStage = null
       },
       saveTactic() {
         this.$refs.tacticName.validate()
           .then((valid) => {
             if (valid) {
-              this.addTactic({
-                roulette: this.roulette.name,
-                mode: this.newTactic.mode.label,
-                tactic: JSON.parse(JSON.stringify(this.newTactic))
-              })
+              const tactic = JSON.parse(JSON.stringify(this.newTactic))
 
-              this.setTab('TacticSaved')
-              this.clearForm()
+              if (this.editedTactic) {
+                this.updateTactic(tactic)
+              } else {
+                this.addTactic(tactic)
+              }
 
-              this.newTactic = this.getTacticScheme()
+              this.cancelEditTactic()
               this.$refs.tacticName.reset()
             }
           })
+      },
+      cancelEditTactic() {
+        this.cancelEdit()
+        this.clearForm()
+        this.setTab('TacticSaved')
       }
     }
   }
@@ -286,5 +308,9 @@
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-gap: 20px;
+  }
+
+  .stage-form-actions__edit-tactic {
+    grid-column: 1/-1;
   }
 </style>

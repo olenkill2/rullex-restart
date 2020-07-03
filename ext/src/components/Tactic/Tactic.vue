@@ -27,11 +27,12 @@
       </button>
       <button
         class="btn-str"
-        @click="tacticToView = tactic"
+        @click.stop="$emit('show-tactic')"
       >
         Подробнее
       </button>
       <button
+        @click="$emit('select')"
         class="btn btn_accent tactic__select"
       >
         Выбрать

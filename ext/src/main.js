@@ -7,7 +7,7 @@ import DropDown from '~UI/components/UI/DropDown'
 import Checkbox from '~UI/components/UI/Checkbox'
 import { clickOutside } from '@/utils/directives'
 import { extend, ValidationProvider } from 'vee-validate'
-import { required, alpha } from 'vee-validate/dist/rules'
+import { required, alpha, numeric, min_value } from 'vee-validate/dist/rules'
 
 
 extend('required', {
@@ -17,7 +17,17 @@ extend('required', {
 
 extend('alpha', {
 	...alpha,
-	message: 'Поле должно содержать только буквы'
+	message: 'Только буквы'
+});
+
+extend('numeric', {
+	...numeric,
+	message: 'Только цифры'
+});
+
+extend('min_value', {
+	...min_value,
+	message: 'Минус низя('
 });
 
 Vue.config.productionTip = false
@@ -30,7 +40,8 @@ const CustomRouter = {
     Vue.prototype.routeTo = function (route, params) {
       this.$store.commit('setRoute', { route, params })
     }
-    Vue.routeBack = function () {
+    Vue.prototype.routeBack = function () {
+      this.$store.dispatch('routerBack')
     }
   }
 }

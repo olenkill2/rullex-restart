@@ -34,7 +34,7 @@
         </div>
         <div
           v-if="$store.state.router.history.length"
-          @click="$store.dispatch('routerBack')"
+          @click="routeBack()"
           key="nav-item-2"
           class="header-back"
         >
