@@ -13,7 +13,7 @@ module.exports =
 		res.status(200).json({ data: newMenuItemData});
 	},
 	get: async(req, res) => {
-		const result = await Menu.find();
+		const result = await Menu.find()
 
 		if(!result) return res.status(404).json({error: 'Not found'});
 
@@ -30,7 +30,7 @@ module.exports =
 				}
 			},
 			{ $sort: { '_id': 1 } },
-		]);
+		]).cache({ expire: 1000 })
 
 		if (!aggregate.length) return res.status(404).json({error: 'Not found'});
 
