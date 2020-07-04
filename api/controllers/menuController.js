@@ -30,7 +30,7 @@ module.exports =
 				}
 			},
 			{ $sort: { '_id': 1 } },
-		]).cache({ expire: 1000 })
+		])
 
 		if (!aggregate.length) return res.status(404).json({error: 'Not found'});
 
