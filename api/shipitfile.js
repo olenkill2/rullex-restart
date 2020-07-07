@@ -15,7 +15,6 @@ module.exports = shipit => {
   }
 
   const app = apps[shipit.environment]
-  console.log(app)
 
   shipit.initConfig({
     default: {
@@ -40,36 +39,38 @@ module.exports = shipit => {
   })
 
   shipit.on('updated', () => {
-    // shipit.log(shipit)
     shipit.start('npm:install')
   })
-  //
-  // shipit.on('published', () => {
-  //   shipit.start('buildSite')
-  // })
-  //
-  // shipit.on('cleaned', () => {
-  //   shipit.start('pm2:restart')
-  // })
+
+  shipit.on('published', () => {
+    shipit.start('buildSite')
+  })
+
+
+  shipit.on('cleaned', () => {
+    shipit.start('pm2:restart')
+  })
   //
   shipit.blTask('npm:install', async () => {
     await shipit.remote(`cd ${shipit.releasePath}/api && npm install --production`)
     // await shipit.remote(`cd ${shipit.releasePath}/site && npm install`)
   })
   // //
-  // shipit.blTask('pm2:restart', async () => {
-  //   await shipit.remote(`pm2 delete -s ${appName} || :`);
-  //   try {
-  //     await shipit.remote(`pm2 restart dev_api dev_site`)
-  //     shipit.log(shipit)
-  //   } catch (error) {
-  //     shipit.log('No previous process to restart. Continuing.')
-  //   }
-  // })
+  shipit.blTask('pm2:restart', async () => {
+    await shipit.remote(`pm2 delete -s ${app.api} || :`);
+    await shipit.remote(`cd ${shipit.releasePath}/api && pm2 start ecosystem.config.js --only ${app.api}`);
+    // try {
+    //   await shipit.remote(`pm2 restart dev_api dev_site`)
+    //   shipit.log(shipit)
+    // } catch (error) {
+    //   shipit.log('No previous process to restart. Continuing.')
+    // }
+  })
   //
-  // shipit.blTask('buildSite', async () => {
-  //   await shipit.remote(`cd ${shipit.releasePath}/site && npm run build`)
-  // })
+  shipit.blTask('buildSite', async () => {
+    shipit.log('build sssssssiiiiiiiitttttttteeeeeeee')
+    // await shipit.remote(`cd ${shipit.releasePath}/site && npm run build`)
+  })
 
   // shipit.task('copyConfig', async () => {
   //   await shipit.copyToRemote(

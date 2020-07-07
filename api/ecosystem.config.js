@@ -16,7 +16,7 @@ module.exports = {
     },
     watch: true,
     instances: "1",
-    cwd: "/www/dev.rullex.ru/current/api"
+    cwd: "dev.rullex.ru/current/api"
   },{
     name: "prod_api",
     script: "index.js",
@@ -32,7 +32,7 @@ module.exports = {
     },
     watch: true,
     instances: "1",
-    cwd: "/www/rullex.ru/current/api"
+    cwd: "rullex.ru/current/api"
   },
   ]
 }
