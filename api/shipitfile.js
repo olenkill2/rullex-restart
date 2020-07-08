@@ -19,10 +19,10 @@ module.exports = shipit => {
   shipit.initConfig({
     default: {
       deployTo: '/var/www/dev.rullex.ru/',
-      // shared: {
-      //   dirs: ['node_modules'],
-      //   overwrite: true
-      // },
+      shared: {
+        dirs: ['node_modules'],
+        overwrite: true
+      },
       keepReleases: 2,
       repositoryUrl: 'https://github.com/olenkill2/rullex-restart',
     },
@@ -51,8 +51,8 @@ module.exports = shipit => {
   })
 
   shipit.blTask('npm:install', async () => {
-    await shipit.remote(`cd ${shipit.releasePath}/api && npm install --production`)
-    await shipit.remote(`cd ${shipit.releasePath}/site && npm install`)
+    await shipit.remote(`cd ${shipit.releasePath}/api && npm ci --production`)
+    await shipit.remote(`cd ${shipit.releasePath}/site && npm ci`)
   })
 
   shipit.blTask('buildSite', async () => {
