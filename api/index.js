@@ -6,6 +6,7 @@ const cors = require('cors')
 const cluster = require( 'cluster' )
 const cCPUs = require('os').cpus().length
 const logger = require('./startup/logger')
+const config = require('config')
 
 require('./startup/db')()
 require('./startup/redis')
@@ -40,7 +41,7 @@ else {
     res.status(404).json({error: 'method not exist'})
   })
 
-  app.listen(3002, () => {
+  app.listen(config.get('port'), () => {
     logger.info('Server start')
   })
 }

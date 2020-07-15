@@ -115,7 +115,9 @@ export default new Vuex.Store({
         authCheck:{_custom:{type:"function", display:"<span>ƒ</span> ()"}},
         parseBalance:{_custom:{type:"function", display:"<span>ƒ</span> ()"}},
         refChange:{_custom:{type:"function", display:"<span>ƒ</span> ()"}}},
-      gameFunctions:{dice:{_custom:{type:"function", display:"<span>ƒ</span> ()"}}}}
+      gameFunctions:{dice:{_custom:{type:"function", display:"<span>ƒ</span> ()"}}}},
+
+    autoStop: null
   },
 
   mutations: {
@@ -140,8 +142,8 @@ export default new Vuex.Store({
     setBalance(state, balance) {
       state.balance = balance
     },
-    setUserTactics(state, tactics) {
-      state.userTactics = tactics
+    setAutoStop(state, autoStop) {
+      state.autoStop = autoStop
     }
   },
   actions: {
@@ -185,6 +187,9 @@ export default new Vuex.Store({
     },
     getBalance: state => {
       return state.balance
+    },
+    getAutoStop: state => {
+      return state.autoStop
     },
     getCurrency: state => {
       return state.currentRoulette.currency

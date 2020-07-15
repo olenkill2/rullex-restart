@@ -27,7 +27,7 @@ extend('numeric', {
 
 extend('min_value', {
 	...min_value,
-	message: 'Минус низя('
+	message: 'Не, не подходит'
 });
 
 Vue.config.productionTip = false
@@ -46,6 +46,27 @@ const CustomRouter = {
   }
 }
 
+const wordInducement = {
+  install: function (Vue, options) {
+    const words = {
+      time: ['раз', 'раза', 'раз']
+    }
+
+    Vue.prototype.getWord = function (count, word) {
+      const num = count % 100
+      const mod = num % 10
+
+      if (num !== 11 && mod === 1) {
+        return words[word][0]
+      } else if (mod >= 2 && mod <= 4 && (num < 10 || num > 20)) {
+        return words[word][1]
+      } else {
+        return words[word][2]
+      }
+    }
+  }
+}
+
 const components = {
   Field,
   DropDown,
@@ -59,6 +80,7 @@ Object.entries(components).forEach(([name, component]) => {
 
 Vue.directive('click-outside', clickOutside)
 Vue.use(CustomRouter)
+Vue.use(wordInducement)
 
 new Vue({
 	store,

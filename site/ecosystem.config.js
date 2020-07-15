@@ -5,7 +5,7 @@ module.exports = {
     {
       name: "dev_site",
       script: "npm",
-      args: "run start",
+      args: "run start-dev",
       env: {
         "NODE_ENV": "production",
       },
@@ -21,7 +21,7 @@ module.exports = {
     {
       name: "prod_site",
       script: "npm",
-      args: "run start",
+      args: "run start-prod",
       env: {
         "NODE_ENV": "production",
       },

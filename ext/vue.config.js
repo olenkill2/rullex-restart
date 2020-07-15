@@ -18,6 +18,5 @@ module.exports = {
 				prependData: '@import "@/assets/style/app.scss";'
 			}
 		}
-	},
-
+	}
 }

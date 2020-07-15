@@ -48,6 +48,21 @@
 	}
 }
 
+.btn_full-red
+{
+	background-color: $red;
+	color: #fff;
+	border: 1px solid $red;
+
+	&:disabled
+	{
+		background-color: #fff;
+		pointer-events: none;
+		color: rgba($red, 0.5);
+		border-color: rgba($red, 0.5);
+	}
+}
+
 .btn_skin
 {
 	background-color: #fff;
@@ -69,11 +84,13 @@
 	box-shadow: none;
 	border: none;
 	outline: none;
+  background: transparent;
 	text-decoration: none;
   padding: 5px 0;
   color: $blue;
 	border-bottom: 1px solid $blue;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .btn-row--black {
@@ -110,7 +127,7 @@
 	font-size: 12px;
 	line-height: 14px;
 	border: none;
-	background-color: none;
+	background-color: transparent;
 	cursor: pointer;
 	color: $blue;
 }

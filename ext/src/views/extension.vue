@@ -113,6 +113,8 @@
 		max-height: calc(100vh - 60px);
 		overflow-y: auto;
 		overflow-x: hidden;
+    display: flex;
+	  flex-direction: column;
 	}
 	.load-message
 	{

@@ -20,25 +20,25 @@
       >
         <field
           v-model="settings.gamesCount"
-          rules="numeric"
+          rules="numeric|min_value:1"
           label="Кол-во игр"
           placeholder="5 игр"
         />
         <field
           v-model="settings.gamesLose"
-          rules="numeric"
+          rules="numeric|min_value:1"
           label="Кол-во поражений"
           placeholder="5 поражений"
         />
         <field
           v-model="settings.maxLose"
-          rules="numeric"
+          rules="numeric|min_value:1"
           label="Максимальный слив"
           placeholder="433 p"
         />
         <field
           v-model="settings.maxProfit"
-          rules="numeric"
+          rules="numeric|min_value:1"
           label="Если выграли"
           placeholder="666 р"
         />
@@ -54,6 +54,7 @@
 
         <button
           @click="setAutoStop"
+          :disabled="!isSeted"
           class="btn"
         >
           Применить
@@ -80,6 +81,7 @@
 </template>
 
 <script>
+  import { mapMutations } from 'vuex'
   import Block from './ui/Block'
 
   export default {
@@ -92,18 +94,26 @@
         settings: {}
       }
     },
+    computed: {
+      isSeted() {
+        const length = Object.keys(this.settings)
+        const hasProperty = Object.keys(this.settings).filter(prop => this.settings[prop]).length
+
+        return length && hasProperty
+      }
+    },
     methods: {
+      ...mapMutations({
+        saveAutoStop: 'setAutoStop'
+      }),
       setAutoStop() {
-        for (const key in this.settings) {
-          console.log(key)
+        for (let key in this.settings) {
           if (!this.settings[key]) {
             delete this.settings[key]
           }
         }
 
-        if (Object.keys(this.settings[key]).length) {
-          console.log('set auto stop settings')
-        }
+        Object.keys(this.settings).length && this.saveAutoStop(this.settings)
 
         this.routeTo('Game')
       }
@@ -129,7 +139,7 @@
     display: grid;
     align-items: center;
     justify-content: center;
-    grid-template-columns: 57px 126px;
+    grid-template-columns: 67px 152px;
     grid-auto-columns: min-content;
     grid-gap: 20px;
   }

@@ -2,6 +2,7 @@
 	"dbUrl": "mongodb://rulex-dev:8y6PzvsM64tx9zkPpyGR7t3JQ7@rullex.ru:27017/rullex-dev",
 	"redisUrl": "redis://localhost:6379",
 	"cacheEnabled": true,
+  "port": 3002,
   "tokens": {
     "ACCESS_SECRET": "LeshitSecretKey",
     "ACCESS_EXP": 30000,

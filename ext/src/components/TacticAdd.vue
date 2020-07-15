@@ -62,6 +62,17 @@
               :label="field.name"
             />
           </div>
+          <div
+            class="stage-form__item"
+          >
+            <Field
+              v-model="stageData.loseCount"
+              name="lose-count"
+              label="Кол-во проигрышей для перехода"
+              placeholder="2"
+              rules="min_value:0"
+            />
+          </div>
         </div>
         <div class="stage-actions">
           <template
