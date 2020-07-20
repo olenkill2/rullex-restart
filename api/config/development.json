@@ -8,5 +8,17 @@
     "ACCESS_EXP": 30000,
 	  "REFRESH_SECRET": "LeshitSecretKey123123123",
     "REFRESH_EXP": 99999
+  },
+  "auth": {
+    "vk": {
+      "clientId": 7101695,
+      "clientSecret": "jjvrUe9sPCInb7EW0Fos",
+      "callbackURL": "http://localhost:3334/"
+    },
+    "google": {
+      "clientId": "48660716713-fo9d7bgkr98800vjicot1r5uofkb3qke.apps.googleusercontent.com",
+      "clientSecret": "waUwQlVAdFDbqtFw--CqMPTy",
+      "callbackURL": "http://localhost:3334/"
+    }
   }
 }

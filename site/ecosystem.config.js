@@ -8,13 +8,8 @@ module.exports = {
       args: "run start-dev",
       env: {
         "NODE_ENV": "production",
-      },
-      env_master: {
-        "NODE_ENV": "production",
-      },
-      env_develop: {
-        "NODE_ENV": "production",
-        "ENV": "develop"
+        "BASE_URL": "https://dev.rullex.ru/api/v1/",
+        "PORT": 3001
       },
       instances: "1",
     },
@@ -24,13 +19,8 @@ module.exports = {
       args: "run start-prod",
       env: {
         "NODE_ENV": "production",
-      },
-      env_master: {
-        "NODE_ENV": "production",
-      },
-      env_develop: {
-        "NODE_ENV": "production",
-        "ENV": "develop"
+        "BASE_URL": "https://dev.rullex.ru/api/v1/",
+        "PORT": 3000
       },
       instances: "1",
     }

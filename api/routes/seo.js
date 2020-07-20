@@ -6,7 +6,7 @@ const passport = require('passport');
 const { JWT_auth } = require('../passport');
 
 router
-    .route('/public/')
+    .route('/public/:slug')
     .get(seo.getBySlug);
 
 router

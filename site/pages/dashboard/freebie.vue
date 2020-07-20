@@ -4,7 +4,7 @@
       <page-header
         :title="`Всего акций или халяв - ${freebies.length}`"
         :isOpened="freebieFormShow"
-        @close="freebieFormShow = false"
+        @close="cancelEdit"
         @open="freebieFormShow = true"
       />
 
@@ -204,7 +204,7 @@
       },
 
       addFreebie () {
-        this.$axios.post('/api/freebies', this.freebie)
+        this.$axios.post('/api/v1/freebies', this.freebie)
           .then((response, error) => {
             this.getFreebies()
             this.cancelEdit()
@@ -214,7 +214,7 @@
       },
 
       deleteFreebie () {
-        this.$axios.delete('/api/freebies/' + this.freebie._id).then((response, error) => {
+        this.$axios.delete('/api/v1/freebies/' + this.freebie._id).then((response, error) => {
           this.getFreebies();
           this.cancelEdit();
         }).catch((error, res) => {
@@ -223,7 +223,7 @@
       },
 
       updateFreebie () {
-        this.$axios.put(`/api/freebies/${this.freebie._id}`, this.freebie)
+        this.$axios.put(`/api/v1/freebies/${this.freebie._id}`, this.freebie)
           .then(async (response, error) => {
             await this.getFreebies();
             this.cancelEdit();

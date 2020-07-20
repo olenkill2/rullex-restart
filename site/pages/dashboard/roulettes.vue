@@ -4,7 +4,7 @@
     <page-header
         :title="`Всего рулеток - ${roulettes.length}`"
         :isOpened="rouletteFormShow"
-        @close="rouletteFormShow = false"
+        @close="cancelEdit"
         @open="rouletteFormShow = true"
       />
     <div
@@ -183,10 +183,13 @@
             :key="index"
             class="pages-form-groups-field-wr pages-form-groups-field-wr_modes"
           >
-            <text-field
-              v-model="func.gameFunc"
-              :label="'Игровая функция для ' + func.mode.name"
-            />
+            <client-only>
+              <FunctionEditor
+                :label="`Игровая функция для ${func.mode.name}`"
+                :code="func.gameFunc"
+                @change="func.gameFunc = $event"
+              />
+            </client-only>
           </div>
         </div>
       </div>
@@ -254,12 +257,14 @@
   import PageHeader from '~/components/dashboard/PageHeader'
   import DashboardTable from '~/components/dashboard/DashboardTable'
   import FormControls from '~/components/dashboard/FormControls'
+  import FunctionEditor from '~/components/dashboard/FunctionEditor'
 
   export default {
     components: {
       PageHeader,
       DashboardTable,
-      FormControls
+      FormControls,
+      FunctionEditor
     },
     layout (context) {
       return 'dashboard'
@@ -367,7 +372,7 @@
       },
 
       addRoulette () {
-        this.$axios.post('/api/roulettes', this.roulette).then((response, error) => {
+        this.$axios.post('/api/v1/roulettes', this.roulette).then((response, error) => {
           this.getRoulettes();
           this.cancelEdit();
         }).catch((error, res) => {
@@ -377,7 +382,7 @@
 
       deleteRoulette () {
         this.$axios
-          .delete('/api/roulettes/' + this.roulette._id)
+          .delete('/api/v1/roulettes/' + this.roulette._id)
           .then((response, error) => {
             this.getRoulettes();
             this.cancelEdit();
@@ -389,7 +394,7 @@
 
       updateRoulette () {
         this.$axios
-          .put('/api/roulettes/' + this.roulette._id, this.roulette)
+          .put('/api/v1/roulettes/' + this.roulette._id, this.roulette)
           .then((response, error) => {
             this.getRoulettes();
             this.cancelEdit();

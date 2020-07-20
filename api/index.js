@@ -11,37 +11,57 @@ const config = require('config')
 require('./startup/db')()
 require('./startup/redis')
 
-if (cluster.isMaster) {
-  for(let i = 0; i < cCPUs; i++) {
-    cluster.fork()
-  }
+const app = express()
 
-  cluster.on('online', function( worker ) {
-    console.log('Worker ' + worker.process.pid + ' is online.')
-  })
+app.use(helmet())
+app.use(cors())
+app.use(morgan('dev'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
-  cluster.on('exit', function(worker, code, signal) {
-    console.log('worker ' + worker.process.pid + ' died.')
-  })
-}
-else {
-  const app = express()
+require('./routes/index')(app)
 
-  app.use(helmet())
-  app.use(cors())
-  app.use(morgan('dev'))
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true }))
+app.use('/uploads', express.static(__dirname + "/uploads"))
 
-  require('./routes/index')(app)
+app.use('*', (req, res) => {
+  res.status(404).json({error: 'method not exist'})
+})
 
-  app.use('/uploads', express.static(__dirname + "/uploads"))
+app.listen(config.get('port'), () => {
+  logger.info('Server start')
+})
 
-  app.use('*', (req, res) => {
-    res.status(404).json({error: 'method not exist'})
-  })
-
-  app.listen(config.get('port'), () => {
-    logger.info('Server start')
-  })
-}
+// if (cluster.isMaster) {
+//   for(let i = 0; i < cCPUs; i++) {
+//     cluster.fork()
+//   }
+//
+//   cluster.on('online', function( worker ) {
+//     console.log('Worker ' + worker.process.pid + ' is online.')
+//   })
+//
+//   cluster.on('exit', function(worker, code, signal) {
+//     console.log('worker ' + worker.process.pid + ' died.')
+//   })
+// }
+// else {
+//   const app = express()
+//
+//   app.use(helmet())
+//   app.use(cors())
+//   app.use(morgan('dev'))
+//   app.use(bodyParser.json())
+//   app.use(bodyParser.urlencoded({ extended: true }))
+//
+//   require('./routes/index')(app)
+//
+//   app.use('/uploads', express.static(__dirname + "/uploads"))
+//
+//   app.use('*', (req, res) => {
+//     res.status(404).json({error: 'method not exist'})
+//   })
+//
+//   app.listen(config.get('port'), () => {
+//     logger.info('Server start')
+//   })
+// }

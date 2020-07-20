@@ -21,7 +21,7 @@ module.exports = {
     },
 
     getBySlug: async(req, res) => {
-        const seoData = await Seo.findOne({ slug: req.query.url, private: false }).select('-private -__v -created_at');
+        const seoData = await Seo.findOne({ slug: req.params.slug, private: false }).select('-private -__v -created_at');
 
         if (!seoData) return res.status(404).json({ error: 'no roullets' });
 
@@ -34,7 +34,7 @@ module.exports = {
         if (!seoData) return res.status(404).json({ error: 'Not found' })
 
         delete req.body._id
-        console.log(req.body)
+
         seoData = await Seo.findOneAndUpdate(req.params.id, req.body, { upsert: true })
 
         res.status(200).json({ data: seoData })

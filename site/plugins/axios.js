@@ -37,7 +37,7 @@ export default function ({ $axios, req, store }) {
 
       return new Promise(function (resolve, reject) {
         $axios
-        .get('/api/users/refresh', {
+        .get('/api/v1/users/refresh', {
           params: { refresh_token: refresh_token }
         })
         .then(async ({ data: tokens }) => {

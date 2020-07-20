@@ -1,9 +1,39 @@
-<template lang="pug">
-  div.page-content
-    h1.page-header Rullex -- расширения для атоигры на любом сайте
-    p Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил без заметных изменений пять веков, но и перешагнул в электронный дизайн. Его популяризации в новое время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.
-    h2 Почему он используется?
-    p Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст.. Здесь ваш текст.. Здесь ваш текст.." Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам "lorem ipsum" сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много версий. Некоторые версии появились по ошибке, некоторые - намеренно (например, юмористические варианты).
+<template>
+  <div class="page-content">
+    <h1>Заголовок перовго уровня</h1>
+<!--    <h2>Заголовок второго уровня</h2>-->
+<!--    <h3><a href="#">Заголовок</a> третьего уровня уровня</h3>-->
+    <p><a href="#">Lorem</a> ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet animi architecto autem consectetur cumque eius itaque nobis, quasi voluptatibus! Ad laborum molestias nulla quos repudiandae, soluta tempore ullam veniam. Aliquid assumenda exercitationem qui quo rem? Culpa cupiditate debitis error fuga hic laboriosam maiores modi quam sapiente, tempore? Autem blanditiis consequatur expedita harum magni, numquam odit officiis, qui quidem quis rem sint soluta! Eveniet odit saepe vero. Alias, asperiores consequatur debitis deserunt dolore dolores facilis fugiat fugit ipsam maiores modi nulla numquam officia porro quo ratione recusandae sint sit tenetur, vero. Distinctio dolore esse illum maiores quidem, rem sapiente vel!</p>
+    <ul>
+      <li>Список список</li>
+      <li>Список <a href="#">список</a></li>
+      <li>Список <b>список</b></li>
+      <li>Список <i>список</i></li>
+    </ul>
+
+    <hr>
+<!--    <h1>Заголовок перовго уровня</h1>-->
+    <h2>Заголовок второго уровня</h2>
+<!--    <h3>Заголовок третьего уровня уровня</h3>-->
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet animi architecto autem consectetur cumque eius itaque nobis, quasi voluptatibus! Ad laborum molestias nulla quos repudiandae, soluta tempore ullam veniam. Aliquid assumenda exercitationem qui quo rem? Culpa cupiditate debitis error fuga hic laboriosam maiores modi quam sapiente, tempore? Autem blanditiis consequatur expedita harum magni, numquam odit officiis, qui quidem quis rem sint soluta! Eveniet odit saepe vero. Alias, asperiores consequatur debitis deserunt dolore dolores facilis fugiat fugit ipsam maiores modi nulla numquam officia porro quo ratione recusandae sint sit tenetur, vero. Distinctio dolore esse illum maiores quidem, rem sapiente vel!</p>
+    <ul>
+      <li>Список список</li>
+      <li>Список список</li>
+      <li>Список список</li>
+      <li>Список список</li>
+    </ul>
+    <hr>
+    <!--    <h1>Заголовок перовго уровня</h1>-->
+<!--    <h2>Заголовок второго уровня</h2>-->
+    <h3>Заголовок третьего уровня уровня</h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet animi architecto autem consectetur cumque eius itaque nobis, quasi voluptatibus! Ad laborum molestias nulla quos repudiandae, soluta tempore ullam veniam. Aliquid assumenda exercitationem qui quo rem? Culpa cupiditate debitis error fuga hic laboriosam maiores modi quam sapiente, tempore? Autem blanditiis consequatur expedita harum magni, numquam odit officiis, qui quidem quis rem sint soluta! Eveniet odit saepe vero. Alias, asperiores consequatur debitis deserunt dolore dolores facilis fugiat fugit ipsam maiores modi nulla numquam officia porro quo ratione recusandae sint sit tenetur, vero. Distinctio dolore esse illum maiores quidem, rem sapiente vel!</p>
+    <ul>
+      <li>Список список</li>
+      <li>Список список</li>
+      <li>Список список</li>
+      <li>Список список</li>
+    </ul>
+  </div>
 </template>
 
 <script>

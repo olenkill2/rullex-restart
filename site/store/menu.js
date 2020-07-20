@@ -10,7 +10,7 @@ export const mutations = {
 
 export const actions = {
   async fetchMenu({ commit }) {
-    await this.$axios.$get('/api/menu/public')
+    await this.$axios.$get('/api/v1/menu/public')
       .then(({ data }) => {
         commit('setMenu', data)
       })

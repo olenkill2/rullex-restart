@@ -30,7 +30,7 @@ export const mutations = {
 
 export const actions = {
   async fetchRoulettes({ commit }) {
-    await this.$axios.$get('/api/roulettes')
+    await this.$axios.$get('/api/v1/roulettes')
       .then(({ data }) => {
         commit('setRoulettes', data)
       })
@@ -39,7 +39,7 @@ export const actions = {
       })
   },
   async fetchFreebies({ commit }) {
-    await this.$axios.$get('/api/freebies')
+    await this.$axios.$get('/api/v1/freebies')
       .then(({ data }) => {
         commit('setFreebies', data)
       })
@@ -49,7 +49,7 @@ export const actions = {
       })
   },
   async fetchModes({ commit }) {
-    await this.$axios.$get('/api/modes')
+    await this.$axios.$get('/api/v1/modes')
       .then(({ data }) => {
         commit('setModes', data)
       })
@@ -59,7 +59,7 @@ export const actions = {
       })
   },
   async fetchSeoItems({ commit }) {
-    await this.$axios.$get('/api/seo')
+    await this.$axios.$get('/api/v1/seo')
       .then(({ data }) => {
         commit('setSeoItems', data)
       })
@@ -69,7 +69,7 @@ export const actions = {
       })
   },
   async fetchFullMenu({ commit }) {
-    await this.$axios.$get('/api/menu')
+    await this.$axios.$get('/api/v1/menu')
       .then(({ data }) => {
         commit('setMenu', data)
       })
@@ -79,7 +79,7 @@ export const actions = {
       })
   },
   async fetchPosts({ commit }) {
-    await this.$axios.$get('/api/post')
+    await this.$axios.$get('/api/v1/post')
       .then(({ data }) => {
         commit('setPosts', data)
       })

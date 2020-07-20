@@ -6,7 +6,8 @@
     >
       <page-header
         :title="`Всего режимов - ${modes.length}`"
-        @close="modeFormShow = false"
+        :isOpened="modeFormShow"
+        @close="cancelEdit"
         @open="modeFormShow = true"
       />
 
@@ -48,7 +49,7 @@
               />
             </div>
             <div class="mode-form-groups-field-wr">
-              {{field.component}}
+<!--              {{field.component}}-->
               <dropdown
                 :options="componentsList"
                 v-model="field.component"
@@ -80,9 +81,9 @@
 
                 <div class="field-droplist-items-added">
                   <div class="field-droplist-item" v-for="(dropItem, index) in field.dropDownList">
-                    {{ dropItem }}
+<!--                    {{ dropItem }}-->
 <!--                    {{ dropItem.label }} {{ dropItem.value }}-->
-                    <div class="field-droplist-item_remove" @click="removeDropListItem(index)"></div>
+<!--                    <div class="field-droplist-item_remove" @click="removeDropListItem(index)"></div>-->
                   </div>
                 </div>
               </div>
@@ -216,14 +217,16 @@
     },
     computed: {
       ...mapGetters({
-        modes: 'dashboard/getModes'
-      })
+        getModesFromStore: 'dashboard/getModes'
+      }),
+      modes() {
+        return JSON.parse(JSON.stringify(this.getModesFromStore))
+      }
     },
     methods: {
       ...mapActions({
         getModes: 'dashboard/fetchModes'
       }),
-
       getFieldSchema () {
         return {
           name: '',
@@ -268,7 +271,7 @@
       },
 
       addMode () {
-        this.$axios.post('/api/modes/', this.mode).then((result, error) => {
+        this.$axios.post('/api/v1/modes/', this.mode).then((result, error) => {
           this.cancelEdit();
           this.getModes();
         }).catch((error) => {
@@ -283,7 +286,7 @@
       },
 
       removeMode () {
-        this.$axios.delete('/api/modes/' + this.mode._id).then((result, error) => {
+        this.$axios.delete('/api/v1/modes/' + this.mode._id).then((result, error) => {
           this.getModes();
           this.cancelEdit();
         }).catch((error) => {
@@ -292,7 +295,7 @@
       },
 
       updateMode () {
-        this.$axios.put('/api/modes/' + this.mode._id, this.mode).then((result, error) => {
+        this.$axios.put('/api/v1/modes/' + this.mode._id, this.mode).then((result, error) => {
           this.getModes();
           this.cancelEdit();
         }).catch((error) => {

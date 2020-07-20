@@ -5,7 +5,9 @@ const VKontakteStrategy = require('passport-vkontakte').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const User = require('./models/userModel.js');
-const ACCESS_SECRET  = require('config').get('tokens.ACCESS_SECRET');
+const config = require('config')
+const ACCESS_SECRET = config.get('tokens.ACCESS_SECRET');
+const socialData = config.get('auth')
 
 //JSON WEB TOKEN STRATEGY
 passport.use(new JwtStrategy({
@@ -13,7 +15,6 @@ passport.use(new JwtStrategy({
 		secretOrKey: ACCESS_SECRET,
 	},
 	async (payload, done) => {
-    console.log(payload)
 		try {
 			const user = await User.findById(payload.sub);
 			if(!user)
@@ -51,10 +52,9 @@ passport.use(new LocalStrategy({
 
 // VK TOKEN STRATEGY
 passport.use(new VKontakteStrategy({
-		clientID: '7101695', // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId'
-		clientSecret: 'jjvrUe9sPCInb7EW0Fos',
-		// callbackURL: 'http://localhost:3334',
-		callbackURL: 'http://localhost:8002/',
+		clientID: socialData.vk.clientId,
+		clientSecret: socialData.vk.clientSecret,
+		callbackURL: socialData.vk.callbackURL,
 		scope: ['email' ],
 		apiVersion: '5.21',
 		profileFields: ['email', 'city', 'bdate']
@@ -66,9 +66,9 @@ passport.use(new VKontakteStrategy({
 
 // GOOGLE TOKEN STRATEGY
 passport.use(new GoogleStrategy({
-	clientID: '48660716713-fo9d7bgkr98800vjicot1r5uofkb3qke.apps.googleusercontent.com',
-	clientSecret: 'waUwQlVAdFDbqtFw--CqMPTy',
-	callbackURL: 'http://localhost:3334'
+	clientID: socialData.google.clientId,
+	clientSecret: socialData.google.clientSecret,
+	callbackURL: socialData.google.callbackURL,
 }, async (accessToken, refreshToken, profile, done) => {
 	done(null, { accessToken, refreshToken, profile });
 }));

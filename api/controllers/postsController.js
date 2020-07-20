@@ -49,9 +49,9 @@ module.exports =
 	},
 
 	getPost: async(req, res, next) => {
-		if (!req.params.slug) return res.status(400).json({error: 'чего-то не хватает'});
+		if (!req.params.slug) return res.status(400).json({ error: 'чего-то не хватает' })
 
-		const result = await Post.findOne({'slug': req.params.slug, private: false});
+		const result = await Post.findOne({ 'slug': req.params.slug, private: false }).cache({ expire: 20 })
 
 		if(!result) return res.status(404).json('error');
 

@@ -185,6 +185,9 @@ export default new Vuex.Store({
     getBaseFunctions: state => {
       return state.functions
     },
+    getGameFunctions: state => {
+      return state.gameFunctions
+    },
     getBalance: state => {
       return state.balance
     },

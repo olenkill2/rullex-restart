@@ -4,7 +4,7 @@
       <page-header
         :title="`Всего страниц - ${seoItems.length}`"
         :isOpened="seoFormShow"
-        @close="seoFormShow = false"
+        @close="cancelEdit"
         @open="seoFormShow = true"
       />
 
@@ -155,7 +155,7 @@ export default {
     },
 
     addSeo () {
-      this.$axios.post('/api/seo', this.seo).then((response, error) => {
+      this.$axios.post('/api/v1/seo', this.seo).then((response, error) => {
         this.getSeoItems();
         this.cancelEdit();
       }).catch((error, res) => {
@@ -164,7 +164,7 @@ export default {
     },
 
     deleteSeo () {
-      this.$axios.delete('/api/seo/' + this.seo._id).then((response, error) => {
+      this.$axios.delete('/api/v1/seo/' + this.seo._id).then((response, error) => {
         this.getSeoItems();
         this.cancelEdit();
       }).catch((error, res) => {
@@ -174,7 +174,7 @@ export default {
 
     updateSeo () {
       this.$axios
-      .put('/api/seo/' + this.seo._id, this.seo)
+      .put('/api/v1/seo/' + this.seo._id, this.seo)
       .then((response, error) => {
         this.getSeoItems();
         this.cancelEdit();

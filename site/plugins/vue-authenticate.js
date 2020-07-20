@@ -14,11 +14,11 @@ const getPopupOptions = (width, height) => {
   }
 }
 
-const getRedirectUrl = () => window.location.origin
+const getRedirectUrl = () => `${window.location.origin}/`
 
 const vueAuth = VueAuthenticate.factory(axios, {
   tokenName: 'access_token',
-  baseUrl: 'http://localhost:3002/api/v1/users/oauth/',
+  baseUrl: `${process.env.baseUrl}api/v1/users/oauth/`,
   tokenPrefix: '',
   storageType: 'memory',
   bindRequestInterceptor() {
@@ -57,7 +57,7 @@ const vueAuth = VueAuthenticate.factory(axios, {
       scopeDelimiter: ' ',
       oauthType: '2.0',
       popupOptions: getPopupOptions(460, 600),
-      clientId: '23'
+      clientId: '48660716713-fo9d7bgkr98800vjicot1r5uofkb3qke.apps.googleusercontent.com'
     }
   }
 })

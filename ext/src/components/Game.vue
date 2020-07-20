@@ -50,8 +50,20 @@
     </div>
 
     <div class="game__actions">
-      <button class="btn btn_skin">
+      <button
+        v-if="globalStatus === 'play'"
+        class="btn btn_skin"
+        @click="pause"
+      >
         Поставить на паузу
+      </button>
+
+      <button
+        v-if="globalStatus === 'pause'"
+        class="btn btn_skin"
+        @click="play"
+      >
+        Продолжить игру
       </button>
 
       <button class="btn btn_full-red">
@@ -68,7 +80,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
 
   import GameStat from './GameStat'
 
@@ -86,7 +98,9 @@
         loses: 0,
         stage: 1,
         currentBet: 0,
-        stat: []
+        stat: [],
+        gameFunction: null,
+        interval: null
       }
     },
     computed: {
@@ -94,10 +108,14 @@
         tactic: 'getTactic',
         currency: 'getCurrency',
         autoStop: 'getAutoStop',
-        functions: 'getFunctions'
+        functions: 'getGameFunctions',
+        globalStatus: 'getGlobalStatus'
       }),
       profit() {
         return this.currentBalance - this.startBalance
+      },
+      currentStage() {
+        return this.tactic.stages[this.stage - 1]
       }
     },
     mounted() {
@@ -105,16 +123,52 @@
         this.stat.push(
           {
             bet: 1,
-            isWin: true,
+            isWin: i % 2 === 0 ? true : false,
             event: 'Больше',
-            profit: -1,
+            profit: i % 2 === 0 ? 1 : -2,
             stage: 3
           }
         )
       }
+
+      this.gameFunction = this.functions[this.tactic.mode.label]()
+      // this.gameFunction().then((res) => {
+      //   console.log(res)
+      // })
+      this.play()
     },
     methods: {
+      ...mapMutations({
+        setGlobalStatus: 'setGlobalStatus'
+      }),
+      play() {
+        this.setGlobalStatus('play')
 
+        this.interval = setInterval(async () => {
+          const result = await this.gameFunction()
+
+          if (!result.isWin && this.tactic.stages.length > 1) {
+            this.stage++
+          }
+
+          if (this.autoStop) {
+            console.log('check autostop')
+            if (2 > 4) {
+              clearInterval(this.interval)
+            }
+          }
+
+          // setTimeout(()=> clearInterval(this.interval), 3000)
+        }, this.currentStage.delay.value)
+      },
+      pause() {
+        this.setGlobalStatus('pause')
+        clearInterval(this.interval)
+      },
+      stop() {
+        this.setGlobalStatus('ready')
+        clearInterval(this.interval)
+      }
     }
   }
 </script>
@@ -129,6 +183,7 @@
   .game__header {
     margin-bottom: 20px;
   }
+
   .game__info {
     margin-bottom: 23px;
     font-size: 16px;
@@ -151,6 +206,10 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
     margin-bottom: 30px;
+  }
+
+  .game-stat__header {
+    margin-bottom: 20px;
   }
 
   .game__stat-block {

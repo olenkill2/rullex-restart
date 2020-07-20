@@ -3,7 +3,8 @@
     <div class="pages-wr">
       <page-header
         :title="`Всего в меню - ${menuItems.length} пунктов`"
-        @close="menuFormShow = false"
+        :isOpened="menuFormShow"
+        @close="cancelEdit"
         @open="menuFormShow = true"
       />
 
@@ -155,7 +156,7 @@
       },
 
       addMenu () {
-        this.$axios.post('/api/menu', this.menu).then((response, error) => {
+        this.$axios.post('/api/v1/menu', this.menu).then((response, error) => {
           this.getMenuItems();
           this.cancelEdit();
         }).catch((error, res) => {
@@ -164,7 +165,7 @@
       },
 
       deleteMenu () {
-        this.$axios.delete('/api/menu/' + this.menu._id).then((response, error) => {
+        this.$axios.delete('/api/v1/menu/' + this.menu._id).then((response, error) => {
           this.getMenuItems();
           this.cancelEdit();
         }).catch((error, res) => {
@@ -173,7 +174,7 @@
       },
 
       updateMenu () {
-        this.$axios.put('/api/menu/' + this.menu._id, this.menu).then((response, error) => {
+        this.$axios.put('/api/v1/menu/' + this.menu._id, this.menu).then((response, error) => {
           this.getMenuItems();
           this.cancelEdit();
         }).catch((error) => {

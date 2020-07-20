@@ -4,7 +4,7 @@
       <page-header
         :title="`Всего статей - ${posts.length}`"
         :isOpened="postFormShow"
-        @close="postFormShow = false"
+        @close="cancelEdit"
         @open="postFormShow = true"
       />
       <div
@@ -146,7 +146,7 @@
       },
 
       addPost () {
-        this.$axios.post('/api/post', this.post).then((response, error) => {
+        this.$axios.post('/api/v1/post', this.post).then((response, error) => {
           this.getPosts()
           this.cancelEdit()
         }).catch((error, res) => {
@@ -154,7 +154,7 @@
       },
 
       deletePost () {
-        this.$axios.delete('/api/post/' + this.post._id).then((response, error) => {
+        this.$axios.delete('/api/v1/post/' + this.post._id).then((response, error) => {
           this.getPosts()
           this.cancelEdit()
         }).catch((error, res) => {
@@ -163,7 +163,7 @@
       },
 
       updatePost () {
-        this.$axios.put('/api/post/' + this.post._id, this.post)
+        this.$axios.put('/api/v1/post/' + this.post._id, this.post)
           .then(() => {
             this.getPosts()
             this.cancelEdit()

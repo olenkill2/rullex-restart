@@ -5,9 +5,9 @@
   "author": "Стас Соколов",
   "private": true,
   "scripts": {
-    "dev": "nuxt --port 3334",
-    "start-dev": "nuxt --port 3334",
-    "start-prod": "nuxt --port 3344",
+    "dev": "BASE_URL=http://127.0.0.1:3002/ PORT=3334 nuxt",
+    "start-dev": "nuxt",
+    "start-prod": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
@@ -20,16 +20,18 @@
     "cookieparser": "^0.1.0",
     "cross-env": "^6.0.3",
     "js-cookie": "^2.2.1",
+    "monaco-editor-webpack-plugin": "^1.9.0",
     "nuxt": "^2.12.2",
     "vee-validate": "^3.3.0",
     "vue-authenticate": "^1.4.1",
-    "vue-editor-js": "^1.1.1"
+    "vue-editor-js": "^1.1.1",
+    "vue-monaco": "^1.2.1"
   },
   "devDependencies": {
     "@nuxtjs/style-resources": "^1.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "node-sass": "^4.14.0",
+    "node-sass": "^4.14.1",
     "nodemon": "^2.0.3",
     "prettier": "^1.19.1",
     "pug": "^2.0.4",

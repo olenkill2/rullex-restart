@@ -18,16 +18,16 @@
 		// 		};
 		// 	}
 		// },
-		head () {
-			return {
-				title: this.seoData.title,
-				meta: [
-					{ hid: 'description', name: 'description', content: this.seoData.description },
-					{ hid: 'og:title', name: 'og:title', content: this.seoData.ogTitle },
-					{ hid: 'og:descriptio ', name: 'og:descriptio ', content: this.seoData.ogDescription },
-				]
-			}
-		},
+		// head () {
+		// 	return {
+		// 		title: this.seoData.title,
+		// 		meta: [
+		// 			{ hid: 'description', name: 'description', content: this.seoData.description },
+		// 			{ hid: 'og:title', name: 'og:title', content: this.seoData.ogTitle },
+		// 			{ hid: 'og:descriptio ', name: 'og:descriptio ', content: this.seoData.ogDescription },
+		// 		]
+		// 	}
+		// },
 		data: () => ({
 			// seoData
 		}),

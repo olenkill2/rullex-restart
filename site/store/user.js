@@ -26,7 +26,7 @@ export const mutations = {
 
 export const actions = {
   async getUser({ commit, dispatch }) {
-	  await this.$axios.post('http://localhost:3002/api/v1/users/user')
+	  await this.$axios.post('/api/v1/users/user')
       .then(({ data }, err) => {
         commit('setAuth', data)
       }).catch((err) => {
