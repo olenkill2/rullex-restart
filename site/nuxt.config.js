@@ -73,9 +73,9 @@ export default {
 		'/api/': process.env.BASE_URL
 	},
 
-  server: {
-    port: process.env.PORT,
-  },
+  // server: {
+  //   port: process.env.PORT,
+  // },
 
 	build: {
 		transpile: ["vee-validate/dist/rules"],
