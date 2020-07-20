@@ -1,5 +1,4 @@
 const pkg = require('./package')
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 
 export default {
 	mode: 'universal',
@@ -70,7 +69,7 @@ export default {
   },
 
 	proxy: {
-		'/api/': process.env.BASE_URL
+		'/api/': process.env.baseURL
 	},
 
   // server: {
@@ -78,12 +77,6 @@ export default {
   // },
 
 	build: {
-		transpile: ["vee-validate/dist/rules"],
-    plugins: [
-      new MonacoWebpackPlugin({
-        publicPath: '',
-        languages: ['javascript', 'css', 'html', 'typescript', 'json']
-      })
-    ]
+		transpile: ["vee-validate/dist/rules"]
 	}
 }

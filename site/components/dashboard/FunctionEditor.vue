@@ -12,12 +12,12 @@
       v-if="edit"
       @close="edit = false"
     >
-      <MonacoEditor
+      <!-- <MonacoEditor
         class="editor"
         v-model="localCode"
         @change="$emit('change', $event)"
         language="javascript"
-      />
+      /> -->
     </Popup>
 
     <pre v-else class="function-code">
@@ -27,7 +27,6 @@
 </template>
 
 <script>
-  import MonacoEditor from 'vue-monaco'
   import Popup from "@/components/UI/Popup"
 
   export default {
@@ -42,7 +41,6 @@
       },
     },
     components: {
-      MonacoEditor,
       Popup
     },
     data() {

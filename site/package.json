@@ -20,12 +20,10 @@
     "cookieparser": "^0.1.0",
     "cross-env": "^6.0.3",
     "js-cookie": "^2.2.1",
-    "monaco-editor-webpack-plugin": "^1.9.0",
     "nuxt": "^2.12.2",
     "vee-validate": "^3.3.0",
     "vue-authenticate": "^1.4.1",
-    "vue-editor-js": "^1.1.1",
-    "vue-monaco": "^1.2.1"
+    "vue-editor-js": "^1.1.1"
   },
   "devDependencies": {
     "@nuxtjs/style-resources": "^1.0.0",
