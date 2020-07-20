@@ -62,9 +62,10 @@ module.exports = shipit => {
 
   shipit.blTask('pm2:restart', async () => {
     await shipit.remote(`pm2 delete -s ${app.api} ${app.site} || :`);
-    await shipit.remote(`cd ${shipit.releasePath}/api && pm2 startOrReload ecosystem.config.js --only ${app.api}
-    && pm2 startOrReload ecosystem.config.js --only ${app.site} && pm2 save
-    `);
+    await shipit.remote(`cd ${shipit.releasePath}/api && pm2 start ecosystem.config.js --only ${app.api}`);
+    // await shipit.remote(`cd ${shipit.releasePath}/api && pm2 startOrReload ecosystem.config.js --only ${app.api}
+    // && pm2 startOrReload ecosystem.config.js --only ${app.site} && pm2 save
+    // `);
     // await shipit.remote(`cd ${shipit.releasePath}/site && pm2 startOrReload ecosystem.config.js --only ${app.site}`);
     await shipit.remote(`pm2 save`);
   })
