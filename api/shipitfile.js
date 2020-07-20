@@ -7,10 +7,12 @@ module.exports = shipit => {
     develop: {
       api: 'dev_api',
       site: 'dev_site',
+      baseUrl: 'https://dev.rullex.ru/'
     },
     production: {
       api: 'prod_api',
       site: 'prod_site',
+      baseUrl: 'https://rullex.ru/'
     }
   }
 
@@ -57,7 +59,7 @@ module.exports = shipit => {
   })
 
   shipit.blTask('buildSite', async () => {
-    await shipit.remote(`cd ${shipit.releasePath}/site && npm run build`)
+    await shipit.remote(`cd ${shipit.releasePath}/site && BASE_URL=${app.baseUrl} npm run build`)
   })
 
   shipit.blTask('pm2:restart', async () => {
