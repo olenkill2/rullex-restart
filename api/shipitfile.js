@@ -43,7 +43,7 @@ module.exports = shipit => {
   })
 
   shipit.on('published', () => {
-    shipit.start('buildSite')
+    // shipit.start('buildSite')
   })
 
   shipit.on('cleaned', () => {
@@ -51,8 +51,9 @@ module.exports = shipit => {
   })
 
   shipit.blTask('npm:install', async () => {
-    await shipit.remote(`cd ${shipit.releasePath}/api && npm ci --production`)
-    await shipit.remote(`cd ${shipit.releasePath}/site && npm ci`)
+    await shipit.remote(`cd ${shipit.releasePath}/api && npm ci --production && cd ../site && npm ci`)
+    // await shipit.remote(`cd ${shipit.releasePath}/api && npm ci --production && cd ../site && npm ci`)
+    // await shipit.remote(`cd ${shipit.releasePath}/site && npm ci`)
   })
 
   shipit.blTask('buildSite', async () => {
@@ -61,8 +62,10 @@ module.exports = shipit => {
 
   shipit.blTask('pm2:restart', async () => {
     await shipit.remote(`pm2 delete -s ${app.api} ${app.site} || :`);
-    await shipit.remote(`cd ${shipit.releasePath}/api && pm2 start ecosystem.config.js --only ${app.api}`);
-    await shipit.remote(`cd ${shipit.releasePath}/site && pm2 start ecosystem.config.js --only ${app.site}`);
+    await shipit.remote(`cd ${shipit.releasePath}/api && pm2 startOrReload ecosystem.config.js --only ${app.api}
+    && pm2 startOrReload ecosystem.config.js --only ${app.site} && pm2 save
+    `);
+    // await shipit.remote(`cd ${shipit.releasePath}/site && pm2 startOrReload ecosystem.config.js --only ${app.site}`);
     await shipit.remote(`pm2 save`);
   })
 }

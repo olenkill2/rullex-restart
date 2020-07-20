@@ -1,0 +1,24 @@
+{
+	"dbUrl": "mongodb://rulex-dev:8y6PzvsM64tx9zkPpyGR7t3JQ7@rullex.ru:27017/rullex-dev",
+	"redisUrl": "redis://localhost:6379",
+	"cacheEnabled": true,
+  "port": 3002,
+  "tokens": {
+    "ACCESS_SECRET": "LeshitSecretKey",
+    "ACCESS_EXP": 30000,
+	  "REFRESH_SECRET": "LeshitSecretKey123123123",
+    "REFRESH_EXP": 99999
+  },
+  "auth": {
+    "vk": {
+      "clientId": 7101695,
+      "clientSecret": "jjvrUe9sPCInb7EW0Fos",
+      "callbackURL": "https://dev.rullex.ru/"
+    },
+    "google": {
+      "clientId": "48660716713-fo9d7bgkr98800vjicot1r5uofkb3qke.apps.googleusercontent.com",
+      "clientSecret": "waUwQlVAdFDbqtFw--CqMPTy",
+      "callbackURL": "https://dev.rullex.ru/"
+    }
+  }
+}
