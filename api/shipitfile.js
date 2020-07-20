@@ -19,10 +19,10 @@ module.exports = shipit => {
   shipit.initConfig({
     default: {
       deployTo: '/var/www/dev.rullex.ru/',
-      // shared: {
-      //   dirs: ['node_modules'],
-      //   overwrite: true
-      // },
+      shared: {
+        dirs: ['node_modules'],
+        overwrite: true
+      },
       keepReleases: 2,
       repositoryUrl: 'https://github.com/olenkill2/rullex-restart',
     },
