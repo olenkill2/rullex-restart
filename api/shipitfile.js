@@ -42,9 +42,9 @@ module.exports = shipit => {
     shipit.start('npm:install')
   })
 
-  // shipit.on('published', () => {
-  //   // shipit.start('buildSite')
-  // })
+  shipit.on('published', () => {
+    shipit.start('buildSite')
+  })
 
   shipit.on('cleaned', () => {
     shipit.start('pm2:restart')
