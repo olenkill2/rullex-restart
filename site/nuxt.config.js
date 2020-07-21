@@ -69,7 +69,7 @@ export default {
   },
 
 	proxy: {
-		'/api/': process.env.baseURL
+		'/api/': process.env.BASE_URL
 	},
 
   // server: {
