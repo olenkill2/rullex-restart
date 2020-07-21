@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "BASE_URL=http://127.0.0.1:3002/ --port 3334 nuxt",
-    "start-dev": "nuxt --port 30001",
-    "start-prod": "nuxt --port 30000",
+    "start-dev": "nuxt --port 3001",
+    "start-prod": "nuxt --port 3000",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
