@@ -7,9 +7,8 @@
       class="checkbox-input"
       type="checkbox"
       v-bind="$attrs"
-      :checked="checked"
-      :value="value"
-      @change="update"
+      v-model="model"
+      :value="$attrs.value"
     />
     <div class="checkbox-box"></div>
     <div class="checkbox-label">
@@ -20,41 +19,38 @@
 <script>
 export default {
 	inheritAttrs: false,
-	model: { prop: 'model', event: 'change' },
-	props: {
-		value:      { default: null  },
-		model:      { default: false },
-		trueValue:  { default: true  },
-		falseValue: { default: false },
-		label:      { default: '' }
-	},
-	computed: {
-		checked() {
-			if(this.model instanceof Array) {
-				// return this.model.filter((item) => {
-				// 	JSON.stringify(item) == JSON.stringify(this.value)
-				// })
-				for(let mode of this.model) {
-					if(JSON.stringify(mode) == JSON.stringify(this.value)) return mode;
-				}
-			}
-			else {
-				return (this.model === this.trueValue);
-			}
-		}
-	},
-	methods: {
-		update(e) {
-			let checked = e.target.checked;
-			if (this.model instanceof Array) {
-				let value = [...this.model];
-				(checked) ? value.push(this.value) : value.splice(value.indexOf(this.value), 1);
-				this.$emit('change', value);
-			} else {
-				this.$emit('change', checked ? this.trueValue : this.falseValue);
-			}
-		}
-	}
+	model: {
+    prop: 'checked',
+    event: 'change'
+  },
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    checked: {
+      type: [String, Number, Boolean, Array],
+      required: true
+    },
+    label: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    model: {
+      get() {
+        return this.checked
+      },
+      set(val) {
+        this.$emit('change', val)
+      }
+    }
+  }
 };
 </script>
 <style lang="scss">

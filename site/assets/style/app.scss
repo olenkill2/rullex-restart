@@ -1,50 +1,5 @@
-// Import Vuetify styling
-@import 'variables';
-@import 'controls';
-html,body
-{
-	padding: 0;
-	margin: 0;
-	height: 100%;
-}
-body
-{
-	font-size: 16px;
-	font-family: $accent-font;
-	font-weight: $regular;
-	color: $accent;
-	background-color: $light-gray;
-	line-height: 1.5;
-	overflow-x: hidden;
-}
-*
-{
-	box-sizing: border-box;
-	outline: none;
-}
-a
-{
-	color: $accent;
-}
-table
-{
-	border-collapse: collapse;
-}
-th
-{
-	font-weight: $medium;
-	text-align: left;
-	font-size: 14px;
-}
-td
-{
-	font-weight: $light;
-	font-size: 14px;
-}
-p
-{
-	margin-top: 0;
-}
+@import 'scaffold';
+
 .def-link
 {
 	color: $accent;
@@ -57,6 +12,7 @@ p
 		border-color: $accent;
 	}
 }
+
 .container
 {
 	max-width: 1400px;
@@ -65,29 +21,18 @@ p
 	margin-left: auto;
 	margin-right: auto;
 }
+
 .header-wr
 {
 	position: relative;
 	z-index: 20;
 }
+
 .page-content
 {
 	padding-top: 30px;
 	padding-left: 30px;
 	padding-right: 30px;
-}
-
-.dashboard-header-wr
-{
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding-bottom: 45px;
-}
-.dashboard-header__left
-{
-	font-size: 24px;
-	color: $accent;
 }
 
 .pages-message
@@ -101,19 +46,23 @@ p
 {
 	padding-bottom: 60px;
 }
+
 .pages-form-groups
 {
 	display: flex;
 	justify-content: space-between;
 }
+
 .pages-form-group
 {
 	margin-bottom: 20px;
 }
+
 .pages-form-group-label
 {
 	margin-bottom: 10px;
 }
+
 .pages-form-group-item
 {
 	margin-bottom: 15px;
@@ -122,10 +71,12 @@ p
 		margin-bottom: 0;
 	}
 }
+
 .pages-form-groups__item
 {
 	flex-basis: calc(50% - 17px);
 }
+
 .pages-form-groups-field-wr
 {
 	margin-bottom: 16px;
@@ -134,6 +85,7 @@ p
 		margin-bottom: 0;
 	}
 }
+
 .pages-form-groups-field-wr_select-mode
 {
 	display: flex;
@@ -149,14 +101,16 @@ p
 {
 	display: flex;
 	justify-content: space-between;
-	// align-items: flex-start;
 	margin-top: 16px;
 }
+
+// TODO вынести
 .sidebar-wr,
 .content
 {
 	background-color: #FFFFFF;
 }
+
 .sidebar-wr
 {
 	height: calc(100vh - 97px);
@@ -165,28 +119,12 @@ p
 	flex-basis: 19%;
 	flex-shrink: 1;
 }
-.sidebar-content
-{
-}
+
 .sidebar-content-element
 {
 	padding: 20px;
 }
-.content-wr
-{
-	max-width: 59%;
-	flex: 1;
-}
-.content
-{
-	min-height: calc(100vh - 106px);
-	flex: 1;
-	overflow-x: hidden;
-}
-.content_popup
-{
-	background-color: transparent;
-}
+
 .sidebar-nav-item
 {
 	display: flex;
@@ -229,22 +167,39 @@ p
 	min-height: 50px;
 	cursor: pointer;
 }
+
 .sidebar-nav-group__label-icon
 {
 	line-height: 0;
 	margin-top: 1px;
 	margin-right: 10px;
 }
+
 .sidebar-nav-item_sub
 {
 	padding-left: 40px;
 	height: 35px;
 }
+
 .sidebar-nav-mob-actions
 {
 	display: none;
 }
 
+.content-wr
+{
+	max-width: 59%;
+	flex: 1;
+}
+
+.content
+{
+	min-height: calc(100vh - 106px);
+	flex: 1;
+	overflow-x: hidden;
+}
+
+// TODO переместить
 .edit-field
 {
 	max-width: 20px;
@@ -255,8 +210,10 @@ p
 	background-repeat: no-repeat;
 	cursor: pointer;
 }
+
 .edit-field
 {
+
 	background-image: url('../../assets/icons/edit.svg');
 	background-size: 80%;
 }
@@ -270,13 +227,12 @@ p
 	.content-wr
 	{
 		flex: 1;
-		margin: 0;
-		max-width: 100%;
-		margin-left: 40px;
-		overflow-x: hidden;
-		margin-right: -15px;
-		padding-right: 15px;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0 -15px 0 40px;
+    padding-right: 15px;
 	}
+
 	.content
 	{
 		width: 100%;
@@ -287,6 +243,7 @@ p
 			transform: translateX(250px);
 		}
 	}
+
 	.sidebar-wr
 	{
 		position: absolute;
@@ -333,7 +290,7 @@ p
 		width: 30px;
 		height: 30px;
 		background: #FFFFFF;
-		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 		border-radius: 4px;
 		margin-bottom: 10px;
 		transition: 0.2s;
@@ -401,16 +358,5 @@ p
 				margin-right: 0;
 			}
 		}
-	}
-}
-
-@media (max-width: $mobile)
-{
-  .sidebar-wr
-	{
-	}
-	.page-content
-	{
-		padding: 14px;
 	}
 }

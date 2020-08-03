@@ -1,0 +1,52 @@
+// Import Vuetify styling
+@import 'variables';
+@import 'controls';
+@import 'mixins/helpers';
+
+html,body
+{
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+body
+{
+	font-size: 16px;
+	font-family: $accent-font;
+	font-weight: $regular;
+	color: $accent;
+	background-color: $light-gray;
+	line-height: 1.5;
+	overflow-x: hidden;
+}
+*
+*:before,
+*:after
+{
+	box-sizing: border-box;
+	outline: none;
+  outline: none;
+}
+a
+{
+	color: $accent;
+}
+table
+{
+	border-collapse: collapse;
+}
+th
+{
+	font-weight: $medium;
+	text-align: left;
+	font-size: 14px;
+}
+td
+{
+	font-weight: $light;
+	font-size: 14px;
+}
+p
+{
+	margin-top: 0;
+}

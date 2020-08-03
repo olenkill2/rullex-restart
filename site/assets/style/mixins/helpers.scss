@@ -1,0 +1,28 @@
+@mixin ulres {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@mixin inpres($arg1: margin) {
+  @if ($arg1 == margin) {
+    margin: 0;
+  }
+
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: inherit;
+  }
+}

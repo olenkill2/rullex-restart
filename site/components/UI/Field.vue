@@ -101,6 +101,7 @@ export default {
 		position: relative;
 		padding-top: 12px;
 		display: block;
+    width: 100%;
 	}
 	.input
 	{
@@ -115,6 +116,7 @@ export default {
 		display: block;
 		width: 100%;
 		min-width: 60px;
+    outline: none;
 	}
 	.input_error
 	{

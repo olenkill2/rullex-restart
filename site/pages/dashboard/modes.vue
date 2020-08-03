@@ -34,6 +34,7 @@
                 type="text"
               />
             </div>
+
             <div class="mode-form-groups-field-wr">
               <field
                 v-model="field.placeholder"
@@ -41,6 +42,7 @@
                 type="text"
               />
             </div>
+
             <div class="mode-form-groups-field-wr">
               <field
                 v-model="field.model"
@@ -48,15 +50,25 @@
                 type="text"
               />
             </div>
+
             <div class="mode-form-groups-field-wr">
-<!--              {{field.component}}-->
-              <dropdown
-                :options="componentsList"
+              <radio
                 v-model="field.component"
-                :value="field.component"
-                label="Тип компонента"
-              />
+                value="field"
+                name="component-type"
+              >
+                Поле
+              </radio>
+
+              <radio
+                v-model="field.component"
+                value="dropdown"
+                name="component-type"
+              >
+                Выпадающий список
+              </radio>
             </div>
+
             <div
               v-if="field.component === 'dropdown'"
               class="mode-form-groups-field-wr"
@@ -67,32 +79,61 @@
                   label="Название параметра"
                   type="text"
                 />
+
                 <field
                   v-model="dropDownListItem.value"
                   label="Значение для параметра"
                   type="text"
                 />
+
                 <button
                   @click="addDropListItem"
-                  class="btn btn_skin btn_small"
+                  class="btn btn_skin btn_small add-dropdown-button"
                 >
                   Добавить
                 </button>
 
                 <div class="field-droplist-items-added">
                   <div class="field-droplist-item" v-for="(dropItem, index) in field.dropDownList">
-<!--                    {{ dropItem }}-->
-<!--                    {{ dropItem.label }} {{ dropItem.value }}-->
-<!--                    <div class="field-droplist-item_remove" @click="removeDropListItem(index)"></div>-->
+                    {{ dropItem.label }}
+
+                    <ButtonEditItem
+                      class="edit-mode-item"
+                      isButton="remove"
+                      @remove="removeDropListItem(index)"
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            <div class="mode-form-groups-field-wr">
-              <button class="btn btn_small btn_full" v-if="!editingField" @click="addField">Добавить</button>
-              <button class="btn btn_small btn_full" v-else="" @click="updateField">Изменить</button>
+
+            <div class="mode-form-groups-field-wr mode-form-groups-field-wr--controls">
+              <button
+                v-if="!editingField"
+                @click="addField"
+                class="btn btn_small btn_full"
+              >
+                Добавить
+              </button>
+
+              <template v-else>
+                <button
+                  @click="updateField"
+                  class="btn btn_small btn_full"
+                >
+                  Сохранить
+                </button>
+
+                <button
+                  @click="cancelEditField"
+                  class="btn btn_small btn_red"
+                >
+                  Отменить
+                </button>
+              </template>
             </div>
           </div>
+
           <div class="mode-form-groups__item">
             <div class="mode-form__item-label">Список полей</div>
 
@@ -106,14 +147,18 @@
                   :label="modeField.name"
                   :placeholder="modeField.placeholder"
                 />
+
                 <dropdown
                   v-else
                   :options="modeField.dropDownList"
                   :label="modeField.name"
                 />
 
-                <div class="remove-field" @click="removeField(index)"></div>
-                <div class="edit-field" @click="editField(index)"></div>
+                <ButtonEditItem
+                  class="edit-mode-item"
+                  @edit="editField(index)"
+                  @remove="removeField(index)"
+                />
               </div>
             </div>
           </div>
@@ -127,12 +172,14 @@
           @clear="clearForm"
         />
       </div>
+
       <div
         class="pages-message"
         v-if="!modes.length"
       >
         Режимов пока нет
       </div>
+
       <DashboardTable
         v-else
         :headers="tableHeaders"
@@ -172,6 +219,7 @@
   import { mapGetters, mapActions } from 'vuex'
   import PageHeader from '~/components/dashboard/PageHeader'
   import DashboardTable from '~/components/dashboard/DashboardTable'
+  import ButtonEditItem from '~/components/UI/ButtonEditItem'
   import FormControls from '~/components/dashboard/FormControls'
   export default {
     layout (context) {
@@ -180,6 +228,7 @@
     components: {
       PageHeader,
       DashboardTable,
+      ButtonEditItem,
       FormControls
     },
     data() {
@@ -199,11 +248,11 @@
         },
         componentsList: [
           {
-            label: 'field',
+            label: 'Поле',
             value: 'field'
           },
           {
-            label: 'dropdown',
+            label: 'Выпадющий список',
             value: 'dropdown'
           }
         ],
@@ -221,12 +270,16 @@
       }),
       modes() {
         return JSON.parse(JSON.stringify(this.getModesFromStore))
+      },
+      fieldsOrder() {
+        return this.mode.fields.length
       }
     },
     methods: {
       ...mapActions({
         getModes: 'dashboard/fetchModes'
       }),
+
       getFieldSchema () {
         return {
           name: '',
@@ -234,12 +287,13 @@
           model: '',
           component: this.componentsList[0].value,
           dropDownList: [],
+          order: this.fieldsOrder
         }
       },
 
       addField () {
-        this.mode.fields.push(this.field);
-        this.field = this.getFieldSchema();
+        this.mode.fields.push(this.field)
+        this.field = this.getFieldSchema()
       },
 
       editField (index) {
@@ -248,10 +302,14 @@
         this.field = JSON.parse(JSON.stringify(this.mode.fields[this.editFieldIndex]));
       },
 
+      cancelEditField() {
+        this.editingField = null
+        this.field = this.getFieldSchema()
+      },
+
       updateField () {
-        this.mode.fields[this.editFieldIndex] = this.field;
-        this.editingField = null;
-        this.field = this.getFieldSchema();
+        this.mode.fields[this.editFieldIndex] = this.field
+        this.cancelEditField()
       },
 
       removeField (index) {
@@ -282,7 +340,7 @@
       editMode (index) {
         this.editingMode = true;
         this.modeFormShow = true;
-        this.mode = this.modes[index];
+        this.mode = JSON.parse(JSON.stringify(this.modes[index]))
       },
 
       removeMode () {
@@ -323,67 +381,50 @@
   }
 </script>
 <style lang="scss">
-	.modes-list
-	{
-		width: 100%;
-	}
-	.modes-header
-	{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding-bottom: 40px;
-	}
-	.modes-header
-	{
-		font-size: 28px;
-		color: $accent;
-	}
-	.modes-message
-	{
-		text-align: center;
-		font-size: 20px;
-		text-transform: uppercase;
-	}
 	.mode-form-wr
 	{
 		padding-bottom: 60px;
 	}
-	.mode-form-groups
+
+  .mode-form-groups
 	{
 		display: flex;
 		justify-content: space-between;
 	}
-	.mode-form-groups__item
+
+  .mode-form-groups__item
 	{
 		flex-basis: calc(33.333333% - 17px);
 	}
-	.mode-form-groups-field-wr
+
+  .mode-form-groups-field-wr
 	{
 		margin-bottom: 16px;
+
 		&:last-child
 		{
 			margin-bottom: 0;
 		}
 	}
-	.mode-form-actions
-	{
-		display: flex;
-		justify-content: flex-end;
-		padding-top: 40px;
-	}
-	.field-droplist-items-top
-	{
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-end;
-		.btn
-		{
-			min-width: 60px;
-			margin-left: 10px;
-		}
-	}
-	.field-droplist-items-added
+
+  .mode-form-groups-field-wr--controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+  }
+
+  .add-dropdown-button {
+    margin-top: 20px;
+  }
+
+  .edit-mode-item {
+    display: grid;
+    margin-left: 15px;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 14px;
+  }
+
+  .field-droplist-items-added
 	{
 		padding-top: 15px;
 		font-size: 14px;
@@ -392,22 +433,16 @@
 		vertical-align: top;
 		flex-wrap: wrap;
 	}
-	.field-droplist-item
+
+  .field-droplist-item
 	{
 		display: flex;
 		align-items: center;
 		padding-right: 10px;
 		padding-bottom: 8px;
 	}
-	.mode-form-actions__item
-	{
-		margin-left: 20px;
-		&:first-child
-		{
-			margin-left: 0;
-		}
-	}
-	.mode-field-item
+
+  .mode-field-item
 	{
 		margin-bottom: 15px;
 		display: flex;
@@ -418,38 +453,5 @@
 			margin-bottom: 0;
 		}
 	}
-	.field-droplist-item_remove,
-	.remove-field,
-	.edit-field
-	{
-		max-width: 20px;
-		width: 100%;
-		height: 20px;
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		cursor: pointer;
-		margin-left: 15px;
-	}
-	.field-droplist-item_remove
-	{
-		margin-left: 5px;
-		min-width: 15px;
-		height: 15px;
-		background-size: cover;
-	}
-	.remove-field,
-	.field-droplist-item_remove
-	{
-		background-image: url('../../assets/icons/close.svg');
-	}
-	.edit-field
-	{
-		background-image: url('../../assets/icons/edit.svg');
-		background-size: 80%;
-		&.edit-field_mode
-		{
-			margin-left: 0;
-		}
-	}
+
 </style>

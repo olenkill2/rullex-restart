@@ -36,7 +36,8 @@ export default {
 
 	styleResources: {
 		scss: [
-			'~assets/style/variables.scss',
+			'~assets/style/mixins/helpers.scss',
+			'~assets/style/variables.scss'
 		]
 	},
 
@@ -49,7 +50,8 @@ export default {
 		'~/plugins/vee-validate',
 		'~/plugins/customGlobalComponents',
 		{src: '~/plugins/editor', mode: 'client'},
-    {src: '~/plugins/vue-authenticate', mode: 'client'}
+    {src: '~/plugins/vue-authenticate', mode: 'client'},
+    {src: '~/plugins/CodeMirror', mode: 'client'}
 	],
 
 	modules: [

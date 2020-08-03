@@ -12,22 +12,22 @@
       v-if="edit"
       @close="edit = false"
     >
-      <!-- <MonacoEditor
-        class="editor"
+      <codemirror
+        class="codemirror"
         v-model="localCode"
-        @change="$emit('change', $event)"
-        language="javascript"
-      /> -->
+        :options="cmOption"
+        @blur="onCmBlur"
+      />
     </Popup>
 
-    <pre v-else class="function-code">
-{{ localCode }}
-    </pre>
+    <pre v-else class="function-code">{{ localCode }}</pre>
   </div>
 </template>
 
 <script>
   import Popup from "@/components/UI/Popup"
+  import 'codemirror/lib/codemirror.css'
+  import 'codemirror/theme/monokai.css'
 
   export default {
     name: 'FunctionEditor',
@@ -46,8 +46,21 @@
     data() {
       return {
         localCode: '',
-        options: {},
-        edit: false
+        edit: false,
+        cmOption: {
+          tabSize: 2,
+          styleActiveLine: true,
+          lineNumbers: true,
+          line: true,
+          mode: 'text/javascript',
+          theme: 'monokai'
+        }
+      }
+    },
+    methods: {
+      onCmBlur() {
+        console.log(this.localCode)
+        this.$emit('change', this.localCode)
       }
     },
     watch: {
@@ -65,10 +78,12 @@
   .function {
     margin-top: 15px;
   }
+
   .function-code {
     max-height: 200px;
     overflow-y: auto;
     margin-top: 10px;
+    font-size: 14px;
   }
 
   .code-block-header {
@@ -78,9 +93,9 @@
     font-size: 12px;
   }
 
-  .editor {
-    width: 600px;
-    height: 600px;
-    margin-top: 40px;
+  .codemirror {
+    height: 100%;
+    margin: 0;
+    overflow: auto;
   }
 </style>

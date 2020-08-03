@@ -72,6 +72,7 @@
           <div class="pages-form-groups-field-wr">
             <checkbox
               v-model="roulette.private"
+              name="private"
               label="Приватная"
             />
           </div>
@@ -151,6 +152,7 @@
             />
           </div>
         </div>
+
         <div class="pages-form-groups__item">
           <div class="pages-form__item-label">Функции</div>
 
@@ -416,9 +418,12 @@
 		padding-bottom: 40px;
 		width: 100%;
 		overflow-x: auto;
-
 	}
 
+  .pages-form-groups__item {
+    flex-shrink: 0;
+    overflow: hidden;
+  }
 
 	.field-droplist-items-top
 	{
@@ -431,6 +436,7 @@
 			margin-left: 10px;
 		}
 	}
+
 	.field-droplist-items-added
 	{
 		padding-top: 15px;

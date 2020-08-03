@@ -8,7 +8,7 @@
     </div>
     <div class="game__stat">
       <div class="game__stat-item">
-        Сыграли {{ `${count} ${getWord(count, 'time')}` }}
+        Сыграли {{ `${iteration} ${getWord(iteration, 'time')}` }}
       </div>
 
       <div
@@ -96,11 +96,14 @@
         currentBalance: 22,
         wins: 0,
         loses: 0,
-        stage: 1,
+        stage: 0,
         currentBet: 0,
         stat: [],
         gameFunction: null,
-        interval: null
+        iteration: 0,
+        loseInStage: 0,
+        interval: null,
+        timeOut: null
       }
     },
     computed: {
@@ -115,26 +118,11 @@
         return this.currentBalance - this.startBalance
       },
       currentStage() {
-        return this.tactic.stages[this.stage - 1]
+        return this.tactic.stages[this.stage]
       }
     },
     mounted() {
-      for (let i = 0; i < 99; i++) {
-        this.stat.push(
-          {
-            bet: 1,
-            isWin: i % 2 === 0 ? true : false,
-            event: 'Больше',
-            profit: i % 2 === 0 ? 1 : -2,
-            stage: 3
-          }
-        )
-      }
-
       this.gameFunction = this.functions[this.tactic.mode.label]()
-      // this.gameFunction().then((res) => {
-      //   console.log(res)
-      // })
       this.play()
     },
     methods: {
@@ -143,31 +131,45 @@
       }),
       play() {
         this.setGlobalStatus('play')
-
-        this.interval = setInterval(async () => {
-          const result = await this.gameFunction()
-
-          if (!result.isWin && this.tactic.stages.length > 1) {
-            this.stage++
-          }
-
-          if (this.autoStop) {
-            console.log('check autostop')
-            if (2 > 4) {
-              clearInterval(this.interval)
-            }
-          }
-
-          // setTimeout(()=> clearInterval(this.interval), 3000)
-        }, this.currentStage.delay.value)
+        this.gameing(this.iteration)
       },
       pause() {
         this.setGlobalStatus('pause')
-        clearInterval(this.interval)
       },
       stop() {
         this.setGlobalStatus('ready')
-        clearInterval(this.interval)
+      },
+      gameing() {
+        if(this.globalStatus === 'pause') {
+          return false;
+        }
+
+        this.timeout = false;
+        this.timeout = setTimeout(async () => {
+          const result = await this.gameFunction()
+          // если выиграл
+          if(result.isWin)
+          {
+            // игровой процесс
+            this.wins++
+            this.loseInStage = 0
+            this.stage = 0
+          }
+          else
+          {
+            // lose++;
+            // loseInStage++;
+            // balance--;
+            // if(loseInStage == taks[currentStage].betLoses && currentStage < taks.length-1)
+            // {
+            //   currentStage++;
+            //   loseInStage = 0;
+            // }
+          }
+
+          this.gameing(++this.iteration)
+          this.stat.unshift(result)
+        }, this.currentStage.delay.value)
       }
     }
   }

@@ -45,11 +45,14 @@
   }
 
   .popup-close {
+    @include inpres;
+
     position: absolute;
-    background: none;
-    border: none;
-    box-shadow: none;
-    right: 10px;
-    top: 10px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    top: -40px;
+    background-color: #fff;
+    border-radius: 50%;
   }
 </style>

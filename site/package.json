@@ -5,7 +5,7 @@
   "author": "Стас Соколов",
   "private": true,
   "scripts": {
-    "dev": "BASE_URL=http://127.0.0.1:3002/ --port 3334 nuxt",
+    "dev": "BASE_URL=http://127.0.0.1:3002/ nuxt --port 3334",
     "start-dev": "nuxt start --port 3001",
     "start-prod": "nuxt start --port 3000",
     "build": "nuxt build",
@@ -23,6 +23,7 @@
     "nuxt": "^2.12.2",
     "vee-validate": "^3.3.0",
     "vue-authenticate": "^1.4.1",
+    "vue-codemirror": "^4.0.6",
     "vue-editor-js": "^1.1.1"
   },
   "devDependencies": {

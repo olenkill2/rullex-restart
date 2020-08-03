@@ -1,17 +1,27 @@
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+}
+
 .btn
 {
+  @include inpres;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: none;
-	box-shadow: none;
-	border: none;
-	outline: none;
-	text-decoration: none;
-	height: 30px;
-	min-width: 150px;
-	background-color: $blue;
-	color: #fff;
+  box-shadow: none;
+  min-width: 150px;
+  background: $blue none;
+  color: #fff;
 	transition: 0.2s;
 	font-size: 16px;
 	border-radius: 4px;
@@ -19,6 +29,7 @@
 	cursor: pointer;
 	padding-left: 20px;
 	padding-right: 20px;
+
 	&:hover
 	{
 		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -30,61 +41,53 @@
 		pointer-events: none;
 	}
 }
+
 .btn_small
 {
 	font-size: 14px;
 	min-width: 90px;
 	height: 35px;
 }
+
 .btn_skin
 {
 	background-color: #fff;
 	color: $blue;
 	border: 1px solid $blue;
+
 	&:disabled
 	{
 		background-color: #fff;
 		pointer-events: none;
 	}
 }
+
 .btn_accent
 {
 	background-color: $blue;
 }
+
 .btn_red
 {
 	background-color: transparent;
 	color: $red;
 	border: 1px solid $red;
+
 	&:disabled
 	{
 		background-color: #fff;
 		opacity: 0.5;
 	}
 }
+
 .checkbox-label-wr
 {
 	display: inline-flex;
 	line-height: 0;
 	align-items: center
 }
+
 .label-text
 {
 	padding-left: 8px;
-}
-
-.edit-btn
-{
-	display: block;
-	width: 20px;
-	height: 20px;
-	background-image: url('../../assets/icons/edit.svg');
-	background-repeat: no-repeat;
-	background-position: center;
-	cursor: pointer;
-	transition: 0.2s;
-	&:hover
-	{
-		transform: scale(1.2);
-	}
 }
