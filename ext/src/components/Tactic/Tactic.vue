@@ -45,6 +45,13 @@
       @accept="$emit('remove'); isShowConfirm = false"
       @cancel="isShowConfirm = false"
     />
+
+    <div
+      v-if="disabled"
+      class="tactic__disabled"
+    >
+      Тактика не для этой рулетки)
+    </div>
   </div>
 </template>
 
@@ -57,6 +64,10 @@
       tactic: {
         type: Object,
         required: true
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     },
     components: {
@@ -76,12 +87,8 @@
 </script>
 
 <style lang="scss">
-  .tactic
-  {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 28px;
-    padding-top: 20px;
+  .tactic {
+    padding: 20px 10px 28px;
     border-bottom: 1px solid #E1EEF6;
     position: relative;
 
@@ -95,31 +102,41 @@
       border-bottom: none;
     }
   }
-  .tactic__name
-  {
+  .tactic__name {
     font-weight: 500;
     font-size: 18px;
     line-height: 21px;
   }
-  .tactic__body
-  {
+  .tactic__body {
     display: flex;
     justify-content: space-between;
     padding-top: 15px;
     padding-bottom: 18px;
   }
-  .tactic__body-item
-  {
+  .tactic__body-item {
     flex-basis: 48%;
     color: $main;
   }
-  .tactic__footer
-  {
+  .tactic__footer {
     display: flex;
     justify-content: flex-end;
   }
-  .btn.tactic__select
-  {
+
+  .tactic__disabled {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#fff, .8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .btn.tactic__select {
     max-width: 120px;
     min-width: 120px;
     margin-left: 10px;

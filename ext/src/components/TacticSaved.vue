@@ -27,6 +27,7 @@
             :key="index"
             :tactic="tactic"
             class="saved-tactics__item"
+            :disabled="tactic.disabled"
             @remove="remove(tactic)"
             @select="select(tactic)"
             @show-tactic="tacticToView = tactic"
@@ -81,7 +82,9 @@
       }),
       savedTactics() {
         return this.userTactics.sort((tactic) => {
-          return tactic.roulette.name === this.rouletteName ? -1 : 1
+          tactic.disabled = tactic.roulette.name !== this.rouletteName
+
+          return !tactic.disabled ? -1 : 1
         })
       },
       filteredTactics() {

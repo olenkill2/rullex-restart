@@ -16,7 +16,8 @@
         </div>
 
         <div class="header__right">
-          <a class="btn" href="google.ru" target="_blank">
+
+          <a class="btn header-ext-link-wr" href="google.ru" target="_blank">
             <span class="header-ext-link__text">Расширения для</span>
             <span class="header-ext-link__icon">
               <img :src="browserIcon" />
@@ -24,11 +25,18 @@
           </a>
 
           <button
+            @click="$emit('open-menu')"
+            class="burger"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -53 384 384"><path d="M368 154.668H16c-8.832 0-16-7.168-16-16s7.168-16 16-16h352c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0M368 32H16C7.168 32 0 24.832 0 16S7.168 0 16 0h352c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0M368 277.332H16c-8.832 0-16-7.168-16-16s7.168-16 16-16h352c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0"/></svg>
+          </button>
+
+          <button
             v-if="isAuth"
             @click="logout"
-            class="btn header-login"
+            class="auth-btn"
           >
-            Выйти
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M25.453 27.563v2.812A5.631 5.631 0 0119.828 36H5.695A5.631 5.631 0 01.07 30.375V5.625A5.631 5.631 0 015.695 0h14.133a5.631 5.631 0 015.625 5.625v2.813a1.406 1.406 0 11-2.812 0V5.624a2.816 2.816 0 00-2.813-2.813H5.695a2.816 2.816 0 00-2.812 2.813v24.75a2.816 2.816 0 002.812 2.813h14.133a2.816 2.816 0 002.813-2.813v-2.813a1.406 1.406 0 112.812 0zm9.588-11.979l-3.15-3.149a1.406 1.406 0 10-1.988 1.989l2.24 2.24H15.258a1.406 1.406 0 100 2.813h16.885l-2.24 2.24a1.406 1.406 0 101.989 1.988l3.149-3.149a3.52 3.52 0 000-4.972z" fill="#000"/></svg>
           </button>
 
           <AuthPopover class="header-login" v-else />
@@ -111,16 +119,28 @@
     display: flex;
     align-items: center;
   }
+
+  .auth-btn {
+    @include inpres;
+    line-height: 0;
+    margin-left: 30px;
+
+    svg {
+      height: 24px;
+    }
+
+    @media (max-width: $tablet) {
+      margin-left: 24px;
+    }
+  }
+
   .header-login {
     margin-left: 25px;
   }
+
   .header-ext-link-wr {
     text-align: center;
     height: 38px;
-
-    &:not(:last-child) {
-      margin-right: 50px;
-    }
   }
   .header-ext-link__text {
     font-size: 14px;
@@ -140,6 +160,20 @@
     }
   }
 
+  .burger {
+    display: none;
+
+    @media (max-width: $tablet) {
+      @include inpres;
+
+      height: 28px;
+      width: 26px;
+      line-height: 0;
+      display: block;
+      margin-left: 24px;
+    }
+  }
+
   @media (max-width: $tablet) {
     .header-logo {
       svg {
@@ -147,6 +181,7 @@
         width: auto;
       }
     }
+
     .header-ext-link-wr {
       height: 34px;
     }
@@ -160,18 +195,9 @@
         height: 28px;
       }
     }
+
     .header-ext-link-wr {
-      padding: 5px;
-      justify-content: center;
-      height: 28px;
-    }
-    .header-ext-link__text {
-      font-size: 12px;
-    }
-    .header-ext-link__icon {
-      img {
-        width: 16px;
-      }
+      display: none;
     }
   }
 </style>

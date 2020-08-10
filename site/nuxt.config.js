@@ -49,6 +49,7 @@ export default {
 		'~/plugins/axios',
 		'~/plugins/vee-validate',
 		'~/plugins/customGlobalComponents',
+		{src: '~/plugins/Scroll-lock', mode: 'client'},
 		{src: '~/plugins/editor', mode: 'client'},
     {src: '~/plugins/vue-authenticate', mode: 'client'},
     {src: '~/plugins/CodeMirror', mode: 'client'}

@@ -167,9 +167,21 @@
             // }
           }
 
+          this.checkAutostop()
           this.gameing(++this.iteration)
           this.stat.unshift(result)
         }, this.currentStage.delay.value)
+      },
+      checkAutostop() {
+        const params = this.autoStop
+        if (params) {
+          Object.keys(params).forEach((param) => {
+            console.log(param)
+            // switch (param):
+          })
+        } else {
+          return true
+        }
       }
     }
   }
