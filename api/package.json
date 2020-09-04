@@ -37,7 +37,7 @@
 	"devDependencies": {
 		"nodemon": "^2.0.3",
 		"shipit-cli": "^5.2.0",
-    "shipit-shared": "^4.4.2",
+		"shipit-shared": "^4.4.2",
 		"shipit-deploy": "^5.2.0"
 	}
 }
