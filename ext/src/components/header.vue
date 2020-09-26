@@ -2,8 +2,9 @@
 	<div class="header-wr">
     <div class="header__left">
       <div
-        v-if="status !== 'ready'"
-        class="header-stat-top">
+        v-if="errorMessage"
+        class="header-stat-top"
+      >
         {{ errorMessage }}
       </div>
 
@@ -15,8 +16,25 @@
         <span
           class="header-currency"
           :class="{'header-currency_minus': $store.state.balanceMinus}"
-        >{{ currency.symbol }}</span>
+        >
+          {{ currency.symbol }}
+        </span>
       </div>
+
+      <div
+        v-if="status === 'play'"
+        class="header-stat-top"
+      >
+        Идет игра
+        <div
+          class="header-currency"
+          :class="{'header-currency_minus': $store.state.balanceMinus}"
+        >
+          {{ currency.symbol }}
+        </div>
+      </div>
+
+
     </div>
     <div class="header__right">
       <transition-group
@@ -32,9 +50,10 @@
           <svg v-if="expand" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)" fill="#62677D"><path d="M11 2H2v9l1-1V3h7l1-1zM5 14h9V5l-1 1v7H6l-1 1z" /><path d="M16 0h-5l1.8 1.8-4.5 4.5 1.4 1.4 4.5-4.5L16 5V0zM7.7 9.7L6.3 8.3l-4.5 4.5L0 11v5h5l-1.8-1.8 4.5-4.5z" /></g><defs><clipPath id="clip0"><path fill="#fff" d="M0 0h16v16H0z" /></clipPath></defs></svg>
           <svg v-else fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M12 0H0v12l1-1V1h10l1-1zM4 16h12V4l-1 1v10H5l-1 1z" fill="#62677D" /><path d="M7 9H2l1.8 1.8L0 14.6 1.4 16l3.8-3.8L7 14V9zM16 1.4L14.6 0l-3.8 3.8L9 2v5h5l-1.8-1.8L16 1.4z" fill="#62677D" /></svg>
         </div>
+
         <div
-          v-if="$store.state.router.history.length"
-          @click="routeBack()"
+          v-if="$store.state.router.history.length > 1 && status !== 'play'"
+          @click="goBack"
           key="nav-item-2"
           class="header-back"
         >
@@ -71,22 +90,17 @@
         currency: 'getCurrency'
       }),
       errorMessage() {
-        console.log(this.status)
         switch (this.status) {
           case 'noAuth':
             return 'Требуется авторизация'
-            break
           case 'load':
             return 'Загрузочка'
-            break
           case 'noBalance':
-            return '"Но вы держитесь"'
-            break
+            return 'Но вы держитесь'
           case 'error':
             return 'Что-то сломалось( А что хз'
-            break
           default:
-            return 'Что-то грузится, возможно и не загрузится'
+            return null
         }
       }
     },
@@ -98,6 +112,13 @@
         this.expand = !this.expand
         this.$emit('expand', this.expand)
       },
+      goBack() {
+        if (this.status === 'pause') {
+          console.log('Очистка игры')
+        }
+
+        this.routeBack()
+      }
     }
   }
 </script>

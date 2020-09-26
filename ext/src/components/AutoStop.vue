@@ -46,7 +46,7 @@
 
       <div class="auto-stop__actions">
         <button
-          @click="routeTo('Game')"
+          @click="skip"
           class="btn btn_skin"
         >
           Пропустить
@@ -115,6 +115,10 @@
 
         Object.keys(this.settings).length && this.saveAutoStop(this.settings)
 
+        this.routeTo('Game')
+      },
+      skip() {
+        this.saveAutoStop({})
         this.routeTo('Game')
       }
     }

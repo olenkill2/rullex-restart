@@ -22,7 +22,7 @@ export default new Vuex.Store({
     ...{
       balance:1,
       globalStatus:"ready",
-      router:{current:"AutoStop", history:["FirstScreen","tactics"]},
+      router:{current:"AutoStop", history:["FirstScreen","tactics", "AutoStop"]},
       currentRoulette:{
         description:"какое-то супер крутое описание",
         color:"#333333",
@@ -117,7 +117,8 @@ export default new Vuex.Store({
         refChange:{_custom:{type:"function", display:"<span>ƒ</span> ()"}}},
       gameFunctions:{dice:{_custom:{type:"function", display:"<span>ƒ</span> ()"}}}},
 
-    autoStop: null
+    autoStop: null,
+    gameStat: null
   },
 
   mutations: {
@@ -129,6 +130,9 @@ export default new Vuex.Store({
         state.router.params = params
       else
         delete state.router.params
+    },
+    setGameStat(state, stat) {
+      state.gameStat = stat
     },
     selectRoulette(state, { roulette, baseFunctions, gameFunctions }) {
       state.currentRoulette = roulette
@@ -148,8 +152,20 @@ export default new Vuex.Store({
   },
   actions: {
     routerBack ({ state }) {
-      state.router.current = state.router.history[state.router.history.length - 1]
-      state.router.history.splice(-1, 1)
+      const router = JSON.parse(JSON.stringify(state.router))
+
+      const newRouter = {
+        current: router.history[router.history.length - 1],
+        history: router.history
+      }
+
+      // console.log(newRouter.current)
+      if (newRouter.current !== 'FirstScreen') {
+        console.log(router.history.splice(-1, 1))
+        // newRouter.history = router.history.splice(-1, 1)
+      }
+      console.log(newRouter.history)
+      state.router = newRouter
     },
 
     setRoulette({ commit }, roulette) {

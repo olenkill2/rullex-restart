@@ -66,7 +66,10 @@
         Продолжить игру
       </button>
 
-      <button class="btn btn_full-red">
+      <button
+        class="btn btn_full-red"
+        @click="stop"
+      >
         СТОП
       </button>
     </div>
@@ -94,6 +97,7 @@
         count: 0,
         startBalance: 33,
         currentBalance: 22,
+        loseMoney: 0,
         wins: 0,
         loses: 0,
         stage: 0,
@@ -102,8 +106,7 @@
         gameFunction: null,
         iteration: 0,
         loseInStage: 0,
-        interval: null,
-        timeOut: null
+        timeout: null
       }
     },
     computed: {
@@ -127,7 +130,8 @@
     },
     methods: {
       ...mapMutations({
-        setGlobalStatus: 'setGlobalStatus'
+        setGlobalStatus: 'setGlobalStatus',
+        setGameStat: 'setGameStat'
       }),
       play() {
         this.setGlobalStatus('play')
@@ -137,51 +141,81 @@
         this.setGlobalStatus('pause')
       },
       stop() {
+        clearTimeout(this.timeout)
         this.setGlobalStatus('ready')
+
+        // this.routeTo('firstScreen')
       },
       gameing() {
-        if(this.globalStatus === 'pause') {
+        if (this.globalStatus !== 'play') {
           return false;
         }
 
         this.timeout = false;
         this.timeout = setTimeout(async () => {
           const result = await this.gameFunction()
-          // если выиграл
-          if(result.isWin)
-          {
-            // игровой процесс
-            this.wins++
-            this.loseInStage = 0
-            this.stage = 0
-          }
-          else
-          {
-            // lose++;
-            // loseInStage++;
-            // balance--;
-            // if(loseInStage == taks[currentStage].betLoses && currentStage < taks.length-1)
-            // {
-            //   currentStage++;
-            //   loseInStage = 0;
-            // }
-          }
 
-          this.checkAutostop()
-          this.gameing(++this.iteration)
-          this.stat.unshift(result)
+          this.updateGameStat(result)
+
+          if (this.checkAutostop()) {
+            this.gameing(++this.iteration)
+            this.stat.unshift(result)
+          } else {
+            this.stop()
+          }
         }, this.currentStage.delay.value)
       },
       checkAutostop() {
         const params = this.autoStop
+
         if (params) {
-          Object.keys(params).forEach((param) => {
-            console.log(param)
-            // switch (param):
+          return Object.keys(params).every((param) => {
+            return this[param](params[param])
           })
         } else {
           return true
         }
+      },
+      gamesCount(maxCount) {
+        console.log(this.count, Number(maxCount))
+        return this.count !== Number(maxCount)
+      },
+      gamesLose(maxLoseGames) {
+        return this.loses !== Number(maxLoseGames)
+
+      },
+      maxLose(maxLoseMoney) {
+        return Number(this.loseMoney) < Number(maxLoseMoney)
+
+      },
+      maxProfit(maxProfit) {
+        return this.profit < Number(maxProfit);
+
+      },
+      updateGameStat(result) {
+        this.count++
+
+        if(result.isWin) {
+          this.wins++
+          this.loseInStage = 0
+          this.stage = 0
+          // this.currentBalance += result.newBalance || 0
+          this.currentBet = this.currentStage.betSize.value
+        } else {
+          this.loses++
+          this.loseInStage++
+          this.loseMoney += this.currentStage.betSize.value
+
+          // if (this.loseInStage === this.currentStage.toNext) {
+          //   this.stage++
+          // }
+        }
+
+        // this.updateGameStat({
+        //   wins: this.wins,
+        //   loses: this.loses,
+        //   balance: this.currentBalance
+        // })
       }
     }
   }
