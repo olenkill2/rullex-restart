@@ -9,7 +9,7 @@
   "dependencies": {
     "@sentry/browser": "^5.11.1",
     "@sentry/integrations": "^5.11.1",
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "vee-validate": "^3.3.0",
     "vue": "^2.6.11",
