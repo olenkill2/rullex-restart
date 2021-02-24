@@ -59,6 +59,14 @@
       </button>
 
       <button
+        v-if="globalStatus === 'ready'"
+        class="btn btn_accent game__play"
+        @click="pause"
+      >
+        Начать играть
+      </button>
+
+      <button
         v-if="globalStatus === 'pause'"
         class="btn btn_skin"
         @click="play"
@@ -67,6 +75,7 @@
       </button>
 
       <button
+        v-if="globalStatus === 'play'"
         class="btn btn_full-red"
         @click="stop"
       >
@@ -95,8 +104,8 @@
     data() {
       return {
         count: 0,
-        startBalance: 33,
-        currentBalance: 22,
+        startBalance: 0,
+        currentBalance: 0,
         loseMoney: 0,
         wins: 0,
         loses: 0,
@@ -115,6 +124,7 @@
         currency: 'getCurrency',
         autoStop: 'getAutoStop',
         functions: 'getGameFunctions',
+        userBalance: 'getBalance',
         globalStatus: 'getGlobalStatus'
       }),
       profit() {
@@ -126,7 +136,7 @@
     },
     mounted() {
       this.gameFunction = this.functions[this.tactic.mode.label]()
-      this.play()
+      this.startBalance = this.userBalance
     },
     methods: {
       ...mapMutations({
@@ -143,15 +153,14 @@
       stop() {
         clearTimeout(this.timeout)
         this.setGlobalStatus('ready')
-
-        // this.routeTo('firstScreen')
       },
       gameing() {
         if (this.globalStatus !== 'play') {
           return false;
         }
 
-        this.timeout = false;
+        clearTimeout(this.timeout)
+
         this.timeout = setTimeout(async () => {
           const result = await this.gameFunction()
 
@@ -159,6 +168,7 @@
 
           if (this.checkAutostop()) {
             this.gameing(++this.iteration)
+
             this.stat.unshift(result)
           } else {
             this.stop()
@@ -177,20 +187,16 @@
         }
       },
       gamesCount(maxCount) {
-        console.log(this.count, Number(maxCount))
         return this.count !== Number(maxCount)
       },
       gamesLose(maxLoseGames) {
         return this.loses !== Number(maxLoseGames)
-
       },
       maxLose(maxLoseMoney) {
         return Number(this.loseMoney) < Number(maxLoseMoney)
-
       },
       maxProfit(maxProfit) {
         return this.profit < Number(maxProfit);
-
       },
       updateGameStat(result) {
         this.count++
@@ -199,7 +205,6 @@
           this.wins++
           this.loseInStage = 0
           this.stage = 0
-          // this.currentBalance += result.newBalance || 0
           this.currentBet = this.currentStage.betSize.value
         } else {
           this.loses++
@@ -251,9 +256,13 @@
 
   .game__actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto;
     grid-gap: 20px;
     margin-bottom: 30px;
+  }
+
+  .game__play {
+    width: 100%;
   }
 
   .game-stat__header {

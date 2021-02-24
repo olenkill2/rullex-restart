@@ -10,112 +10,112 @@ export default new Vuex.Store({
   },
 
   state: {
-    // balance: 0,
-    // globalStatus: 'load',
-    // router: {
-    //   current: 'FirstScreen',
-    //   history: []
-    // },
-    // currentRoulette: null,
-    // modes: null,
-    // functions: {}
-    ...{
-      balance:1,
-      globalStatus:"ready",
-      router:{current:"AutoStop", history:["FirstScreen","tactics", "AutoStop"]},
-      currentRoulette:{
-        description:"какое-то супер крутое описание",
-        color:"#333333",
-        minBet:0.01,
-        modes:[{
-          created_at:"2020-05-02T13:23:43.560Z",
-          _id:"5ead745fa71a5216dcd0337a",
-          name:"dice",
-          fields:[{
-            dropDownList:[],
-            _id:"5ead745fa71a5216dcd0337b",
-            name:"ставка",
-            placeholder:"p",
-            model:"betSize",
-            component:"field"},{
-            dropDownList:[{label:"Больше", value:"large"},{label:"Меньше", value:"men"}],
-            _id:"5ead745fa71a5216dcd0337c",
-            name:"на что ставить",
-            placeholder:"больше",
-            model:"whoBet",
-            component:"dropdown"},{
-            dropDownList:[],
-            _id:"5ead745fa71a5216dcd0337d",
-            name:"Задержка",
-            placeholder:"500 ms",
-            model:"delay",
-            component:"field"}],
-          __v:0}],
-        _id:"5ead7564a71a5216dcd0337e",
-        name:"nvuti",
-        host:"http://localhost:8080",
-        currency:{symbol:"D", name:"Dubli"},
-        functions:{
-          authValidationRuleFunction:"() => {return function() { \nconsole.log('validate auth')\nreturn true; \n}}",
-          balanceParseFunction:"() => {return function() { \nconsole.log('get balance')\nreturn 1; \n}}",
-          referalChangeFunction:"() => {return function() { console.log('ref change') }}"},
-        gameFunctionForMode:[{
-          _id:"5ead7564a71a5216dcd0337f",
-          mode:{
-            created_at:"2020-05-02T13:23:43.560Z",
-            _id:"5ead745fa71a5216dcd0337a",
-            name:"dice",
-            fields:[{
-              dropDownList:[],
-              _id:"5ead745fa71a5216dcd0337b",
-              name:"ставка",
-              placeholder:"p",
-              model:"betSize",
-              component:"field"},{
-              dropDownList:[{label:"Больше", value:"large"},{label:"Меньше", value:"men"}],
-              _id:"5ead745fa71a5216dcd0337c",
-              name:"на что ставить",
-              placeholder:"больше",
-              model:"whoBet",
-              component:"dropdown"},{
-              dropDownList:[],
-              _id:"5ead745fa71a5216dcd0337d",
-              name:"Задержка",
-              placeholder:"500 ms",
-              model:"delay",
-              component:"field"}],
-            __v:0},
-          gameFunc:"() => {return function() { console.log('game functions', args) }}"}],
-        referal:{refType:"url", url:"http://localolhost:8000/ref-url", code:""}},
-      modes:[{
-        created_at:"2020-05-02T13:23:43.560Z",
-        _id:"5ead745fa71a5216dcd0337a",
-        name:"dice",
-        fields:[{
-          dropDownList:[],
-          _id:"5ead745fa71a5216dcd0337b",
-          name:"ставка",
-          placeholder:"p",
-          model:"betSize",
-          component:"field"},{
-          dropDownList:[{label:"Больше", value:"large"},{label:"Меньше", value:"men"}],
-          _id:"5ead745fa71a5216dcd0337c",
-          name:"на что ставить",
-          placeholder:"больше",
-          model:"whoBet",
-          component:"dropdown"},{
-          dropDownList:[],
-          _id:"5ead745fa71a5216dcd0337d",
-          name:"Задержка",
-          placeholder:"500 ms",
-          model:"delay",
-          component:"field"}],
-        __v:0}],
-      functions:{
-        authCheck:{_custom:{type:"function", display:"<span>ƒ</span> ()"}},
-        parseBalance:{_custom:{type:"function", display:"<span>ƒ</span> ()"}},
-        refChange:{_custom:{type:"function", display:"<span>ƒ</span> ()"}}},
-      gameFunctions:{dice:{_custom:{type:"function", display:"<span>ƒ</span> ()"}}}},
+    balance: 0,
+    globalStatus: 'load',
+    router: {
+      current: 'FirstScreen',
+      history: []
+    },
+    currentRoulette: null,
+    modes: null,
+    functions: {},
+    // ...{
+    //   balance:1,
+    //   globalStatus:"ready",
+    //   router:{current:"AutoStop", history:["FirstScreen","tactics", "AutoStop"]},
+    //   currentRoulette:{
+    //     description:"какое-то супер крутое описание",
+    //     color:"#333333",
+    //     minBet:0.01,
+    //     modes:[{
+    //       created_at:"2020-05-02T13:23:43.560Z",
+    //       _id:"5ead745fa71a5216dcd0337a",
+    //       name:"dice",
+    //       fields:[{
+    //         dropDownList:[],
+    //         _id:"5ead745fa71a5216dcd0337b",
+    //         name:"ставка",
+    //         placeholder:"p",
+    //         model:"betSize",
+    //         component:"field"},{
+    //         dropDownList:[{label:"Больше", value:"large"},{label:"Меньше", value:"men"}],
+    //         _id:"5ead745fa71a5216dcd0337c",
+    //         name:"на что ставить",
+    //         placeholder:"больше",
+    //         model:"whoBet",
+    //         component:"dropdown"},{
+    //         dropDownList:[],
+    //         _id:"5ead745fa71a5216dcd0337d",
+    //         name:"Задержка",
+    //         placeholder:"500 ms",
+    //         model:"delay",
+    //         component:"field"}],
+    //       __v:0}],
+    //     _id:"5ead7564a71a5216dcd0337e",
+    //     name:"nvuti",
+    //     host:"http://localhost:8080",
+    //     currency:{symbol:"D", name:"Dubli"},
+    //     functions:{
+    //       authValidationRuleFunction:"() => {return function() { \nconsole.log('validate auth')\nreturn true; \n}}",
+    //       balanceParseFunction:"() => {return function() { \nconsole.log('get balance')\nreturn 1; \n}}",
+    //       referalChangeFunction:"() => {return function() { console.log('ref change') }}"},
+    //     gameFunctionForMode:[{
+    //       _id:"5ead7564a71a5216dcd0337f",
+    //       mode:{
+    //         created_at:"2020-05-02T13:23:43.560Z",
+    //         _id:"5ead745fa71a5216dcd0337a",
+    //         name:"dice",
+    //         fields:[{
+    //           dropDownList:[],
+    //           _id:"5ead745fa71a5216dcd0337b",
+    //           name:"ставка",
+    //           placeholder:"p",
+    //           model:"betSize",
+    //           component:"field"},{
+    //           dropDownList:[{label:"Больше", value:"large"},{label:"Меньше", value:"men"}],
+    //           _id:"5ead745fa71a5216dcd0337c",
+    //           name:"на что ставить",
+    //           placeholder:"больше",
+    //           model:"whoBet",
+    //           component:"dropdown"},{
+    //           dropDownList:[],
+    //           _id:"5ead745fa71a5216dcd0337d",
+    //           name:"Задержка",
+    //           placeholder:"500 ms",
+    //           model:"delay",
+    //           component:"field"}],
+    //         __v:0},
+    //       gameFunc:"() => {return function() { console.log('game functions', args) }}"}],
+    //     referal:{refType:"url", url:"http://localolhost:8000/ref-url", code:""}},
+    //   modes:[{
+    //     created_at:"2020-05-02T13:23:43.560Z",
+    //     _id:"5ead745fa71a5216dcd0337a",
+    //     name:"dice",
+    //     fields:[{
+    //       dropDownList:[],
+    //       _id:"5ead745fa71a5216dcd0337b",
+    //       name:"ставка",
+    //       placeholder:"p",
+    //       model:"betSize",
+    //       component:"field"},{
+    //       dropDownList:[{label:"Больше", value:"large"},{label:"Меньше", value:"men"}],
+    //       _id:"5ead745fa71a5216dcd0337c",
+    //       name:"на что ставить",
+    //       placeholder:"больше",
+    //       model:"whoBet",
+    //       component:"dropdown"},{
+    //       dropDownList:[],
+    //       _id:"5ead745fa71a5216dcd0337d",
+    //       name:"Задержка",
+    //       placeholder:"500 ms",
+    //       model:"delay",
+    //       component:"field"}],
+    //     __v:0}],
+    //   functions:{
+    //     authCheck:{_custom:{type:"function", display:"<span>ƒ</span> ()"}},
+    //     parseBalance:{_custom:{type:"function", display:"<span>ƒ</span> ()"}},
+    //     refChange:{_custom:{type:"function", display:"<span>ƒ</span> ()"}}},
+    //   gameFunctions:{dice:{_custom:{type:"function", display:"<span>ƒ</span> ()"}}}},
 
     autoStop: null,
     gameStat: null
