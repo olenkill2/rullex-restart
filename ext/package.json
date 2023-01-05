@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.2",
-    "@vue/cli-service": "^4.1.2",
+    "@vue/cli-service": "^5.0.8",
     "node-sass": "^4.13.1",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
